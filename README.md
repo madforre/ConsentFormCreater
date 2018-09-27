@@ -1,6 +1,8 @@
 # cms
 
-> A Vue.js project
+> Vue로 CMS 만들기
+
+목표 : Vue Router과 싱글 뷰 컴포넌트를 이용하여 동의서 생성하는 프로그램(CMS)을 SPA로 만들기.
 
 ## Build Setup
 
