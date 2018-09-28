@@ -7,7 +7,6 @@
         <li><p> {{msg}} </p></li>
       </ul>
     </div>
-    <br>
     <router-view></router-view>
   </div>
 </template>
@@ -50,16 +49,19 @@ img{
 
 /* Wrap */
 
+html {
+  min-width : 900px;
+}
+
 #wrap {
-  height : 100%;
+  height : auto;
   text-align: center;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   box-sizing: border-box;
-  border : 2px solid rgb(190, 184, 248);
-  padding : 1rem;
+  padding : 0.5rem;
 }
 
 /* Wrap header */
@@ -67,8 +69,10 @@ img{
 #wrap .header {
   display : flex;
   flex-direction: row;
-  border-bottom : 1px solid rgb(111, 135, 241);
-  padding : 1rem;
+  box-sizing: border-box;
+  border-bottom : 2px solid rgb(111, 135, 241);
+  padding : 0.5rem;
+  margin-bottom : 1rem;
 }
 
 #wrap .header .gnb {
@@ -83,7 +87,6 @@ img{
 }
 
 #wrap .header h1, h3 {
-  /* border : 1px solid black; */
   font-weight: normal;
 }
 

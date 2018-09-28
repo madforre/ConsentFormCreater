@@ -11,7 +11,6 @@ export default {
 
 <style>
 .creater {
-    border : 1px solid rgb(111, 135, 241);
     padding : 1rem;
 }
 </style>

@@ -4,8 +4,9 @@ import VueRouter from 'vue-router'
 import Home from '../components/Home'
 
 import Template from '../components/Template.vue'
-import Picker from '../components/Template/Picker'
-import Creater from '../components/Template/Creater'
+import Loader from '../components/Load/Loader'
+import Creater from '../components/Create/Creater'
+// import Tools from '../components/Create/Tools'
 
 // Vue 애플리케이션에 라우터 플러그인 추가
 Vue.use(VueRouter)
@@ -20,8 +21,8 @@ const router = new VueRouter({
         { path: '/template', component: Template,
           children: [
             {
-              path: 'picker',
-              component: Picker,
+              path: 'loader',
+              component: Loader,
             },
             {
               path: 'creater',
