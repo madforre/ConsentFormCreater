@@ -3,9 +3,8 @@
       <ul>
         <li><h1>Tools</h1></li>
         <li>
-            <button v-on:click="zoomIn">확대</button>
-            　,
-            <button v-on:click="zoomOut">축소</button>
+            <button v-on:click="zoomIn">　+　</button>
+            <button v-on:click="zoomOut">　-　</button>
         </li>
         <li class="words">
             <p>글자 넣기</p>
@@ -55,17 +54,17 @@
 </template>
 <script>
 export default {
-    props: ['select'],
+    // props: ['select'],
     methods: {
         zoomIn: function (e) {
             let zoom = document.querySelector(".creater .document");
-            zoom.style.width = "595px";
-            zoom.style.height = "842px";
+            zoom.style.width = "1190px";
+            zoom.style.height = "1684px";
         },
         zoomOut: function (e) {
             let zoom = document.querySelector(".creater .document");
-            zoom.style.width = "1190px";
-            zoom.style.height = "1684px";
+            zoom.style.width = "595px";
+            zoom.style.height = "842px";
         }
     }
 }

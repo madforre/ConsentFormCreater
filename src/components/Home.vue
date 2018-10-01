@@ -19,6 +19,7 @@ export default {
 }
 </script>
 <style>
+
 .home{
   border : 1px solid rgb(0, 0, 0);
   width : 25rem;

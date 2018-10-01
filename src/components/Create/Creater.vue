@@ -52,8 +52,6 @@ export default {
 .creater .document {
     display : flex;
     background : #fff;
-    /* width : 595px;
-    height : 842px; */
     width : 1190px;
     height : 1684px;
     margin : 0 auto;
