@@ -1,6 +1,7 @@
 <template>
   <div class="middle">
     <div class="left">
+      <router-view name="tools"></router-view>
     </div>
     <div class="right">
       <ul class="section one">
@@ -8,6 +9,7 @@
         <li><router-link to="/template/creater">제작하기</router-link></li>
         <li><router-link to="/template/save">저장하기</router-link></li>
         {{template}}
+        {{select}}
       </ul>
       <div class="section two">
         <router-view></router-view>
@@ -22,6 +24,7 @@ export default {
   data () {
     return {
       template: {"구성":"html",},
+      select: [ "바나나", "사과" ],
     }
   },
   created() {
@@ -43,8 +46,9 @@ export default {
 
 .middle .left {
   border : 1px solid rgb(7, 0, 100);  
-  width : 20%;
+  width : 16%;
   margin-right : 0.5%;
+  min-width : 240px;
 }
 
 .middle .left {
@@ -52,7 +56,7 @@ export default {
   padding : 0.5rem;
 }
 .middle .right {
-  width : 89%;
+  width : 93%;
 }
 
 .middle .right .one {
