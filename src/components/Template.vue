@@ -70,7 +70,7 @@ export default {
 
 .middle .right .two {
   border : 2px solid rgb(131, 131, 187);
-  height : 47.5rem;
+  height : 47rem;
   overflow: auto;
   box-sizing: border-box;
 }

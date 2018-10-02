@@ -3,8 +3,8 @@
       <ul>
         <li><h1>Tools</h1></li>
         <li>
-            <button v-on:click="zoomIn">　+　</button>
-            <button v-on:click="zoomOut">　-　</button>
+            <button v-on:click="zoomIn">　+　.</button>
+            <button v-on:click="zoomOut">　-　.</button>
         </li>
         <li class="words">
             <p>글자 넣기</p>
@@ -22,9 +22,6 @@
                 <ul>
                     <li>1</li>
                     <li>2</li>
-                    <li>3</li>
-                    <li>4</li>
-                    <li>5</li>
                 </ul>
             </div>
         </li>
@@ -44,12 +41,16 @@
         </li>
         <li class="check"> 
             <h4>체크 박스 추가</h4>
-            <input class="check" type="checkbox" name="vehicle" value="Car" checked>
+            <div class="drag">
+                <input class="check" type="checkbox" checked>
+            </div>
         </li>
         <li class="sign">전자서명란 추가
-            <vueSignature ref="signature" :sigOption="option" :w="'100%'" :h="'100%'"></vueSignature>
-		    <button @click="clear">Clear</button>
-		    <button @click="undo">Undo</button>
+            <div class="drag">
+                <vueSignature ref="signature" :sigOption="option" :w="'100%'" :h="'100%'"></vueSignature>
+		        <button @click="clear">Clear</button>
+		        <button @click="undo">Undo</button>
+            </div>
         </li>
         <li>휴지통</li>
       </ul>
@@ -74,7 +75,6 @@ export default {
     methods: {
         throwElement() {
             let draggable = document.querySelectorAll('.drag')
-
         },
         // 확대, 축소
         zoomIn: function (e) {
@@ -125,13 +125,13 @@ export default {
 .tools ul .set input {
     display : block;
     width : 20px;
-
 }
 
 .tools ul .table_set{
     flex-direction: column;
     border : 1px solid #555;
-    padding : 0.5rem;
+    padding : 0.2rem;
+    box-sizing: border-box;
 }
 
 .tools ul .table_set input{
@@ -146,6 +146,8 @@ export default {
     position : relative;
     justify-content: center;
     align-items: center;
+    right:0;
+    top:0;
 }
 
 .tools ul .check:after {
@@ -208,6 +210,11 @@ export default {
 
 .tools ul .sign {
     flex-direction: column;
+}
+
+.tools ul .sign .drag {
+    border : 1rem solid rgb(143, 143, 143);
+    box-sizing : border-box;
 }
 
 </style>

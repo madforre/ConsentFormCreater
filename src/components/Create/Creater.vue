@@ -40,7 +40,8 @@
 <script>
 export default {
     data: function() {
-        
+        return {
+        }
     },
     methods: {
         catchElement() {
@@ -93,7 +94,6 @@ export default {
     box-sizing : border-box;
     margin-top : -1px;
     margin-right :-1px;
-    
 }
 
 </style>
