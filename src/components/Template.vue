@@ -43,8 +43,10 @@ export default {
   
     document.addEventListener("dragstart", (event) => {
 
-        // 파이어폭스 크로스 웹브라우징 호환용 코드
+        // 파이어폭스 크로스 웹브라우징 호환용 코드 ?
         event.dataTransfer.setData('text/plain', 'anything');
+        event.dataTransfer.setData('text/html', 'anything');
+        event.dataTransfer.setData('text/uri-list');
     
         // 사용자가 요소나 텍스트 블록을 드래그하기 시작했을 때 발생한다.
         // store a ref. on the dragged elem
