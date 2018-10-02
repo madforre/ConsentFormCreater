@@ -4,7 +4,7 @@
             <div class="relative"></div>
         </div>
         <div class="document">
-            <ul class="table">
+            <!-- <ul class="table">
                 <li>1asdfasdfsdfsf<br>fda</li>
                 <li>2</li>
                 <li>3</li>
@@ -32,15 +32,28 @@
                 <li>3</li>
                 <li>4</li>
                 <li>5</li>
-            </ul>
+            </ul> -->
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    
-}
+    data: function() {
+        
+    },
+    methods: {
+        catchElement() {
+
+        },
+        resizeElement() {
+
+        },
+        deleteElement() {
+
+        },
+    }
+};
 </script>
 
 <style>

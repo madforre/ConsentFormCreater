@@ -12,7 +12,8 @@
   "dependencies": {
     "vue": "^2.5.11",
     "vue-resize-directive": "^1.1.4",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vue-signature": "^2.3.3"
   },
   "browserslist": [
     "> 1%",

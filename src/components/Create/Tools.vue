@@ -30,32 +30,53 @@
         </li>
         <li class="select">
             <p>
-                셀렉트 박스 (쉼표로 구분)
-                인풋 박스 양방향 바인딩 후 delimiter , 로 나누어서 배열로 변환
+                셀렉트 박스 생성
             </p>
             <div class="drag">
-                <select name="" id="">
-                    <option value="바나나">바나나</option>
-                    <option value="사과">사과</option>
-                    <option value="파인애플">파인애플</option>
+                <select>
+                    <option>선택해주세요.</option>
+                    <option value="선택해주세요." v-for="select in selects" :key="select">{{select}}</option>
                 </select>
             </div>
-            <input type="text">
+            <input type="text" v-model="selectInputs" placeholder="ex) 딸기,바나나,키위">
+            추가할 요소들은<br>
+            쉼표로 구분합니다.
         </li>
-        {{select}}
         <li class="check"> 
             <h4>체크 박스 추가</h4>
             <input class="check" type="checkbox" name="vehicle" value="Car" checked>
         </li>
-        <li>전자서명 추가</li>
+        <li class="sign">전자서명란 추가
+            <vueSignature ref="signature" :sigOption="option" :w="'100%'" :h="'100%'"></vueSignature>
+		    <button @click="clear">Clear</button>
+		    <button @click="undo">Undo</button>
+        </li>
         <li>휴지통</li>
       </ul>
     </div>
 </template>
 <script>
 export default {
-    // props: ['select'],
+    data: function() {
+        return {
+            selectInputs:"",
+            option:{
+				penColor:"rgb(0, 0, 0)",
+				backgroundColor:"rgb(212, 212, 212)"
+            }
+        }
+    },
+    computed: {
+        selects: function () {
+            return this.selectInputs.split(",")
+        }
+    },
     methods: {
+        throwElement() {
+            let draggable = document.querySelectorAll('.drag')
+
+        },
+        // 확대, 축소
         zoomIn: function (e) {
             let zoom = document.querySelector(".creater .document");
             zoom.style.width = "1190px";
@@ -65,7 +86,16 @@ export default {
             let zoom = document.querySelector(".creater .document");
             zoom.style.width = "595px";
             zoom.style.height = "842px";
-        }
+        },
+        // 전자서명
+        clear(){
+			var _this = this;
+			_this.$refs.signature.clear();
+		},
+		undo(){
+			var _this = this;
+			_this.$refs.signature.undo();
+		},
     }
 }
 </script>
@@ -153,20 +183,31 @@ export default {
     content: '✔';
 }
 
-/* 선택 박스 */
+/* 셀렉트 박스 */
 
-.tools .select {
+.tools ul .select {
     flex-direction: column;
     border : 1px solid #555;
     padding : 0.5rem;
+    box-sizing: border-box;
 }
 
-.tools .select .drag select {
+.tools ul .select .drag select {
+    margin : 5%;
+    width : auto;
+    max-width : 90%;
+    border : 2px solid #555;
+}
+
+.tools ul .select .drag input {
+    display : block;
     width : auto;
 }
 
-.tools .select .drag input {
-    width : auto;
+/* sign 추가 */
+
+.tools ul .sign {
+    flex-direction: column;
 }
 
 </style>
