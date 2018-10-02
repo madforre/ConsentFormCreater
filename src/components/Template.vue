@@ -24,10 +24,86 @@ export default {
     return {
       template: {"구성":"html",},
       select: [ "바나나", "사과" ],
+      option: {
+				penColor:"rgb(0, 0, 0)",
+				backgroundColor:"rgb(212, 212, 212)",
+      },
     }
   },
   created() {
-      this.template["호우"] = 2;
+    this.template["호우"] = 2;
+  },
+  mounted() {
+    var dragged;
+
+    /* events fired on the draggable target */
+    document.addEventListener("drag", (event) => {
+        // 요소나 텍스트 블록을 드래그 할 때 발생한다.
+    }, false);
+  
+    document.addEventListener("dragstart", (event) => {
+
+        // 파이어폭스 크로스 웹브라우징 호환용 코드
+        event.dataTransfer.setData('text/plain', 'anything');
+    
+        // 사용자가 요소나 텍스트 블록을 드래그하기 시작했을 때 발생한다.
+        // store a ref. on the dragged elem
+        dragged = event.target;
+        // make it half transparent
+        event.target.style.opacity = .5;
+    
+    }, false);
+  
+    document.addEventListener("dragend", (event) => {
+        // 드래그를 끝냈을 때 발생한다.
+        // reset the transparency
+        event.target.style.opacity = "";
+  
+    }, false);
+  
+    /* events fired on the drop targets */
+    document.addEventListener("dragover", (event) => {
+        // 요소나 텍스트 블록을 적합한 드롭 대상 위로 지나갈 때 발생한다.
+        if ( event.target.className == "document" ) {
+            event.target.style.background = "#eee";
+        }
+
+        event.preventDefault();
+  
+    }, false);
+  
+    document.addEventListener("dragenter", (event) => {
+        // 드래그한 요소나 텍스트 블록이 적합한 드롭 대상위에 올라갔을 때 발생한다.
+        // highlight potential drop target when the draggable element enters it
+        if ( event.target.className == "document" ) {
+            // event.target.style.background = "gray";
+        }
+  
+    }, false);
+  
+    document.addEventListener("dragleave", (event) => {
+        // 드래그를 끝냈을 때 발생한다. (마우스 버튼을 떼거나 ESC 키를 누를 때)
+        // reset background of potential drop target when the draggable element leaves it
+        if ( event.target.className == "drag" ) {
+                // 드래그한 엘리멘트가 떠날 때 그 자리에 똑같은 엘리먼트를 
+                // 생성하는 로직을 추가할 것
+            event.target.style.background = "white";
+        }
+  
+    }, false);
+  
+    document.addEventListener("drop", (event) => {
+        // 요소나 텍스트 블록을 적합한 드롭 대상에 드롭했을 때 발생한다.
+        // prevent default action (open as link for some elements)
+        event.preventDefault();
+        // move dragged elem to the selected drop target
+        if ( event.target.className == "document" ) {
+            event.target.style.background = "";
+            dragged.parentNode.removeChild( dragged );
+            event.target.appendChild( dragged );
+        }
+
+    }, false);
   }
 }
 </script>
@@ -73,6 +149,21 @@ export default {
   height : 47rem;
   overflow: auto;
   box-sizing: border-box;
+}
+
+/* sign 추가 */
+
+.tools ul .sign {
+    flex-direction: column;
+}
+
+.tools ul .sign .drag {
+    border : 1rem solid rgb(143, 143, 143);
+    box-sizing : border-box;
+}
+
+.tools .drag {
+  cursor : all-scroll;
 }
 
 </style>

@@ -10,7 +10,7 @@
             <p>글자 넣기</p>
             <div class="size"></div>
             <div class="weight"></div>
-            <div class="drag"></div>
+            <div class="drag" draggable="true">글자</div>
         </li>
         <li class="table_set">
             <p>표</p>
@@ -29,24 +29,24 @@
             <p>
                 셀렉트 박스 생성
             </p>
-            <div class="drag">
+            <div class="drag" draggable="true">
                 <select>
                     <option>선택해주세요.</option>
                     <option value="선택해주세요." v-for="select in selects" :key="select">{{select}}</option>
                 </select>
             </div>
             <input type="text" v-model="selectInputs" placeholder="ex) 딸기,바나나,키위">
-            추가할 요소들은<br>
-            쉼표로 구분합니다.
+            <p>추가할 요소들은<br>
+            쉼표로 구분합니다.</p>
         </li>
         <li class="check"> 
             <h4>체크 박스 추가</h4>
-            <div class="drag">
+            <div class="drag" draggable="true">
                 <input class="check" type="checkbox" checked>
             </div>
         </li>
         <li class="sign">전자서명란 추가
-            <div class="drag">
+            <div class="drag" draggable="true">
                 <vueSignature ref="signature" :sigOption="option" :w="'100%'" :h="'100%'"></vueSignature>
 		        <button @click="clear">Clear</button>
 		        <button @click="undo">Undo</button>
@@ -61,10 +61,6 @@ export default {
     data: function() {
         return {
             selectInputs:"",
-            option:{
-				penColor:"rgb(0, 0, 0)",
-				backgroundColor:"rgb(212, 212, 212)"
-            }
         }
     },
     computed: {
@@ -73,9 +69,6 @@ export default {
         }
     },
     methods: {
-        throwElement() {
-            let draggable = document.querySelectorAll('.drag')
-        },
         // 확대, 축소
         zoomIn: function (e) {
             let zoom = document.querySelector(".creater .document");
@@ -194,6 +187,11 @@ export default {
     box-sizing: border-box;
 }
 
+.tools ul .select .drag {
+    box-sizing : border-box;
+    border : 1px solid #555;
+}
+
 .tools ul .select .drag select {
     margin : 5%;
     width : auto;
@@ -201,20 +199,14 @@ export default {
     border : 2px solid #555;
 }
 
-.tools ul .select .drag input {
+.tools ul .select input {
     display : block;
     width : auto;
+    margin: 3% 0;
+    height : 1.5rem;
 }
 
-/* sign 추가 */
-
-.tools ul .sign {
-    flex-direction: column;
+.tools ul .select p:nth-child(4) {
+    font-size : 13px;
 }
-
-.tools ul .sign .drag {
-    border : 1rem solid rgb(143, 143, 143);
-    box-sizing : border-box;
-}
-
 </style>
