@@ -95,6 +95,11 @@ export default {
         dragged.parentNode.removeChild( dragged );
         event.target.appendChild( dragged );
 
+        // 객체를 참조하는 상태에서 객체에 변화를 주었기 때문에
+        // 문제가 발생한 것이 아닐까?
+
+        // 객체를 clone하는 개념으로 접근해 보자.
+
       }
 
       after();
