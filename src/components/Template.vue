@@ -22,91 +22,101 @@
 export default {
   data () {
     return {
-      template: {"구성":"html",},
+      template: {"구성":"html"},
       select: [ "바나나", "사과" ],
-      option: {
-				penColor:"rgb(0, 0, 0)",
-				backgroundColor:"rgb(212, 212, 212)",
-      },
     }
   },
   created() {
     this.template["호우"] = 2;
   },
   mounted() {
-    var dragged;
+
+    /* HTML5 Drag & Drop API 사용 */
+
+    // * 드래그 앤 드롭이 끝난 요소는 다시 
+    // 드래그 시작했던 자리에 붙어야 한다.
+
+    // 드래그 할 때의 요소를 저장해 두었다가 전달한다.
+
+    let dragged;
+    let draggedParentClass;
 
     /* events fired on the draggable target */
-    document.addEventListener("drag", (event) => {
-        // 요소나 텍스트 블록을 드래그 할 때 발생한다.
+
+    /* 필수 코드 */
+    document.addEventListener("dragover", (event) => {
+      // 요소나 텍스트 블록을 적합한 드롭 대상 위로 지나갈 때 발생한다.
+      // prevent default to allow drop
+      event.preventDefault();
+  
     }, false);
   
     document.addEventListener("dragstart", (event) => {
 
-        // 파이어폭스 크로스 웹브라우징 호환용 코드 ?
-        event.dataTransfer.setData('text/plain', 'anything');
-        event.dataTransfer.setData('text/html', 'anything');
-        event.dataTransfer.setData('text/uri-list');
+      /* 크로스 브라우징용 코드 (edge, firefox) */
+      event.dataTransfer.setData('text', 'anything');
     
-        // 사용자가 요소나 텍스트 블록을 드래그하기 시작했을 때 발생한다.
-        // store a ref. on the dragged elem
-        dragged = event.target;
-        // make it half transparent
-        event.target.style.opacity = .5;
+      // 사용자가 요소나 텍스트 블록을 드래그하기 시작했을 때 발생한다.
+      // store a ref. on the dragged elem
+      dragged = event.target;
+      draggedParentClass = event.target.parentNode.className;
+
+      // make it half transparent
+      event.target.style.opacity = .5;
     
     }, false);
   
     document.addEventListener("dragend", (event) => {
-        // 드래그를 끝냈을 때 발생한다.
-        // reset the transparency
-        event.target.style.opacity = "";
+
+      // 이벤트 타겟의 부모 노드가 document이면 document에 맞게 사이즈 조절
+      // 부모 노드가 document가 아니면 정해진 대로 가공
+
+      event.target.style.border = "";
+
+      // reset the transparency
+      event.target.style.opacity = "";
+
+      console.log(draggedParentClass)
   
     }, false);
   
     /* events fired on the drop targets */
-    document.addEventListener("dragover", (event) => {
-        // 요소나 텍스트 블록을 적합한 드롭 대상 위로 지나갈 때 발생한다.
-        if ( event.target.className == "document" ) {
-            event.target.style.background = "#eee";
-        }
-
-        event.preventDefault();
-  
-    }, false);
-  
-    document.addEventListener("dragenter", (event) => {
-        // 드래그한 요소나 텍스트 블록이 적합한 드롭 대상위에 올라갔을 때 발생한다.
-        // highlight potential drop target when the draggable element enters it
-        if ( event.target.className == "document" ) {
-            // event.target.style.background = "gray";
-        }
-  
-    }, false);
-  
-    document.addEventListener("dragleave", (event) => {
-        // 드래그를 끝냈을 때 발생한다. (마우스 버튼을 떼거나 ESC 키를 누를 때)
-        // reset background of potential drop target when the draggable element leaves it
-        if ( event.target.className == "drag" ) {
-                // 드래그한 엘리멘트가 떠날 때 그 자리에 똑같은 엘리먼트를 
-                // 생성하는 로직을 추가할 것
-            event.target.style.background = "white";
-        }
-  
-    }, false);
-  
     document.addEventListener("drop", (event) => {
-        // 요소나 텍스트 블록을 적합한 드롭 대상에 드롭했을 때 발생한다.
-        // prevent default action (open as link for some elements)
-        event.preventDefault();
-        // move dragged elem to the selected drop target
-        if ( event.target.className == "document" ) {
-            event.target.style.background = "";
-            dragged.parentNode.removeChild( dragged );
-            event.target.appendChild( dragged );
-        }
+
+      event.preventDefault();
+
+      // move dragged elem to the selected drop target
+      if ( event.target.className == "document" ) {
+
+        event.target.style.border = "";
+        dragged.style.width ="30rem";
+        dragged.style.height ="30rem";
+        dragged.setAttribute("draggable", "false");
+        dragged.parentNode.removeChild( dragged );
+        event.target.appendChild( dragged );
+
+      }
+
+      after();
 
     }, false);
-  }
+
+    function after() {
+
+      let restore = document.getElementsByClassName(draggedParentClass);
+
+        console.log(restore);
+        // let div = document.createElement("div");
+        console.log(event.target);
+        restore.appendChild(dragged.firstChild);
+
+        // let restore = document.getElementsByClassName("dropzone2");
+        // let div = document.createElement('div');
+        // restore.appendChild(div);
+        // restore.lastChild.innerHTML="<h1>호우</h1>";
+
+    }
+  },
 }
 </script>
 
@@ -122,7 +132,7 @@ export default {
 }
 
 .middle .left {
-  border : 1px solid rgb(7, 0, 100);  
+  border : 1px solid rgb(7, 0, 100);
   width : 16%;
   margin-right : 0.5%;
   min-width : 240px;
@@ -153,20 +163,8 @@ export default {
   box-sizing: border-box;
 }
 
-/* sign 추가 */
-
-.tools ul .sign {
-    flex-direction: column;
-}
-
-.tools ul .sign .drag {
-    border : 1rem solid rgb(143, 143, 143);
-    box-sizing : border-box;
-}
-
 .tools .drag {
   cursor : all-scroll;
 }
 
 </style>
-

@@ -41,6 +41,10 @@
 export default {
     data: function() {
         return {
+            option: {
+			    penColor:"rgb(0, 0, 0)",
+                backgroundColor:"rgb(212, 212, 212)",
+            },
         }
     },
     methods: {
@@ -53,6 +57,16 @@ export default {
         deleteElement() {
 
         },
+
+        // 전자서명
+        clear(){
+			var _this = this;
+			_this.$refs.signature.clear();
+		},
+		undo(){
+			var _this = this;
+			_this.$refs.signature.undo();
+		},
     }
 };
 </script>

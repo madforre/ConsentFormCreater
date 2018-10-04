@@ -29,15 +29,15 @@
             <p>
                 셀렉트 박스 생성
             </p>
+            <input type="text" v-model="selectInputs" placeholder="ex) 딸기,바나나,키위">
+            <p>추가할 요소들은<br>
+            쉼표로 구분합니다.</p>
             <div class="drag" draggable="true">
                 <select>
                     <option>선택해주세요.</option>
                     <option value="선택해주세요." v-for="select in selects" :key="select">{{select}}</option>
                 </select>
             </div>
-            <input type="text" v-model="selectInputs" placeholder="ex) 딸기,바나나,키위">
-            <p>추가할 요소들은<br>
-            쉼표로 구분합니다.</p>
         </li>
         <li class="check"> 
             <h4>체크 박스 추가</h4>
@@ -45,13 +45,14 @@
                 <input class="check" type="checkbox" checked>
             </div>
         </li>
-        <li class="sign">전자서명란 추가
+        <li class="sign">
+            <p>전자서명란 추가</p>
             <div class="drag" draggable="true">
-                <vueSignature ref="signature" :sigOption="option" :w="'100%'" :h="'100%'"></vueSignature>
-		        <button @click="clear">Clear</button>
-		        <button @click="undo">Undo</button>
+                <vueSignature class="board" ref="signature" :sigOption="option" :w="'100%'" :h="'100%'"></vueSignature>
             </div>
         </li>
+        <button @click="clear">Clear</button>
+		<button @click="undo">Undo</button>
         <li>휴지통</li>
       </ul>
     </div>
@@ -61,6 +62,10 @@ export default {
     data: function() {
         return {
             selectInputs:"",
+            option: {
+				penColor:"rgb(0, 0, 0)",
+                backgroundColor:"rgb(212, 212, 212)",
+            },
         }
     },
     computed: {
@@ -136,20 +141,25 @@ export default {
 
 .tools ul .check {
     border : 1px solid #555;
+    border-right : 0px;
     position : relative;
     justify-content: center;
     align-items: center;
-    right:0;
-    top:0;
 }
 
 .tools ul .check:after {
-    content :"";
+    content : "";
     width : 40px;
     height : 40px;
 }
 
-.tools ul .check input[type="checkbox"] {
+.tools ul .check .drag {
+    border : 8px solid rgb(131, 131, 131);
+    position : absolute;
+    right : 0;
+}
+
+.tools ul .check .drag input[type="checkbox"] {
     display : block;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -158,17 +168,16 @@ export default {
     height : 40px;
     box-sizing: border-box;
     border : 1px solid black;
-    position : absolute;
+    position : relative;
     cursor: pointer;
-    right : 0;
 }
 
-.tools ul .check input[type="checkbox"] {
+.tools ul .check .drag input[type="checkbox"] {
     width : 40px;
     height : 40px;
 }
 
-.tools ul .check input[type="checkbox"]:checked:after {
+.tools ul .check .drag input[type="checkbox"]:checked:after {
     border : 0px;
     position : relative;
     font-size : 2em;
@@ -189,7 +198,7 @@ export default {
 
 .tools ul .select .drag {
     box-sizing : border-box;
-    border : 1px solid #555;
+    border : 10px solid rgb(131, 131, 131);
 }
 
 .tools ul .select .drag select {
@@ -209,4 +218,21 @@ export default {
 .tools ul .select p:nth-child(4) {
     font-size : 13px;
 }
+
+/* 전자 서명 */
+
+.tools ul .sign {
+    position : relative;
+    flex-direction: column;
+}
+
+.tools ul .sign .drag {
+    border : 1rem solid rgb(143, 143, 143);
+    box-sizing : border-box;
+}
+
+.tools ul .sign .drag .board {
+    cursor : pointer;
+}
+
 </style>
