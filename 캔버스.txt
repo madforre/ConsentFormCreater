@@ -6,10 +6,7 @@ Drag & Drop
 
 canvas sketch
 
-select 박스 
-
-http://1.devleaguer.com/documents/agree4?reserve_id=4720537
-
+select 박스
 
 --------------------------------
 
@@ -83,3 +80,9 @@ Header
 	radio
 
 3. 저장하기
+
+-----------------
+
+https://github.com/Akryum/vue-resize#readme
+
+Vue Resize

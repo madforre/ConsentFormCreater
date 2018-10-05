@@ -7,7 +7,10 @@
         <li><p> {{msg}} </p></li>
       </ul>
     </div>
-    <div class="hi"></div>
+    <div class="hi">
+      <h1>Hello world!</h1>
+      <resize-observer @notify="handleResize" />
+    </div>
     <router-view></router-view>
   </div>
 </template>
@@ -22,23 +25,34 @@ export default {
       msg: '원하는 재료를 선택 / 동의서를 구성',
     }
   },
+  methods: {
+    handleResize () {
+      console.log('resized')
+    }
+  }
+  
 }
 
 </script>
 
 <style>
 
-
 /* reset init */
 
 @charset "utf-8";
 
 
+/* resize test */
+
 .hi {
     border : 5px solid black;
     width : 150px;
     height : 50px;
+    position : relative;
 }
+
+
+/* ---------- */
 
 *{
     margin: 0;
