@@ -35,18 +35,18 @@
             <div class="drag" draggable="true">
                 <select>
                     <option>선택해주세요.</option>
-                    <option value="선택해주세요." v-for="select in selects" :key="select">{{select}}</option>
+                    <option v-for="select in selects" :key="select">{{select}}</option>
                 </select>
             </div>
         </li>
         <li class="check"> 
             <h4>체크 박스 추가</h4>
             <div class="drag" draggable="true">
-                <input class="check" type="checkbox" checked>
+                <input class="checkbox" type="checkbox" checked>
             </div>
         </li>
         <li class="sign">
-            <p>전자서명란 추가</p>
+            <p>전자서명란 (1회)</p>
             <div class="drag" draggable="true">
                 <vueSignature class="board" ref="signature" :sigOption="option" :w="'100%'" :h="'100%'"></vueSignature>
             </div>
@@ -64,7 +64,7 @@ export default {
             selectInputs:"",
             option: {
 				penColor:"rgb(0, 0, 0)",
-                backgroundColor:"rgb(212, 212, 212)",
+                backgroundColor:"rgb(233, 233, 233)",
             },
         }
     },
@@ -74,7 +74,7 @@ export default {
         }
     },
     methods: {
-        // 확대, 축소
+        /* 확대, 축소 */
         zoomIn: function (e) {
             let zoom = document.querySelector(".creater .document");
             zoom.style.width = "1190px";
@@ -85,7 +85,7 @@ export default {
             zoom.style.width = "595px";
             zoom.style.height = "842px";
         },
-        // 전자서명
+        /* 전자서명 */
         clear(){
 			var _this = this;
 			_this.$refs.signature.clear();
@@ -164,8 +164,6 @@ export default {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    width : 40px;
-    height : 40px;
     box-sizing: border-box;
     border : 1px solid black;
     position : relative;

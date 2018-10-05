@@ -7,26 +7,38 @@
         <li><p> {{msg}} </p></li>
       </ul>
     </div>
+    <div class="hi"></div>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-// 하위 컴포넌트들은 데이터를 표현하거나 데이터 조작에 대한 요청만 한다.
+
+/* 데이터를 표현하거나 데이터 조작에 대해 요청하는 루트 컴포넌트 */
+
 export default {
   data () {
     return {
-      msg: '원하는 재료를 선택 / 동의서를 구성'
+      msg: '원하는 재료를 선택 / 동의서를 구성',
     }
-  }
+  },
 }
+
 </script>
 
 <style>
 
+
 /* reset init */
 
 @charset "utf-8";
+
+
+.hi {
+    border : 5px solid black;
+    width : 150px;
+    height : 50px;
+}
 
 *{
     margin: 0;

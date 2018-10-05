@@ -18,39 +18,30 @@
   </div>
 </template>
 
-<script>
+<script scoped>
 
     /* HTML5 Drag & Drop API 사용 */
-
-    // 드래그 앤 드롭이 끝난 요소는 다시 
-    // 드래그 시작했던 자리에 붙어야 한다.
-
-    // 드래그 할 때의 요소를 저장해 두었다가 전달한다.
     
     let dragged;
-    let draggedParentClass;
-
-    /* events fired on the draggable target */
-
-    /* dragover - 필수 코드*/
+    let draggedParentClass;  
+    
+    // events fired on the draggable target (필수 코드 : dragover)
     document.addEventListener("dragover", (event) => {
       // prevent default to allow drop
       event.preventDefault();
-  
     }, false);
   
+    // store a ref. on the dragged elem - 사용자가 요소나 텍스트 블록을 드래그시 발생
     document.addEventListener("dragstart", (event) => {
 
-      /* 초기화 */
+      // 초기화
       dragged = null;
       draggedParentClass = null;
 
-      /* 크로스 브라우징용 코드 (edge, firefox) */
+      // 크로스 브라우징용 코드 (edge, firefox)
       event.dataTransfer.setData('text', 'anything');
-    
-      // 사용자가 요소나 텍스트 블록을 드래그하기 시작했을 때 발생한다.
-      // store a ref. on the dragged elem
 
+      // 클래스 이름이 drag 인 것만 drop 되게끔 설정
       if ( event.target.className == "drag" ) {
         dragged = event.target;
         draggedParentClass = event.target.parentNode.className;
@@ -73,12 +64,12 @@
   
     }, false);
   
-    /* events fired on the drop targets */
+    // events fired on the drop targets
     document.addEventListener("drop", (event) => {
 
       event.preventDefault();
 
-      /* move dragged elem to the selected drop target */
+      // move dragged elem to the selected drop target
       if ( event.target.className == "document" ) {
 
         dragged.style.width ="20%";
@@ -86,11 +77,6 @@
         dragged.setAttribute("draggable", "false");
         dragged.parentNode.removeChild( dragged );
         event.target.appendChild( dragged );
-
-        /* 각각의 Tools 디테일한 설정 */
-        switch (draggedParentClass) {
-          case "sign":
-        }
 
         dropAfter();
 
@@ -100,11 +86,11 @@
 
     function dropAfter() {
 
-      /* 전자서명일 경우 한번만 실행 */
+      // 전자서명일 경우 한번만 실행
 
       if ( draggedParentClass != "sign") {
 
-      /* 드래그했던 Elements 복구시키기 */
+      // 드래그했던 Elements 복구시키기
       let restoreMe = document.querySelector("."+draggedParentClass);
       let dupElement = dragged.cloneNode(true);
       
@@ -116,6 +102,18 @@
 
       }
 
+      // 각각의 Tools에 대한 디테일한 설정
+      switch (draggedParentClass) {
+        case "sign":
+          dragged.style.width = "100%";
+          dragged.style.height = "15%";
+          break;
+        case "select":
+          dragged.style.width = "50%";
+          dragged.style.height = "5%";
+          dragged.style.border = "10px solid black";
+          break;
+        }
     }
 
 export default {

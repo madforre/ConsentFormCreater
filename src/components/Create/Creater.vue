@@ -5,19 +5,19 @@
         </div>
         <div class="document">
             <!-- <ul class="table">
-                <li>1asdfasdfsdfsf<br>fda</li>
+                <li>테스트 단어테스트 다sdasdasd언 테스트 단어<br>fda</li>
                 <li>2</li>
                 <li>3</li>
                 <li>4</li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+                <li>5</li>
+                <li>6</li>
+                <li>7</li>
+                <li>8</li>
+                <li>9</li>
             </ul>
             <ul>
                 <li>1</li>
@@ -41,10 +41,6 @@
 export default {
     data: function() {
         return {
-            option: {
-			    penColor:"rgb(0, 0, 0)",
-                backgroundColor:"rgb(212, 212, 212)",
-            },
         }
     },
     methods: {
@@ -72,6 +68,7 @@ export default {
 </script>
 
 <style>
+
 .creater {
     background: #ccc;
     padding: 1.5rem 0;
@@ -93,7 +90,7 @@ export default {
     display : flex;
     width : 100%;
     flex-flow : row wrap;
-    height : 220px;
+    height : auto;
     box-sizing: border-box;
     margin-left : 2px;
     margin-top : 1px;
@@ -102,6 +99,8 @@ export default {
 }
 
 .creater .document ul>li {
+    word-break:break-word;
+    overflow: hidden;
     width : 20%;
     height : auto;
     border : 1px solid gray;
