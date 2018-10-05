@@ -1,7 +1,7 @@
 <template>
   <div class="middle">
     <div class="left">
-      <router-view name="tools"></router-view>
+      <router-view name="tools" draggable="false"></router-view>
     </div>
     <div class="right">
       <ul class="section one">
@@ -19,33 +19,21 @@
 </template>
 
 <script>
-export default {
-  data () {
-    return {
-      template: {"구성":"html"},
-      select: [ "바나나", "사과" ],
-    }
-  },
-  created() {
-    this.template["호우"] = 2;
-  },
-  mounted() {
 
     /* HTML5 Drag & Drop API 사용 */
 
-    // * 드래그 앤 드롭이 끝난 요소는 다시 
+    // 드래그 앤 드롭이 끝난 요소는 다시 
     // 드래그 시작했던 자리에 붙어야 한다.
 
     // 드래그 할 때의 요소를 저장해 두었다가 전달한다.
-
+    
     let dragged;
     let draggedParentClass;
 
     /* events fired on the draggable target */
 
-    /* 필수 코드 */
+    /* dragover - 필수 코드*/
     document.addEventListener("dragover", (event) => {
-      // 요소나 텍스트 블록을 적합한 드롭 대상 위로 지나갈 때 발생한다.
       // prevent default to allow drop
       event.preventDefault();
   
@@ -53,13 +41,20 @@ export default {
   
     document.addEventListener("dragstart", (event) => {
 
+      /* 초기화 */
+      dragged = null;
+      draggedParentClass = null;
+
       /* 크로스 브라우징용 코드 (edge, firefox) */
       event.dataTransfer.setData('text', 'anything');
     
       // 사용자가 요소나 텍스트 블록을 드래그하기 시작했을 때 발생한다.
       // store a ref. on the dragged elem
-      dragged = event.target;
-      draggedParentClass = event.target.parentNode.className;
+
+      if ( event.target.className == "drag" ) {
+        dragged = event.target;
+        draggedParentClass = event.target.parentNode.className;
+      }
 
       // make it half transparent
       event.target.style.opacity = .5;
@@ -75,8 +70,6 @@ export default {
 
       // reset the transparency
       event.target.style.opacity = "";
-
-      console.log(draggedParentClass)
   
     }, false);
   
@@ -85,42 +78,55 @@ export default {
 
       event.preventDefault();
 
-      // move dragged elem to the selected drop target
+      /* move dragged elem to the selected drop target */
       if ( event.target.className == "document" ) {
 
-        event.target.style.border = "";
-        dragged.style.width ="30rem";
-        dragged.style.height ="30rem";
+        dragged.style.width ="20%";
+        dragged.style.height ="10%";
         dragged.setAttribute("draggable", "false");
         dragged.parentNode.removeChild( dragged );
         event.target.appendChild( dragged );
 
-        // 객체를 참조하는 상태에서 객체에 변화를 주었기 때문에
-        // 문제가 발생한 것이 아닐까?
+        /* 각각의 Tools 디테일한 설정 */
+        switch (draggedParentClass) {
+          case "sign":
+        }
 
-        // 객체를 clone하는 개념으로 접근해 보자.
+        dropAfter();
 
       }
 
-      after();
-
     }, false);
 
-    function after() {
+    function dropAfter() {
 
-      let restore = document.getElementsByClassName(draggedParentClass);
+      /* 전자서명일 경우 한번만 실행 */
 
-        console.log(restore);
-        // let div = document.createElement("div");
-        console.log(event.target);
-        restore.appendChild(dragged.firstChild);
+      if ( draggedParentClass != "sign") {
 
-        // let restore = document.getElementsByClassName("dropzone2");
-        // let div = document.createElement('div');
-        // restore.appendChild(div);
-        // restore.lastChild.innerHTML="<h1>호우</h1>";
+      /* 드래그했던 Elements 복구시키기 */
+      let restoreMe = document.querySelector("."+draggedParentClass);
+      let dupElement = dragged.cloneNode(true);
+      
+      dupElement.style.width = "100%";
+      dupElement.style.height = "100%";
+      dupElement.style.opacity = "";
+      dupElement.setAttribute("draggable", "true");
+      restoreMe.appendChild(dupElement);
+
+      }
 
     }
+
+export default {
+  data () {
+    return {
+      template: {"구성":"html"},
+      select: [ "바나나", "사과" ],
+    }
+  },
+  created() {
+    this.template["호우"] = 2;
   },
 }
 </script>
