@@ -6,14 +6,17 @@ import router from './routes'
 
 /* Vue Signature */
 import VueSignature from "vue-signature"
-
 Vue.use(VueSignature)
 
-/* Vue Resize */
-import 'vue-resize/dist/vue-resize.css'
-import VueResize from 'vue-resize'
-
-Vue.use(VueResize)
+/* Font Awesome */
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faMarker } from '@fortawesome/free-solid-svg-icons'
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+library.add(faMarker)
+library.add(faTrashAlt)
+Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.config.productionTip = false
 
 
 // 이벤트 버스

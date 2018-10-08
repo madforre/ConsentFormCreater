@@ -23,7 +23,8 @@
     /* HTML5 Drag & Drop API 사용 */
     
     let dragged;
-    let draggedParentClass;  
+    let draggedParentClass;
+    let inDocument;
     
     // events fired on the draggable target (필수 코드 : dragover)
     document.addEventListener("dragover", (event) => {
@@ -42,7 +43,7 @@
       event.dataTransfer.setData('text', 'anything');
 
       // 클래스 이름이 drag 인 것만 drop 되게끔 설정
-      if ( event.target.className == "drag" ) {
+      if ( event.target.className == "drag" || event.target.className == "droped" ) {
         dragged = event.target;
         draggedParentClass = event.target.parentNode.className;
       }
@@ -65,40 +66,44 @@
     }, false);
   
     // events fired on the drop targets
-    document.addEventListener("drop", (event) => {
+    document.addEventListener("drop", (event) => {      
 
       event.preventDefault();
 
       // move dragged elem to the selected drop target
-      if ( event.target.className == "document" ) {
 
-        dragged.style.width ="20%";
-        dragged.style.height ="10%";
-        dragged.setAttribute("draggable", "false");
-        dragged.parentNode.removeChild( dragged );
+      if ( event.target.className == "document") {
+
+        // 드롭 후 복구를 위해 자식 노드를 포함하여 미리 복사
+        let dupElement = dragged.cloneNode(true);
+
         event.target.appendChild( dragged );
 
-        dropAfter();
+        dropAfter(dupElement);
+
+      }
+
+      if ( event.target.className == "bin") {
+        console.log("delete");
 
       }
 
     }, false);
 
-    function dropAfter() {
+    function dropAfter(dupElement) {
 
       // 전자서명일 경우 한번만 실행
 
-      if ( draggedParentClass != "sign") {
+      if ( draggedParentClass != "sign" || dragged.className == "droped") {
 
-      // 드래그했던 Elements 복구시키기
-      let restoreMe = document.querySelector("."+draggedParentClass);
-      let dupElement = dragged.cloneNode(true);
+        // 드래그했던 Elements 의 부모 위치 변수로 저장
+        let restoreMe = document.querySelector("." + draggedParentClass);
       
-      dupElement.style.width = "100%";
-      dupElement.style.height = "100%";
-      dupElement.style.opacity = "";
-      dupElement.setAttribute("draggable", "true");
-      restoreMe.appendChild(dupElement);
+        // dupElement.style.width = "100%";
+        // dupElement.style.height = "100%";
+        dupElement.style.opacity = "";
+        restoreMe.appendChild(dupElement);
+        dragged.setAttribute("class", "droped");
 
       }
 
@@ -107,12 +112,22 @@
         case "sign":
           dragged.style.width = "100%";
           dragged.style.height = "15%";
+          dragged.style.resize = "none";
+          dragged.style.border = "";
+          dragged.setAttribute("draggable", "false");
           break;
         case "select":
-          dragged.style.width = "50%";
+          dragged.style.width = "10%";
           dragged.style.height = "5%";
-          dragged.style.border = "10px solid black";
           break;
+        case "check":
+          dragged.style.width ="3.9%";
+          dragged.style.height ="3%";
+          break;
+        case "words":
+          dragged.style.fontSize = "2rem";
+          dragged.style.width = "auto";
+          dragged.style.height = "3%";
         }
     }
 
@@ -130,6 +145,7 @@ export default {
 </script>
 
 <style>
+
 
 /* Wrap section */
 

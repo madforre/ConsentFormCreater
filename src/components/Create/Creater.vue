@@ -1,38 +1,9 @@
 <template>
     <div class="creater">
-        <div class="absolute">
-            <div class="relative"></div>
-        </div>
         <div class="document">
-            <!-- <ul class="table">
-                <li>테스트 단어테스트 다sdasdasd언 테스트 단어<br>fda</li>
-                <li>2</li>
-                <li>3</li>
-                <li>4</li>
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
-                <li>4</li>
-                <li>5</li>
-                <li>6</li>
-                <li>7</li>
-                <li>8</li>
-                <li>9</li>
-            </ul>
-            <ul>
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
-                <li>4</li>
-                <li>5</li>
-            </ul>
-            <ul>
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
-                <li>4</li>
-                <li>5</li>
-            </ul> -->
+        </div>
+        <div class="bin">
+            <h1><font-awesome-icon icon="trash-alt"/></h1>
         </div>
     </div>
 </template>
@@ -74,6 +45,20 @@ export default {
     padding: 1.5rem 0;
 }
 
+.bin {
+    position : absolute;
+    right : 3%;
+    bottom : 7%;
+    border : 10px solid rgb(255, 255, 255);
+    padding : 0.5rem;
+    color : rgba(158, 38, 38, 0.445);
+    cursor : pointer;
+}
+
+.bin:hover {
+    color : rgba(255, 31, 31, 0.822);
+}
+
 .creater .document {
     display : flex;
     background : #fff;
@@ -86,7 +71,25 @@ export default {
     align-content: flex-start;
 }
 
-.creater .document ul {
+/* Drop된 요소의 Resize를 위한 css 설정 */
+
+.creater .document .droped {
+    resize: both;
+    overflow: auto;
+    width : 100%;
+    height : 100%;
+    border : 1px solid blue;
+    margin : 0.5%;
+}
+
+.creater .document .droped select {
+    display : block;
+    width : 100%;
+    text-align : center;
+}
+
+
+/* .creater .document ul {
     display : flex;
     width : 100%;
     flex-flow : row wrap;
@@ -107,6 +110,6 @@ export default {
     box-sizing : border-box;
     margin-top : -1px;
     margin-right :-1px;
-}
+} */
 
 </style>

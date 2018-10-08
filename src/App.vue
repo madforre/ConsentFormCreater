@@ -3,13 +3,9 @@
     <div class="header">
       <ul class="gnb">
         <li><router-link to="/"><h1>Form CMS</h1></router-link></li>
-        <li><router-link to="/template"><h3>템플릿 만들기</h3></router-link></li>
+        <li><router-link to="/template"><h3><font-awesome-icon icon="marker" /></h3></router-link></li>
         <li><p> {{msg}} </p></li>
       </ul>
-    </div>
-    <div class="hi">
-      <h1>Hello world!</h1>
-      <resize-observer @notify="handleResize" />
     </div>
     <router-view></router-view>
   </div>
@@ -25,12 +21,6 @@ export default {
       msg: '원하는 재료를 선택 / 동의서를 구성',
     }
   },
-  methods: {
-    handleResize () {
-      console.log('resized')
-    }
-  }
-  
 }
 
 </script>
@@ -41,16 +31,16 @@ export default {
 
 @charset "utf-8";
 
-
 /* resize test */
 
-.hi {
-    border : 5px solid black;
-    width : 150px;
-    height : 50px;
-    position : relative;
+.resized {
+    position: relative;
+    border: 1px solid #42b983;
+    margin: 12px;
+    padding: 12px;
+    display: inline-block;
+    resize: both;
 }
-
 
 /* ---------- */
 
