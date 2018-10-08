@@ -42,14 +42,14 @@ export default {
 
 .creater {
     background: #ccc;
-    padding: 1.5rem 0;
+    width : auto;
 }
 
 .bin {
     position : absolute;
     right : 3%;
     bottom : 7%;
-    border : 10px solid rgb(255, 255, 255);
+    background : rgb(255, 255, 255);
     padding : 0.5rem;
     color : rgba(158, 38, 38, 0.445);
     cursor : pointer;
@@ -76,15 +76,13 @@ export default {
 .creater .document .droped {
     resize: both;
     overflow: auto;
-    width : 100%;
-    height : 100%;
     border : 1px solid blue;
     margin : 0.5%;
 }
 
 .creater .document .droped select {
-    display : block;
     width : 100%;
+    display : block;
     text-align : center;
 }
 

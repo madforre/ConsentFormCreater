@@ -12,24 +12,34 @@
             <div class="weight"></div>
             <div class="drag" draggable="true">글자</div>
         </li>
-        <li class="table_set">
+        <li class="table">
             <p>표</p>
             <div class="value">
               행　<input maxlength="1" type="text">
               열　<input maxlength="1" type="text">
             </div>
-            <div class="drag_table">
+            <div class="drag">
+                <ul>
+                    <li>1</li>
+                    <li>2</li>
+                </ul>
                 <ul>
                     <li>1</li>
                     <li>2</li>
                 </ul>
             </div>
         </li>
+        <li class="input">
+            <p>인풋 박스 생성</p>
+            <div class="drag" draggable="true">
+                <input type="text">
+            </div>
+        </li>
         <li class="select">
             <p>
                 셀렉트 박스 생성
             </p>
-            <input type="text" v-model="selectInputs" placeholder="ex) 딸기,바나나,키위">
+            <input class="selectValue" type="text" v-model="selectInputs" placeholder="ex) 딸기,바나나,키위">
             <p>추가할 요소들은<br>
             쉼표로 구분합니다.</p>
             <div class="drag" draggable="true">
@@ -53,7 +63,6 @@
         </li>
         <button @click="clear">Clear</button>
 		<button @click="undo">Undo</button>
-        <li>휴지통</li>
       </ul>
     </div>
 </template>
@@ -125,16 +134,40 @@ export default {
     width : 20px;
 }
 
-.tools ul .table_set{
+.tools ul .table{
     flex-direction: column;
     border : 1px solid #555;
     padding : 0.2rem;
     box-sizing: border-box;
 }
 
-.tools ul .table_set input{
+.tools ul .table input{
     width : 18px;
     text-align: center;
+}
+
+.tools ul .table .drag {
+    display: flex;
+    flex-direction: row;
+    flex-flow: wrap;
+}
+
+/* 인풋 박스 */
+
+.tools ul .input {
+    padding : 3%;
+    border : 1px solid #555;
+    flex-direction: column;
+}
+
+.tools ul .input .drag {
+    padding : 5%;
+    border : 10px solid rgb(173, 173, 173);
+}
+
+.tools ul .input .drag input {
+    box-sizing: border-box;
+    width : 100%;
 }
 
 /* 체크 박스 */
@@ -154,7 +187,7 @@ export default {
 }
 
 .tools ul .check .drag {
-    border : 8px solid rgb(131, 131, 131);
+    border : 8px solid rgb(173, 173, 173);
     position : absolute;
     right : 0;
 }
@@ -196,7 +229,7 @@ export default {
 
 .tools ul .select .drag {
     box-sizing : border-box;
-    border : 10px solid rgb(131, 131, 131);
+    border : 10px solid rgb(173, 173, 173);
 }
 
 .tools ul .select .drag select {
@@ -225,7 +258,7 @@ export default {
 }
 
 .tools ul .sign .drag {
-    border : 1rem solid rgb(143, 143, 143);
+    border : 1rem solid rgb(173, 173, 173);
     box-sizing : border-box;
 }
 

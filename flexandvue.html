@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <style>
+        ui, li {
+            list-style: none;
+        }
+
+        ul {
+            width : 500px;
+            height : auto;
+            border : 10px solid salmon;
+            display : flex;
+            flex-flow: row wrap;
+            padding : 0;
+            align-items : flex-start;
+        }
+
+        li {
+            height : 50px;
+            box-sizing : border-box;
+            border : 3px solid limegreen;
+            flex : 1 1 auto;
+        }
+    
+    </style>
+</head>
+<body>
+<div id="app">
+    <input type="text" v-model="row" @keyup="hou">
+    <input type="text" v-model="column">
+    <ul>
+        <li v-for="n in li(row,column)"> test </li>
+    </ul>
+    row : {{row}} <br>
+    column : {{column}} <br>
+
+    li 한 개당 width : {{width}} <br>
+    필요한 li 개수 : {{li}}<br>
+
+</div>
+    <script>
+
+        const vm = new Vue({
+            el : "#app",
+            data : {
+                row : "",
+                column : "",
+            },
+            methods : {
+                width : function() {
+                    return 100 / row;
+                },
+                li : function(row,column){
+                    return row * column;
+                },
+                hou : function() {
+                    // document.querySelectorAll("ul > li")[0]
+                    console.log();
+                }
+            }
+        })
+
+// https://kr.vuejs.org/v2/guide/list.html
+
+    </script>
+</body>
+</html>

@@ -19,7 +19,18 @@
 </template>
 
 <script scoped>
-
+export default {
+  data () {
+    return {
+      template: { "구성":"html" },
+      select: [ "바나나", "사과" ],
+    }
+  },
+created() {
+  this.template["호우"] = 2;
+},
+mounted() {
+  
     /* HTML5 Drag & Drop API 사용 */
     
     let dragged;
@@ -66,7 +77,7 @@
     }, false);
   
     // events fired on the drop targets
-    document.addEventListener("drop", (event) => {      
+    document.addEventListener("drop", (event) => {
 
       event.preventDefault();
 
@@ -89,14 +100,15 @@
       }
 
     }, false);
-
+    
     function dropAfter(dupElement) {
 
       // 전자서명일 경우 한번만 실행
 
+      // 드래그했던 Elements 의 부모 위치 변수로 저장
+
       if ( draggedParentClass != "sign" || dragged.className == "droped") {
 
-        // 드래그했던 Elements 의 부모 위치 변수로 저장
         let restoreMe = document.querySelector("." + draggedParentClass);
       
         // dupElement.style.width = "100%";
@@ -117,8 +129,8 @@
           dragged.setAttribute("draggable", "false");
           break;
         case "select":
-          dragged.style.width = "10%";
-          dragged.style.height = "5%";
+          dragged.style.width = "auto";
+          dragged.style.height = "1.3%";
           break;
         case "check":
           dragged.style.width ="3.9%";
@@ -128,24 +140,18 @@
           dragged.style.fontSize = "2rem";
           dragged.style.width = "auto";
           dragged.style.height = "3%";
+          break;
+        case "input":
+          dragged.style.width ="auto";
+          dragged.style.height ="1.5%";
+          break;
         }
     }
-
-export default {
-  data () {
-    return {
-      template: {"구성":"html"},
-      select: [ "바나나", "사과" ],
-    }
-  },
-  created() {
-    this.template["호우"] = 2;
-  },
+  }
 }
 </script>
 
 <style>
-
 
 /* Wrap section */
 
