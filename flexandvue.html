@@ -7,14 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <style>
-        ui, li {
+
+        ul, li {
             list-style: none;
         }
 
         ul {
             width : 500px;
             height : auto;
-            border : 10px solid salmon;
+            border : 1px solid rgb(2, 0, 7);
             display : flex;
             flex-flow: row wrap;
             padding : 0;
@@ -22,52 +23,74 @@
         }
 
         li {
-            height : 50px;
+            height : 30px;
             box-sizing : border-box;
-            border : 3px solid limegreen;
+            border : 1px solid rgb(10, 0, 104);
+            background: rgba(221, 221, 221, 0.719);
             flex : 1 1 auto;
+            word-break:break-word;
         }
     
     </style>
 </head>
 <body>
 <div id="app">
-    <input type="text" v-model="row" @keyup="hou">
-    <input type="text" v-model="column">
+    <input type="number" v-model="row" @click="table" @keyup="table" min="1" max="20">
+    <input type="number" v-model="column" @click="table" @keyup="table" min="1" max="20">
     <ul>
-        <li v-for="n in li(row,column)"> test </li>
+        <!-- 계산된 속성을 실행할 수 없는 중첩된 v-for는 메소드로 처리 -->
+        <li v-for="n in li(row,column)"> </li>
     </ul>
     row : {{row}} <br>
     column : {{column}} <br>
 
-    li 한 개당 width : {{width}} <br>
-    필요한 li 개수 : {{li}}<br>
-
+    li 한 개당 width : {{width}} %<br>
+    필요한 li 개수 : {{ row * column }}<br>
 </div>
-    <script>
-
-        const vm = new Vue({
-            el : "#app",
-            data : {
-                row : "",
-                column : "",
+<script>
+    const vm = new Vue({
+        el : "#app",
+        data : {
+            row : "",
+            column : "",
+        },
+        computed : {
+            width: function() {
+                return 100 / this.row
+            }
+        },
+        methods : {
+            li : function (row,column) {
+                return row * column;
             },
-            methods : {
-                width : function() {
-                    return 100 / row;
-                },
-                li : function(row,column){
-                    return row * column;
-                },
-                hou : function() {
-                    // document.querySelectorAll("ul > li")[0]
-                    console.log();
+            table : function (event) {
+
+                if (event.target.value.length <= 2){
+
+                    lis = document.querySelectorAll("ul > li");
+                    lis.forEach(element => {
+                        element.style.width = this.width+"%";
+                    });
                 }
             }
-        })
+        },
+        beforeUpdate() {
 
-// https://kr.vuejs.org/v2/guide/list.html
+            if (this.row.length > 2) {
+                let cut = String(this.row);
+                cut = cut.slice(0,-1);
+                cut = cut.slice(0, 2);
+                this.row = parseInt(cut)
+            }
 
+            if (this.column.length > 2) {
+                let cut = String(this.column);
+                cut = cut.slice(0,-1);
+                cut = cut.slice(0, 2);
+                this.column = parseInt(cut)
+            }
+        }
+    })
     </script>
 </body>
 </html>

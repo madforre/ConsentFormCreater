@@ -13,26 +13,33 @@
             <div class="drag" draggable="true">글자</div>
         </li>
         <li class="table">
-            <p>표</p>
+            <p>표 (최대 14 x 14)</p>
             <div class="value">
-              행　<input maxlength="1" type="text">
-              열　<input maxlength="1" type="text">
+              행　<input type="number" v-model="row" @click="setTable" @keyup="setTable" min="1" max="14">
+              열　<input type="number" v-model="column" @click="setTable" @keyup="setTable" min="1" max="14">
             </div>
-            <div class="drag">
+            row : {{row}} <br>
+            column : {{column}} <br>
+            li 한 개당 width : {{width}} %<br>
+            필요한 li 개수 : {{ row * column }}<br>
+            <div class="drag" draggable="true">
                 <ul>
-                    <li>1</li>
-                    <li>2</li>
-                </ul>
-                <ul>
-                    <li>1</li>
-                    <li>2</li>
+                <!-- 계산된 속성을 실행할 수 없는 중첩된 v-for는 메소드로 처리 -->
+                    <li v-for="index in li(row,column)" v-bind:key="index"></li>
                 </ul>
             </div>
         </li>
         <li class="input">
             <p>인풋 박스 생성</p>
+            <br>
             <div class="drag" draggable="true">
                 <input type="text">
+            </div>
+        </li>
+        <li class="check"> 
+            <h4>체크 박스 추가</h4>
+            <div class="drag" draggable="true">
+                <input class="checkbox" type="checkbox" checked>
             </div>
         </li>
         <li class="select">
@@ -47,12 +54,6 @@
                     <option>선택해주세요.</option>
                     <option v-for="select in selects" :key="select">{{select}}</option>
                 </select>
-            </div>
-        </li>
-        <li class="check"> 
-            <h4>체크 박스 추가</h4>
-            <div class="drag" draggable="true">
-                <input class="checkbox" type="checkbox" checked>
             </div>
         </li>
         <li class="sign">
@@ -75,11 +76,19 @@ export default {
 				penColor:"rgb(0, 0, 0)",
                 backgroundColor:"rgb(233, 233, 233)",
             },
+            row : "1",
+            column : "1",
         }
     },
     computed: {
         selects: function () {
             return this.selectInputs.split(",")
+        },
+        width: function() {
+            return 100 / this.row
+        },
+        height: function() {
+            return 100 / this.column
         }
     },
     methods: {
@@ -103,6 +112,43 @@ export default {
 			var _this = this;
 			_this.$refs.signature.undo();
 		},
+        li : function (row, column) {
+            return row * column;
+        },
+        setTable : function (event) {
+
+            if (event.target.value.length <= 2){
+
+                let lis = document.querySelectorAll(".table ul > li");
+                
+                for(let i=0; i<lis.length; i++) {
+                    lis[i].style.width = this.width+"%";
+                    lis[i].style.height = this.height+"%";
+                }
+
+                // foEach는 edge 지원 안한다.
+                // lis.forEach(element => {
+                //     element.style.width = this.width+"%";
+                //     element.style.height = this.height+"%";
+                // });
+            }
+        },
+    },
+    beforeUpdate() {
+
+        if (this.row.length > 2 || this.row > 14) {
+            let cut = String(this.row);
+            cut = cut.slice(0,-1);
+            cut = cut.slice(0, 2);
+            this.row = parseInt(cut)
+        }
+
+        if (this.column.length > 2 || this.column > 14) {
+            let cut = String(this.column);
+            cut = cut.slice(0,-1);
+            cut = cut.slice(0, 2);
+            this.column = parseInt(cut)
+        }
     }
 }
 </script>
@@ -110,13 +156,15 @@ export default {
 
 .tools {
     min-width : 200px;
+    overflow : auto;
+    height : 50rem;
 }
 
-.tools ul {
+.tools>ul {
     min-width : 153px;
 }
 
-.tools ul li {
+.tools>ul>li {
     margin : 1rem;
     display : flex;
 }
@@ -124,45 +172,57 @@ export default {
 /* 글자 */
 
 .tools ul .words {
-    border : 1px solid #555;
+    border : 1px solid rgba(2, 109, 250, 0.986);
 }
 
 /* 표 */
 
-.tools ul .set input {
-    display : block;
-    width : 20px;
-}
-
-.tools ul .table{
+.tools ul> .table{
+    color : rgb(80, 150, 255);
     flex-direction: column;
-    border : 1px solid #555;
-    padding : 0.2rem;
+    border: 2px solid rgb(80, 150, 255);
+    /* border : 1px solid rgba(2, 109, 250, 0.986); */
+    padding : 1rem;
     box-sizing: border-box;
 }
 
-.tools ul .table input{
-    width : 18px;
-    text-align: center;
+.tools ul .table ul {
+    background: rgb(80, 150, 255);
+    margin : 0.5rem 0;
+    width : auto;
+    height : 12rem;
+    display : flex;
+    flex-flow: row wrap;
+    align-items : flex-start;
 }
 
-.tools ul .table .drag {
-    display: flex;
-    flex-direction: row;
-    flex-flow: wrap;
+.tools ul .table ul li {
+    padding : 0;
+    height : auto;
+    box-sizing : border-box;
+    border : 1px solid rgb(255, 255, 255);
+    word-break:break-word;
+}
+
+.tools ul .table input{
+    width : 30px;
+    text-align: center;
 }
 
 /* 인풋 박스 */
 
+
 .tools ul .input {
-    padding : 3%;
-    border : 1px solid #555;
     flex-direction: column;
+    border : 2px solid rgb(80, 150, 255);
+    padding : 5%;
+    color : rgb(80, 150, 255);
 }
 
 .tools ul .input .drag {
-    padding : 5%;
-    border : 10px solid rgb(173, 173, 173);
+    margin-top : 6%;
+    padding : 4%;
+    
 }
 
 .tools ul .input .drag input {
@@ -173,11 +233,13 @@ export default {
 /* 체크 박스 */
 
 .tools ul .check {
-    border : 1px solid #555;
     border-right : 0px;
     position : relative;
     justify-content: center;
     align-items: center;
+    padding : 0.5rem;
+    border : 2px solid rgb(80, 150, 255);
+    color : rgb(80, 150, 255);
 }
 
 .tools ul .check:after {
@@ -187,9 +249,10 @@ export default {
 }
 
 .tools ul .check .drag {
-    border : 8px solid rgb(173, 173, 173);
+    background: #fff;
+    border : 5px solid rgb(80, 150, 255);
     position : absolute;
-    right : 0;
+    right : 4px;
 }
 
 .tools ul .check .drag input[type="checkbox"] {
@@ -222,21 +285,22 @@ export default {
 
 .tools ul .select {
     flex-direction: column;
-    border : 1px solid #555;
+    color : rgb(80, 150, 255);
+    border : 3px solid rgb(80, 150, 255);
     padding : 0.5rem;
     box-sizing: border-box;
 }
 
 .tools ul .select .drag {
+    margin : 0.5rem;
+    padding : 0.7rem;
     box-sizing : border-box;
-    border : 10px solid rgb(173, 173, 173);
+    border : 3px solid rgb(80, 150, 255);
 }
 
 .tools ul .select .drag select {
-    margin : 5%;
     width : auto;
     max-width : 90%;
-    border : 2px solid #555;
 }
 
 .tools ul .select input {
@@ -244,6 +308,8 @@ export default {
     width : auto;
     margin: 3% 0;
     height : 1.5rem;
+    text-indent: 0.5rem;
+    border : 1px dotted;
 }
 
 .tools ul .select p:nth-child(4) {
@@ -258,7 +324,7 @@ export default {
 }
 
 .tools ul .sign .drag {
-    border : 1rem solid rgb(173, 173, 173);
+    border : 5px solid rgb(124, 124, 124);
     box-sizing : border-box;
 }
 

@@ -76,8 +76,9 @@ export default {
 .creater .document .droped {
     resize: both;
     overflow: auto;
-    border : 1px solid blue;
+    border : 1px solid black;
     margin : 0.5%;
+    width : 100%;
 }
 
 .creater .document .droped select {
@@ -87,27 +88,26 @@ export default {
 }
 
 
-/* .creater .document ul {
+.creater .document .droped ul {
     display : flex;
     width : 100%;
     flex-flow : row wrap;
-    height : auto;
+    height : 10rem;
     box-sizing: border-box;
-    margin-left : 2px;
+    /* margin-left : 2px;
     margin-top : 1px;
-    margin-bottom : 1px;
+    margin-bottom : 1px; */
     text-align: center;
-}
+} 
+
 
 .creater .document ul>li {
     word-break:break-word;
     overflow: hidden;
-    width : 20%;
-    height : auto;
     border : 1px solid gray;
     box-sizing : border-box;
-    margin-top : -1px;
-    margin-right :-1px;
-} */
+    /* margin-top : -1px;
+    margin-right :-1px; */
+}
 
 </style>

@@ -145,6 +145,8 @@ mounted() {
           dragged.style.width ="auto";
           dragged.style.height ="1.5%";
           break;
+        case "table":
+          break;
         }
     }
   }
