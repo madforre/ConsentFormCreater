@@ -59,7 +59,7 @@ export default {
     color : rgba(255, 31, 31, 0.822);
 }
 
-.creater .document {
+.creater> .document {
     display : flex;
     background : #fff;
     width : 1190px;
@@ -74,40 +74,29 @@ export default {
 /* Drop된 요소의 Resize를 위한 css 설정 */
 
 .creater .document .droped {
-    resize: both;
+    resize : both;
     overflow: auto;
-    border : 1px solid black;
-    margin : 0.5%;
     width : 100%;
+    text-align: left;
 }
-
-.creater .document .droped select {
-    width : 100%;
-    display : block;
-    text-align : center;
-}
-
 
 .creater .document .droped ul {
     display : flex;
+    height : auto;
     width : 100%;
     flex-flow : row wrap;
-    height : 10rem;
     box-sizing: border-box;
-    /* margin-left : 2px;
-    margin-top : 1px;
-    margin-bottom : 1px; */
+    border-left : 1px solid #000;
+    border-top : 1px solid #000;
     text-align: center;
 } 
 
-
-.creater .document ul>li {
+.creater .document .droped ul > li {
+    width : 100%;
     word-break:break-word;
-    overflow: hidden;
-    border : 1px solid gray;
+    border-bottom : 1px solid rgb(0, 0, 0);
+    border-right : 1px solid rgb(0, 0, 0);
     box-sizing : border-box;
-    /* margin-top : -1px;
-    margin-right :-1px; */
 }
 
 </style>

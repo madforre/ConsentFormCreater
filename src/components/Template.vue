@@ -142,10 +142,16 @@ mounted() {
           dragged.style.height = "3%";
           break;
         case "input":
-          dragged.style.width ="auto";
-          dragged.style.height ="1.5%";
+          dragged.style.width ="7%";
+          dragged.firstChild.style.width ="90%";
+          dragged.firstChild.style.height ="90%";
+          dragged.firstChild.style.margin ="0 auto 0 0";
+          dragged.style.height ="3%";
           break;
         case "table":
+          // 이벤트 버스를 통해 tools의 table을 가지고 온다.
+          dragged.style.height = "40%";
+          dragged.firstChild.style.height = "100%";
           break;
         }
     }
@@ -165,7 +171,7 @@ mounted() {
 }
 
 .middle .left {
-  border : 1px solid rgb(7, 0, 100);
+  border : 3px solid rgb(80, 150, 255);
   width : 16%;
   margin-right : 0.5%;
   min-width : 240px;
@@ -181,7 +187,7 @@ mounted() {
 
 .middle .right .one {
   box-sizing : border-box;
-  border : 2px solid rgb(7, 0, 100);  
+  border : 3px solid rgb(80, 150, 255);
   display : flex;
   height : 3rem;
   justify-content: space-around;
@@ -190,8 +196,8 @@ mounted() {
 }
 
 .middle .right .two {
-  border : 2px solid rgb(131, 131, 187);
-  height : 47rem;
+  border : 2px solid rgb(111, 135, 241);
+  height : 48rem;
   overflow: auto;
   box-sizing: border-box;
 }

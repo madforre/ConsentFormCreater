@@ -13,10 +13,10 @@
             <div class="drag" draggable="true">글자</div>
         </li>
         <li class="table">
-            <p>표 (최대 14 x 14)</p>
+            <p>표 (최대 20 x 20)</p>
             <div class="value">
-              행　<input type="number" v-model="row" @click="setTable" @keyup="setTable" min="1" max="14">
-              열　<input type="number" v-model="column" @click="setTable" @keyup="setTable" min="1" max="14">
+              행　<input type="number" v-model="row" @click="setTable" @keyup="setTable" min="1" max="20">
+              열　<input type="number" v-model="column" @click="setTable" @keyup="setTable" min="1" max="20">
             </div>
             row : {{row}} <br>
             column : {{column}} <br>
@@ -126,7 +126,7 @@ export default {
                     lis[i].style.height = this.height+"%";
                 }
 
-                // foEach는 edge 지원 안한다.
+                // forEach는 edge 지원 안한다.
                 // lis.forEach(element => {
                 //     element.style.width = this.width+"%";
                 //     element.style.height = this.height+"%";
@@ -136,14 +136,14 @@ export default {
     },
     beforeUpdate() {
 
-        if (this.row.length > 2 || this.row > 14) {
+        if (this.row.length > 2 || this.row > 20) {
             let cut = String(this.row);
             cut = cut.slice(0,-1);
             cut = cut.slice(0, 2);
             this.row = parseInt(cut)
         }
 
-        if (this.column.length > 2 || this.column > 14) {
+        if (this.column.length > 2 || this.column > 20) {
             let cut = String(this.column);
             cut = cut.slice(0,-1);
             cut = cut.slice(0, 2);
