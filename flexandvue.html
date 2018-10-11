@@ -13,39 +13,66 @@
         }
 
         ul {
-            width : 500px;
+            position : relative;
+            top : 0px;
+            left : 100px;
+            width : 400px;
             height : auto;
             border : 1px solid rgb(2, 0, 7);
             display : flex;
-            flex-flow: row wrap;
+            flex-wrap : wrap;
+            flex-direction: row;
             padding : 0;
-            align-items : flex-start;
         }
 
-        li {
-            height : 30px;
+        ul li {
+            position : relative;
             box-sizing : border-box;
             border : 1px solid rgb(10, 0, 104);
             background: rgba(221, 221, 221, 0.719);
             flex : 1 1 auto;
-            word-break:break-word;
+            width : auto;
         }
-    
+
+        .resizer.column {
+            position : absolute;
+            right :-1px;
+            top : 0px;
+            width : 4%;
+            height : 100%;
+            background: #222;
+            cursor :w-resize;
+        }
+
+        .resizer.row {
+            position : absolute;
+            bottom : -1px;
+            width : 100%;
+            height : 8%;
+            background: #222;
+            cursor :s-resize;
+        }
+
     </style>
 </head>
 <body>
 <div id="app">
     <input type="number" v-model="row" @click="table" @keyup="table" min="1" max="20">
     <input type="number" v-model="column" @click="table" @keyup="table" min="1" max="20">
-    <ul>
-        <!-- 계산된 속성을 실행할 수 없는 중첩된 v-for는 메소드로 처리 -->
-        <li v-for="n in li(row,column)"> </li>
-    </ul>
+    <hr>
     row : {{row}} <br>
     column : {{column}} <br>
 
     li 한 개당 width : {{width}} %<br>
     필요한 li 개수 : {{ row * column }}<br>
+    <hr>
+    <ul>
+        <!-- 계산된 속성을 실행할 수 없는 중첩된 v-for는 메소드로 처리 -->
+        <li v-for="n in li(row, column)">
+            <div class="resizer column" v-show="n % row !== 0" @mousedown="colResize" @mouseup="stop"></div>
+            <div class="resizer row" @mousedown="rowResize" @mouseup="stop"></div>
+        </li>
+    </ul>
 </div>
 <script>
     const vm = new Vue({
@@ -67,12 +94,80 @@
 
                 if (event.target.value.length <= 2){
 
-                    lis = document.querySelectorAll("ul > li");
-                    lis.forEach(element => {
-                        element.style.width = this.width+"%";
-                    });
+                    let lis = document.querySelectorAll("ul > li");
+                    let row = this.row;
+                    // console.log(this.row);
+
+                    for(i=0; i<lis.length; i++) {
+                        lis[i].style.width = this.width+"%";
+                        // lis[i].style.height = this.height+"%";
+                        lis[i].style.height = "50px";
+                        lis[i].setAttribute("class", i);
+                    }
                 }
-            }
+            },
+            rowResize : function (event) {
+
+                let theClass = event.target.parentNode.getAttribute("class");
+                let lis = document.querySelectorAll("ul > li");
+                let row = this.row;
+                let column = this.column;
+
+                console.log(event.target)
+
+                // event.target.parentNode.height = "10px";
+                // event.target.innerHTML = "hi";
+
+                // console.log(event.offsetY);
+                // console.log(event.target.parentNode.height);
+
+                event.target.addEventListener("mousemove", function(e) {
+
+                    // console.log (event.offsetY);
+
+                    console.log(event.target.parentNode);
+                    // console.log(theClass);
+                    // console.log(row);
+
+                    // 케이스 분류
+                    // row x 0 부터 row 전까지
+
+                    function jaegui(row, column) {
+                        // event.target.parentNode 
+                    }
+                })
+
+                
+                // let stop = function() {
+                //     // e.preventDefault();
+                // }
+                // stop();
+
+                //     // for (theClass; theClass<row; theClass++) {
+                //     //     event.target.parentNode.style.height = event.target.parentNode.style.height + event.offsetY
+                //     // }
+                //     // row x 1 부터 row x 2 전까지
+                //     // row x 2 부터 row x 3 전까지
+                //     // row x 3 부터 row x 4 전까지
+                //     // . . .
+                //     // . . .
+                //     // row x (column - 1) 부터 row x column 전까지
+
+                //     // for (theClass; theClass<row; theClass++) {
+                //     // }
+                //     // console.log (event.target.style.height);
+
+                // })
+
+                // console.log(event.target)
+                // return console.log("rowResize")
+            },
+            colResize : function () {
+                return console.log("colResize")
+            },
+            stop : function() {
+                // window.removeEventListener('mousemove')
+            },
         },
         beforeUpdate() {
 

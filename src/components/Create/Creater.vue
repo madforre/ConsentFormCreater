@@ -65,7 +65,8 @@ export default {
     width : 1190px;
     height : 1684px;
     margin : 0 auto;
-    padding : 1rem;
+    box-sizing: border-box;
+    padding : 2.3%;
     border : 1px solid black;
     flex-flow : row wrap;
     align-content: flex-start;
@@ -74,10 +75,12 @@ export default {
 /* Drop된 요소의 Resize를 위한 css 설정 */
 
 .creater .document .droped {
-    resize : both;
-    overflow: auto;
     width : 100%;
     text-align: left;
+    resize :vertical;
+    overflow: auto;
+    margin-bottom : 1px;
+    margin-top : 1px;
 }
 
 .creater .document .droped ul {
@@ -97,6 +100,11 @@ export default {
     border-bottom : 1px solid rgb(0, 0, 0);
     border-right : 1px solid rgb(0, 0, 0);
     box-sizing : border-box;
+}
+
+.creater .document .droped ul >li:last-child {
+    resize : none;
+    overflow: none;
 }
 
 </style>

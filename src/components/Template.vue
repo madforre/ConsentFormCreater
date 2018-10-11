@@ -26,10 +26,10 @@ export default {
       select: [ "바나나", "사과" ],
     }
   },
-created() {
-  this.template["호우"] = 2;
-},
-mounted() {
+  created() {
+    this.template["호우"] = 2;
+  },
+  mounted() {
   
     /* HTML5 Drag & Drop API 사용 */
     
@@ -154,8 +154,8 @@ mounted() {
           dragged.firstChild.style.height = "100%";
           break;
         }
+      }
     }
-  }
 }
 </script>
 
