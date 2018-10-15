@@ -16,9 +16,9 @@
             position : relative;
             top : 0px;
             left : 100px;
-            width : 400px;
+            width : 800px;
             height : auto;
-            border : 1px solid rgb(2, 0, 7);
+            /* border : 1px solid rgb(2, 0, 7); */
             display : flex;
             flex-wrap : wrap;
             flex-direction: row;
@@ -32,17 +32,18 @@
             background: rgb(221, 221, 221);
             flex : 1 1 auto;
             width : auto;
-            transition : 0.05s;
+            transition : 0.03s;
         }
 
         ul li .resizer.column {
             position : absolute;
-            right :-1px;
+            right :-17px;
             top : 0px;
-            width : 4%;
+            width : 32px;
             height : 100%;
             background: #222;
             cursor :w-resize;
+            z-index : 99;
         }
 
         ul li .resizer.row {
@@ -70,7 +71,7 @@
     <ul>
         <!-- 계산된 속성을 실행할 수 없는 중첩된 v-for는 메소드로 처리 -->
         <li v-for="n in li(row, column)">
-            <div class="resizer column" v-show="n % row !== 0" @mousedown="colResize" @mouseup="stop"></div>
+            <div class="resizer column" v-show="n % row !== 0" @mousedown="colResize" @mouseup="stop" @mouseout="stop"></div>
             <div class="resizer row"  @mousedown="rowResize" @mouseup="stop" @mouseout="stop"></div>
         </li>
     </ul>
@@ -103,84 +104,99 @@
                 }
             },
             rowResize : function (event) {
-                event.preventDefault();                
-                document.addEventListener("mousemove", this.mouseMoveHandler);
-                
+                event.preventDefault();
+                document.addEventListener("mousemove", this.rowMouseMoveHandler);
             },
-            colResize : function () {
-                return console.log("colResize")
+            colResize : function (event) {
+                event.preventDefault();
+                document.addEventListener("mousemove", this.colMouseMoveHandler);
             },
-            mouseMoveHandler : function (event) {
+            rowMouseMoveHandler : function (event) {
                 event.preventDefault();
                 let theClass = event.target.parentNode.getAttribute("class");
                 let lis = document.querySelectorAll("ul > li");
 
-                // 나누기 / 몫 %
-
-                /* theClass % row - 1 은 현재 열에 해당 의미한다. */
-                /* theClass / row 가 1보다 작으면 1행, 2보다 작으면 2행 전체에 해당 */
-
-
-                /* rowResize시 현재 row 구하기 */
+                /* rowResize시 현재 row의 위치 대략 구하기 */
                 let checkRow = theClass / this.row;
 
-                let currentRow;
-
-                // 요소 클릭시 해당 행의 값을 currentRow에 저장
+                // checkRow의 소수점을 제거한 rowIndex
+                let rowIndex;
                 for (let n = 0; n < this.column; n++) {
                     if (checkRow > n && checkRow <= n+1) {
-                        currentRow = n+1;
+                        rowIndex = n+1;
                     }
                 }
 
                 // start
-                let startIndex = lis[this.row * (currentRow - 1)].getAttribute("class") - 1;
+                let rowStart = lis[this.row * (rowIndex - 1)].getAttribute("class") - 1;
 
                 // end
-                let endIndex = lis[this.row * currentRow - 1].getAttribute("class") - 1
+                let rowEnd = lis[this.row * rowIndex - 1].getAttribute("class") - 1;
 
                 // height 에서 숫자만 걸러내고 숫자만 바꾼뒤 단위 붙여주어야 한다.
                 const re = /[0-9]*/i
 
                 // height
-                let defaultHeight = parseInt(lis[startIndex].style.height.match(re)[0]);
+                let defaultHeight = parseInt(lis[rowStart].style.height.match(re)[0]);
 
-                // current
-                let currentIndex = startIndex;
+                // while문에 쓰일 currentCell
+                let currentCell = rowStart;
 
                 while(true) {
-
-                    console.log(event.offsetY);
-
-                    let currentHeight = parseInt(lis[currentIndex].style.height.match(re)[0]);
-
-
-                    // lis[currentIndex].style.height = (defaultHeight + event.offsetY) + "px";
-
-                    // offsetY 값에 따른 픽셀 값 조정
-                    if (event.offsetY > 15) {
-
-                        lis[currentIndex].style.height = (defaultHeight + 5) + "px";
-
+                    if (event.offsetY > 14) {
+                        lis[currentCell].style.height = (defaultHeight + 5) + "px";
                     } else {
-
-                        lis[currentIndex].style.height = (defaultHeight - 5) + "px";
-
+                        lis[currentCell].style.height = (defaultHeight - 5) + "px";
                     }
-
-                    if (currentIndex == endIndex) { 
-                        // console.log(currentIndex + " , 현재 while 안에 있음");
+                    if (currentCell == rowEnd) { 
                         break;
                     }
-
-                    currentIndex = currentIndex + 1;
+                    currentCell = currentCell + 1;
                 }
+            },
+            colMouseMoveHandler : function (event) {
+                event.preventDefault();
+                let theClass = event.target.parentNode.getAttribute("class");
+                let lis = document.querySelectorAll("ul > li");
 
+                /* colResize시 현재 col 위치 구하기 */
+                let checkColumn = theClass % this.row;
+                let columnIndex = checkColumn - 1;
 
+                const re = /[0-9\.]*/i
+                let beforeWidthFloat = parseFloat(lis[columnIndex].style.width.match(re)[0]);
+                let afterWidthFloat = parseFloat(lis[columnIndex + 1].style.width.match(re)[0]);
+
+                console.log(beforeWidthFloat);
+                console.log(afterWidthFloat);
+
+                if (event.offsetX > 15) {
+
+                    // offsetX 가 15보다 크면 checkCol의 왼쪽을 전부 선택한 후
+                    // 크기를 키운 다음 오른쪽을 전부 선택한 후 크기를 줄인다.
+
+                    console.log(lis[columnIndex]);
+
+                    lis[columnIndex].style.width = (beforeWidthFloat + 1) + "%";
+                    lis[columnIndex+1].style.width = (afterWidthFloat - 1) + "%";
+                    
+                } else {
+
+                    // offsetX 가 15보다 작으면 checkCol의 오른쪽을 전부 선택한 후,
+                    // 크기를 키운 다음 왼쪽을 전부 선택한 후 크기를 줄인다.
+
+                    // lis[(columnIndex+1)*n].style.width = (beforeWidthInt - 1) + "%";
+                    // lis[(columnIndex+1)*n + 1].style.width = (afterWidthInt + 1) + "%";
+
+                    lis[columnIndex].style.width = (beforeWidthFloat - 1) + "%";
+                    lis[columnIndex+1].style.width = (afterWidthFloat + 1) + "%";
+
+                }
             },
             stop() {
                 console.log("마우스 업");
-                document.removeEventListener("mousemove",this.mouseMoveHandler);
+                document.removeEventListener("mousemove",this.rowMouseMoveHandler);
+                document.removeEventListener("mousemove",this.colMouseMoveHandler);
             }
         },
         beforeUpdate() {
