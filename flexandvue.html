@@ -179,23 +179,17 @@
                         beforeWidthFloat = parseFloat(lis[columnIndex+this.row*n].style.width.match(re)[0]);
                         afterWidthFloat = parseFloat(lis[columnIndex+this.row*n+1].style.width.match(re)[0]);
 
-                        // *********
                         // width가 1퍼센트 이상일때만 실행하고 이하라면 실행하지 않도록 만들어야 한다.
-                        // *********
+
+                        // 왼쪽이 커지는중이다. 오른쪽으로 더이상 줄지 않도록 해야 한다.
+                        // 오른쪽으로 리사이징시에는 버그 발생 안하고 있다.
 
                         lis[columnIndex+this.row*n].style.width = (beforeWidthFloat + 0.5) + "%";
                         lis[columnIndex+this.row*n + 1].style.width = (afterWidthFloat - 0.5) + "%";
 
-                        // if(lis[columnIndex+this.row*n].style.width <= 0) {
-                        //     beforeWidthFloat = parseFloat(lis[columnIndex+this.row*n].style.width.match(re)[0]);
-                        //     lis[columnIndex+this.row*n].style.width = (beforeWidthFloat + 2) + "%";
-                        //     document.removeEventListener("mousemove",this.colMouseMoveHandler);
-                        // }
-
-                        // if(lis[columnIndex+this.row*n + 1].style.width <= 0) {
-                        //     beforeWidthFloat = parseFloat(lis[columnIndex+this.row*n].style.width.match(re)[0]);
-                        //     lis[columnIndex+this.row*n].style.width = (beforeWidthFloat - 2) + "%";
-                        //     document.removeEventListener("mousemove",this.colMouseMoveHandler);
+                        // if (beforeWidthFloat >= 1 && afterWidthFloat >= 1) {
+                        //     lis[columnIndex+this.row*n].style.width = (beforeWidthFloat + 0.5) + "%";
+                        //     lis[columnIndex+this.row*n + 1].style.width = (afterWidthFloat - 0.5) + "%";
                         // }
 
                     }
@@ -205,25 +199,21 @@
                     // offsetX 가 15보다 작으면 checkCol의 오른쪽을 전부 선택한 후,
                     // 크기를 키운 다음 왼쪽을 전부 선택한 후 크기를 줄인다.
 
+                    // 오른쪽이 커지는중이다. 왼쪽으로 더이상 줄지 않도록 해야 한다.
+                    // 왼쪽으로 리사이징시에는 버그 발생 하는 중이다.
+
                     for(let n=0; n < this.column; n++) {
 
                         beforeWidthFloat = parseFloat(lis[columnIndex+this.row*n].style.width.match(re)[0]);
                         afterWidthFloat = parseFloat(lis[columnIndex+this.row*n+1].style.width.match(re)[0]);
 
+                        // if (beforeWidthFloat >= 1 && afterWidthFloat >= 1) {
+                        //     lis[columnIndex+this.row*n].style.width = (beforeWidthFloat + 0.5) + "%";
+                        //     lis[columnIndex+this.row*n + 1].style.width = (afterWidthFloat - 0.5) + "%";
+                        // }
+
                         lis[columnIndex+this.row*n].style.width = (beforeWidthFloat - 0.5) + "%";
                         lis[columnIndex+this.row*n + 1].style.width = (afterWidthFloat + 0.5) + "%";
-
-                        // if(lis[columnIndex+this.row*n].style.width <= 0) {
-                        //     beforeWidthFloat = parseFloat(lis[columnIndex+this.row*n].style.width.match(re)[0]);
-                        //     lis[columnIndex+this.row*n].style.width = (beforeWidthFloat - 2) + "%";
-                        //     document.removeEventListener("mousemove",this.colMouseMoveHandler);
-                        // }
-
-                        // if(lis[columnIndex+this.row*n + 1].style.width <= 0) {
-                        //     beforeWidthFloat = parseFloat(lis[columnIndex+this.row*n].style.width.match(re)[0]);
-                        //     lis[columnIndex+this.row*n].style.width = (beforeWidthFloat + 2) + "%";
-                        //     document.removeEventListener("mousemove",this.colMouseMoveHandler);
-                        // }
 
                     }
 
