@@ -4,7 +4,7 @@ import VueRouter from 'vue-router'
 import Home from '../components/Home'
 
 import Template from '../components/Template.vue'
-import Loader from '../components/Load/Loader'
+
 import Creater from '../components/Create/Creater'
 import Tools from '../components/Create/Tools'
 
@@ -22,10 +22,6 @@ const router = new VueRouter({
         { path: '/', component: Home },
         { path: '/template', component: Template,
           children: [
-            {
-              path: 'loader',
-              component: Loader,
-            },
             {
               path: 'creater',
               components: {

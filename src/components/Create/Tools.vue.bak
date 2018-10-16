@@ -22,7 +22,6 @@
             column : {{column}} <br>
             li 한 개당 width : {{width}} %<br>
             필요한 li 개수 : {{ row * column }}<br>
-            카운트 : {{count}}
             <div class="drag" draggable="true">
                 <ul>
                 <!-- 계산된 속성을 실행할 수 없는 중첩된 v-for는 메소드로 처리 -->
@@ -80,9 +79,8 @@ export default {
 				penColor:"rgb(0, 0, 0)",
                 backgroundColor:"rgb(233, 233, 233)",
             },
-            row : [1],
-            column : [1],
-            count : 0,
+            row : "1",
+            column : "1",
         }
     },
     computed: {
@@ -97,9 +95,6 @@ export default {
         }
     },
     methods: {
-        countUp : function () {
-            this.count + 1;  
-        },
         /* 확대, 축소 */
         zoomIn: function (e) {
             let zoom = document.querySelector(".creater .document");
