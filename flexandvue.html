@@ -56,6 +56,10 @@
             z-index: 99;
         }
 
+        .hou {
+            height : auto;
+        }
+
     </style>
 </head>
 <body>
@@ -69,6 +73,7 @@
     li 한 개당 width : {{width}} %<br>
     필요한 li 개수 : {{ row * column }}<br>
     <hr>
+    <div class="hou">
     <ul>
         <!-- 계산된 속성을 실행할 수 없는 중첩된 v-for는 메소드로 처리 -->
         <li v-for="n in li(row, column)">
@@ -76,6 +81,7 @@
             <div class="resizer row"  @mousedown="rowResize" @mouseup="stop" @mouseout="stop"></div>
         </li>
     </ul>
+    </div>
 </div>
 <script>
     const vm = new Vue({

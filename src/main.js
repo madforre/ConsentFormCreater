@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-
-/* Vue Router */
-import router from './routes'
+import EventBus from './plugins/event-bus.js'
 
 /* Vue Signature */
 import VueSignature from "vue-signature"
@@ -10,7 +8,7 @@ Vue.use(VueSignature)
 
 /* Font Awesome */
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faMarker } from '@fortawesome/free-solid-svg-icons'
+import { faMarker, faBus } from '@fortawesome/free-solid-svg-icons'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 library.add(faMarker)
@@ -19,14 +17,10 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.config.productionTip = false
 
 
-// 이벤트 버스
-// Vue.prototype.$EventBus = new Vue();
+/* Event Bus */
+Vue.prototype.$eventBus = new Vue();
 
 new Vue({
   el: '#app',
   render: h => h(App),
-
-  // 라우터 객체
-  router,
-  
 })

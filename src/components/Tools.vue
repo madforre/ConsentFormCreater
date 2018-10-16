@@ -76,15 +76,12 @@ export default {
     data: function() {
         return {
             selectInputs:"",
-            option: {
-				penColor:"rgb(0, 0, 0)",
-                backgroundColor:"rgb(233, 233, 233)",
-            },
             row : [1],
             column : [1],
             count : 0,
         }
     },
+    props: ["option"],
     computed: {
         selects: function () {
             return this.selectInputs.split(",")
@@ -98,7 +95,6 @@ export default {
     },
     methods: {
         countUp : function () {
-            this.count + 1;  
         },
         /* 확대, 축소 */
         zoomIn: function (e) {
@@ -142,6 +138,11 @@ export default {
             }
         },
     },
+    created() {
+        // 이벤터 버스를 이용한 이벤트 발행
+        eventBus.$emit('clear', this.clear);
+        eventBus.$emit('undo', this.undo);
+    },
     beforeUpdate() {
 
         if (this.row.length > 2 || this.row > 20) {
@@ -163,13 +164,13 @@ export default {
 <style>
 
 .tools {
-    min-width : 200px;
+    min-width : 250px;
     overflow : auto;
-    height : 50rem;
+    height : 51rem;
 }
 
 .tools>ul {
-    min-width : 153px;
+    min-width : 250px;
 }
 
 .tools>ul>li {
