@@ -6,12 +6,12 @@
             <button v-on:click="zoomIn">　+　.</button>
             <button v-on:click="zoomOut">　-　.</button>
         </li>
-        <li class="words">
+        <!-- <li class="words">
             <p>글자 넣기</p>
             <div class="size"></div>
             <div class="weight"></div>
             <div class="drag" draggable="true">글자</div>
-        </li>
+        </li> -->
         <li class="table">
             <p>표 (최대 20 x 20)</p>
             <div class="value">
@@ -22,13 +22,12 @@
             column : {{column}} <br>
             li 한 개당 width : {{width}} %<br>
             필요한 li 개수 : {{ row * column }}<br>
-            카운트 : {{count}}
             <div class="drag" draggable="true">
                 <ul>
                 <!-- 계산된 속성을 실행할 수 없는 중첩된 v-for는 메소드로 처리 -->
-                    <li v-for="index in li(row,column)" v-bind:key="index">
-                        <!-- <div class="resizer column" v-show="n % row !== 0" @mousedown="colResize" @mouseup="stop" @mouseout="stop"></div>
-                        <div class="resizer row"  @mousedown="rowResize" @mouseup="stop" @mouseout="stop"></div> -->
+                    <li v-for="n in li(row,column)" v-bind:key="n">
+                        <div class="resizer column" v-show="n % row !== 0" @mousedown="colResize" @mouseup="stop" @mouseout="stop"></div>
+                        <div class="resizer row"  @mousedown="rowResize" @mouseup="stop" @mouseout="stop"></div>
                     </li>
                 </ul>
             </div>
@@ -50,13 +49,14 @@
             <p>
                 셀렉트 박스 생성
             </p>
-            <input class="selectValue" type="text" v-model="selectInputs" placeholder="ex) 딸기,바나나,키위">
+            <input class="selectValue" type="text" v-model="selectInputs[selectCount]" placeholder="ex) 딸기,바나나,키위">
+            <!-- <input v-for="n in selectCount" :key="n" class="selectValue" type="text" v-model="selectInputs[n]" placeholder="ex) 딸기,바나나,키위"> -->
             <p>추가할 요소들은<br>
             쉼표로 구분합니다.</p>
             <div class="drag" draggable="true">
                 <select>
                     <option>선택해주세요.</option>
-                    <option v-for="select in selects" :key="select">{{select}}</option>
+                    <option v-for="select in bind" :key="select">{{select}}</option>
                 </select>
             </div>
         </li>
@@ -66,32 +66,40 @@
                 <vueSignature class="board" ref="signature" :sigOption="option" :w="'100%'" :h="'100%'"></vueSignature>
             </div>
         </li>
+        {{selectStack}}
+        {{tableCount}}
+        {{selectCount}}
         <button @click="clear">Clear</button>
 		<button @click="undo">Undo</button>
       </ul>
     </div>
 </template>
 <script>
+
 import { eventBus } from '../main.js'
+import resizeTableMixin from '../mixins/mixin.js';
 
 export default {
+    mixins:[resizeTableMixin],
     data: function() {
         return {
-            selectInputs:"",
+            selectStack : { },
+            selectInputs : ["테스트,테스트2"],
             row : [1],
             column : [1],
-            count : 0,
         }
     },
-    props: ["option"],
+    props: ["option", "tableCount", "selectCount"],
     computed: {
-        selects: function () {
-            return this.selectInputs.split(",")
-        },
-        width: function() {
+        bind: function () {
+                let inputArray = this.selectInputs[this.selectCount].split(",");
+                this.selectStack[this.selectCount] = inputArray;
+                return inputArray;
+            },
+        width: function () {
             return 100 / this.row
         },
-        height: function() {
+        height: function () {
             return 100 / this.column
         }
     },
@@ -141,11 +149,18 @@ export default {
         },
     },
     created() {
-        // 이벤터 버스를 이용한 이벤트 발행
+        // this.selectStack[0] = inputArray;
+        // 이벤트 버스를 이용한 이벤트 발행
         eventBus.$emit('clear', this.clear);
         eventBus.$emit('undo', this.undo);
+
     },
     beforeUpdate() {
+
+        // 셀렉트 박스
+        // if(this.selectStack.length < this.selectCount) {
+        //     this.selectStack[this.selectCount] = inputArray;
+        // }
 
         if (this.row.length > 2 || this.row > 20) {
             let cut = String(this.row);

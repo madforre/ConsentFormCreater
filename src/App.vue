@@ -8,11 +8,11 @@
     </div>
     <div class="middle">
       <div class="left">
-        <Tools v-bind:option="option" draggable="false"></Tools>
+        <Tools v-bind:option="option" :tableCount="tableCount" :selectCount="selectCount" draggable="false"></Tools>
       </div>
       <div class="right">
         <div class="section one">
-          <Document v-bind:option="option"></Document>
+          <Document v-bind:option="option" :tableCount="tableCount" :selectCount="selectCount"></Document>
         </div>
       </div>
     </div>
@@ -33,7 +33,7 @@ export default {
             selectCount : 0,
             msg: '원하는 재료를 선택 / 동의서를 구성',
             option: {
-				        penColor:"rgb(0, 0, 0)",
+                penColor:"rgb(0, 0, 0)",
                 backgroundColor:"rgb(233, 233, 233)",
             },
         }
@@ -106,6 +106,9 @@ export default {
 
                 dropAfter(dupElement);
 
+                if (draggedParentClass == "table") this.tableCount = this.tableCount + 1
+                if (draggedParentClass == "select") this.selectCount = this.selectCount + 1
+
             }
 
             if ( event.target.className == "bin") {
@@ -174,6 +177,7 @@ export default {
                 break;
 
                 case "table":
+
                 // 이벤트 버스를 통해 tools의 table을 가지고 온다.
                 dragged.style.height = "auto";
                 dragged.style.width = "100%";
@@ -238,9 +242,11 @@ html {
     display : flex;
     flex-direction: row;
     box-sizing: border-box;
-    border-bottom : 3px solid rgb(111, 135, 241);
+    background : rgb(80, 150, 255);
+    color : white;
+    border-bottom : 2px solid rgb(85, 144, 233);
     padding : 0.5rem;
-    margin-bottom : 1rem;
+    margin-bottom : 8px;
 }
 
 #app .header .gnb {
@@ -259,7 +265,7 @@ html {
 }
 
 #app .header h1 {
-    color : rgb(41, 68, 219);
+    color : rgb(255, 255, 255);
 }
 
 #app .header h3 {

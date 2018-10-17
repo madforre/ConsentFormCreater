@@ -2,6 +2,8 @@
   <div class="bg">
     <div class="a4">
         <div class="document">
+          {{tableCount}}
+          {{selectCount}}
         </div>
         <div class="bin">
             <h1><font-awesome-icon icon="trash-alt"/></h1>
@@ -12,13 +14,15 @@
 
 <script scoped>
 import { eventBus } from '../main.js'
+import resizeTableMixin from '../mixins/mixin.js';
 
 export default {
+  mixins:[resizeTableMixin],
   data () {
     return {
     }
   },
-  props: ["option"],
+  props: ["option", "tableCount", "selectCount"],
   created() {
     eventBus.$on("clear", method => {
       this.clear = method;
