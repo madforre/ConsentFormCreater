@@ -11,6 +11,8 @@
 </template>
 
 <script scoped>
+import { eventBus } from '../main.js'
+
 export default {
   data () {
     return {

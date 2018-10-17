@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import App from './App.vue'
-import EventBus from './plugins/event-bus.js'
 
 /* Vue Signature */
 import VueSignature from "vue-signature"
@@ -16,9 +15,8 @@ library.add(faTrashAlt)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.config.productionTip = false
 
-
 /* Event Bus */
-Vue.prototype.$eventBus = new Vue();
+export const eventBus = new Vue();
 
 new Vue({
   el: '#app',
