@@ -3,16 +3,16 @@
     <div class="header">
       <ul class="gnb">
         <li><h1>Form CMS</h1></li>
-        <li><p>{{msg}}　<font-awesome-icon icon="marker" /> </p></li>
+        <li><p>{{msg}}　<font-awesome-icon icon="marker"/> </p></li>
       </ul>
     </div>
     <div class="middle">
       <div class="left">
-        <Tools v-bind:option="option" :tableCount="tableCount" :selectCount="selectCount" draggable="false"></Tools>
+        <Tools v-bind:option="option" :tableCount="tableCount" :selectCount="selectCount" :row="row" :column="column" draggable="false"></Tools>
       </div>
       <div class="right">
         <div class="section one">
-          <Document v-bind:option="option" :tableCount="tableCount" :selectCount="selectCount"></Document>
+          <Document v-bind:option="option" :tableCount="tableCount" :selectCount="selectCount" :row="row" :column="column"></Document>
         </div>
       </div>
     </div>
@@ -27,10 +27,12 @@ import Tools from './components/Tools.vue'
 /* 데이터를 표현하거나 데이터 조작에 대해 요청하는 루트 컴포넌트 */
 
 export default {
-    data () {
+    data : function () {
         return {
-            tableCount : 0,
-            selectCount : 0,
+            tableCount : 1,
+            row : [1],
+            column : [1],
+            selectCount : 1,
             msg: '원하는 재료를 선택 / 동의서를 구성',
             option: {
                 penColor:"rgb(0, 0, 0)",
@@ -39,9 +41,16 @@ export default {
         }
     },
     components: {
-      'Tools' : Tools,
-      'Document' : Document,
+        'Tools' : Tools,
+        'Document' : Document,
     },
+    // @cutInput="cutInputs"
+    // methods : {
+    //     cutInputs : function(rowCut, colCut) {
+    //         this.row[this.selectCount-1] = rowCut;
+    //         this.column[this.selectCount-1] = colCut;
+    //     }
+    // },
     mounted() {
   
         /* HTML5 Drag & Drop API 사용 */
@@ -106,14 +115,19 @@ export default {
 
                 dropAfter(dupElement);
 
-                if (draggedParentClass == "table") this.tableCount = this.tableCount + 1
-                if (draggedParentClass == "select") this.selectCount = this.selectCount + 1
+                if (draggedParentClass == "table") {
+                    this.tableCount = this.tableCount + 1
+                    this.row.push(1)
+                    this.column.push(1)
+                }
+                if (draggedParentClass == "select") { 
+                    this.selectCount = this.selectCount + 1
+                }
 
             }
 
             if ( event.target.className == "bin") {
                 console.log("delete");
-
             }
 
         }, false);
@@ -124,17 +138,16 @@ export default {
 
             // 드래그했던 Elements 의 부모 위치 변수로 저장
 
-            if ( draggedParentClass != "sign" || dragged.className == "dropped") {
+            if ( draggedParentClass != "sign" || draggedParentClass != "table" || draggedParentClass != "select" || dragged.className == "dropped") {
 
                 let restoreMe = document.querySelector("." + draggedParentClass);
-            
-                // dupElement.style.width = "100%";
-                // dupElement.style.height = "100%";
+                
                 dupElement.style.opacity = "";
                 restoreMe.appendChild(dupElement);
-                dragged.setAttribute("class", "dropped");
 
             }
+
+            dragged.setAttribute("class", "dropped");
 
             // document의 높이에 dragged의 높이가 auto로 적용이 안되므로 잠깐 풀어줘야 한다.
 

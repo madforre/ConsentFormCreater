@@ -22,7 +22,7 @@ export default {
     return {
     }
   },
-  props: ["option", "tableCount", "selectCount"],
+  props: ["option", "tableCount", "selectCount", "row" , "column"],
   created() {
     eventBus.$on("clear", method => {
       this.clear = method;
@@ -45,7 +45,7 @@ export default {
 /* 휴지통 */
 
 /* width : 1190px;
-    height : 1684px; */
+  height : 1684px; */
 
 .bin {
     position : absolute;

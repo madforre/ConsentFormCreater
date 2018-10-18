@@ -14,23 +14,29 @@
         </li> -->
         <li class="table">
             <p>표 (최대 20 x 20)</p>
-            <div class="value">
-              행　<input type="number" v-model="row" @click="setTable" @keyup="setTable" min="1" max="20">
-              열　<input type="number" v-model="column" @click="setTable" @keyup="setTable" min="1" max="20">
+            <div class="value" v-for="n in tableCount" :key="n">
+              행　<input type="number" v-model="row[n-1]" @click="setTable" @keyup="setTable" min="1" max="20">
+              열　<input type="number" v-model="column[n-1]" @click="setTable" @keyup="setTable" min="1" max="20">
             </div>
             row : {{row}} <br>
             column : {{column}} <br>
-            li 한 개당 width : {{width}} %<br>
-            필요한 li 개수 : {{ row * column }}<br>
-            <div class="drag" draggable="true">
+            <!-- li 한 개당 width : {{width}} %<br> -->
+            <div v-for="n in tableCount" v-bind:key="`C-${n}`">
+                <!-- <div v-for="n in row[n-1] * column[n-1]" v-bind:key="`B-${n}`"> -->
+                    필요한 li 개수 : {{ row[n-1] }} * {{ column[n-1] }}<br>
+                <!-- </div> -->
+            </div>
+
+            계산된 속성을 실행할 수 없는 중첩된 v-for는 메소드로 처리
+            <div class="drag" draggable="true" v-for="n in tableCount" :key="`A-${n}`">
                 <ul>
-                <!-- 계산된 속성을 실행할 수 없는 중첩된 v-for는 메소드로 처리 -->
-                    <li v-for="n in li(row,column)" v-bind:key="n">
+                    <li v-for="n in row[n-1] * column[n-1]" v-bind:key="`B-${n}`">
                         <div class="resizer column" v-show="n % row !== 0" @mousedown="colResize" @mouseup="stop" @mouseout="stop"></div>
                         <div class="resizer row"  @mousedown="rowResize" @mouseup="stop" @mouseout="stop"></div>
                     </li>
                 </ul>
             </div>
+
         </li>
         <li class="input">
             <p>인풋 박스 생성</p>
@@ -50,13 +56,13 @@
                 셀렉트 박스 생성
             </p>
             <input class="selectValue" type="text" v-model="selectInputs[selectCount]" placeholder="ex) 딸기,바나나,키위">
-            <!-- <input v-for="n in selectCount" :key="n" class="selectValue" type="text" v-model="selectInputs[n]" placeholder="ex) 딸기,바나나,키위"> -->
+            <input v-for="n in selectCount" :key="n" class="selectValue" type="text" v-model="selectInputs[n]" placeholder="ex) 딸기,바나나,키위">
             <p>추가할 요소들은<br>
             쉼표로 구분합니다.</p>
             <div class="drag" draggable="true">
                 <select>
                     <option>선택해주세요.</option>
-                    <option v-for="select in bind" :key="select">{{select}}</option>
+                    <!-- <option v-for="select in bind" :key="select">{{select}}</option> -->
                 </select>
             </div>
         </li>
@@ -85,27 +91,21 @@ export default {
         return {
             selectStack : { },
             selectInputs : ["테스트,테스트2"],
-            row : [1],
-            column : [1],
         }
     },
-    props: ["option", "tableCount", "selectCount"],
-    computed: {
-        bind: function () {
-                let inputArray = this.selectInputs[this.selectCount].split(",");
-                this.selectStack[this.selectCount] = inputArray;
-                return inputArray;
-            },
-        width: function () {
-            return 100 / this.row
-        },
-        height: function () {
-            return 100 / this.column
-        }
-    },
+    props: ["option", "tableCount", "selectCount", "row" , "column"],
+    // computed: {
+    //     // bind: function () {
+    //     //     let inputArray = this.selectInputs[this.selectCount-1].split(",");
+    //     //     this.selectStack[this.selectCount-1] = inputArray;
+    //     //     return inputArray;
+    //     //     },
+    //     li: function () {
+    //         let many = this.row[this.tableCount-1] * this.column[this.tableCount-1];
+    //         return many;
+    //     }
+    // },
     methods: {
-        countUp : function () {
-        },
         /* 확대, 축소 */
         zoomIn: function (e) {
             let zoom = document.querySelector(".creater .document");
@@ -118,38 +118,66 @@ export default {
             zoom.style.height = "842px";
         },
         /* 전자서명 */
-        clear(){
+        clear() {
 			var _this = this;
 			_this.$refs.signature.clear();
 		},
-		undo(){
+		undo() {
 			var _this = this;
 			_this.$refs.signature.undo();
 		},
-        li : function (row, column) {
-            return row * column;
-        },
         setTable : function (event) {
 
-            if (event.target.value.length <= 2){
+            this.$nextTick(() =>
+            {
+                if (event.target.value.length <= 2){
 
-                let lis = document.querySelectorAll(".table ul > li");
-                
-                for(let i=0; i<lis.length; i++) {
-                    lis[i].style.width = this.width+"%";
-                    lis[i].style.height = this.height+"%";
+                    let lis = document.querySelectorAll(".table .drag:last-child ul > li");
+                    let wid;
+                    let hei;
+                    
+                    wid =  100 / this.row[this.tableCount-1];
+                    hei =  100 / this.column[this.tableCount-1];
+                    let li = this.row[this.tableCount-1] * this.column[this.tableCount-1];
+
+                    for(let i=0; i< li; i++) {
+                        lis[i].style.width = wid+"%";
+                        lis[i].style.height = hei+"%";
+                    }
+
+                    // forEach는 edge 지원 안한다.
+                    // lis.forEach(element => {
+                    //     element.style.width = this.width+"%";
+                    //     element.style.height = this.height+"%";
+                    // });
                 }
-
-                // forEach는 edge 지원 안한다.
-                // lis.forEach(element => {
-                //     element.style.width = this.width+"%";
-                //     element.style.height = this.height+"%";
-                // });
-            }
+            })
         },
+        // cutInput : function() {
+
+        //     let colCut;
+        //     let rowCut;
+
+        //     if (this.row[this.tableCount-1].length > 2 || this.row[this.tableCount-1] > 20) {
+        //         let cut = String(this.row[this.tableCount-1]);
+        //         cut = cut.slice(0,-1);
+        //         cut = cut.slice(0, 2);
+        //         let rowCut = parseInt(cut);
+        //     }
+
+        //     if (this.column[this.tableCount-1].length > 2 || this.column[this.tableCount-1] > 20) {
+        //         let cut = String(this.column[this.tableCount-1]);
+        //         cut = cut.slice(0,-1);
+        //         cut = cut.slice(0, 2);
+        //         let colCut = parseInt(cut);
+        //     }
+
+        //     this.$emit('cutInput', rowCut, colCut)
+
+        // },
     },
     created() {
-        // this.selectStack[0] = inputArray;
+
         // 이벤트 버스를 이용한 이벤트 발행
         eventBus.$emit('clear', this.clear);
         eventBus.$emit('undo', this.undo);
@@ -162,19 +190,8 @@ export default {
         //     this.selectStack[this.selectCount] = inputArray;
         // }
 
-        if (this.row.length > 2 || this.row > 20) {
-            let cut = String(this.row);
-            cut = cut.slice(0,-1);
-            cut = cut.slice(0, 2);
-            this.row = parseInt(cut)
-        }
+        // this.cutInput();
 
-        if (this.column.length > 2 || this.column > 20) {
-            let cut = String(this.column);
-            cut = cut.slice(0,-1);
-            cut = cut.slice(0, 2);
-            this.column = parseInt(cut)
-        }
     }
 }
 </script>
