@@ -14,21 +14,18 @@
         </li> -->
         <li class="table">
             <p>표 (최대 20 x 20)</p>
-            <div class="value" v-for="n in tableCount" :key="n">
-              행　<input type="number" v-model="row[n-1]" @click="setTable" @keyup="setTable" min="1" max="20">
-              열　<input type="number" v-model="column[n-1]" @click="setTable" @keyup="setTable" min="1" max="20">
+            <div class="value" v-for="n in tableCount" v-show="test[n-1]" :key="n">
+              행　<input type="number" v-model="row[n-1]" @click="setTable" @keyup="setTable" @keydown ="cutInput"  min="1" max="20">
+              열　<input type="number" v-model="column[n-1]" @click="setTable" @keyup="setTable" @keydown="cutInput" min="1" max="20">
             </div>
-            row : {{row}} <br>
-            column : {{column}} <br>
+            삽입된 표 : {{tableCount-1}} 개
             <!-- li 한 개당 width : {{width}} %<br> -->
-            <div v-for="n in tableCount" v-bind:key="`C-${n}`">
+            <div v-for="n in tableCount" v-show="test[n-1]" v-bind:key="`C-${n}`">
                 <!-- <div v-for="n in row[n-1] * column[n-1]" v-bind:key="`B-${n}`"> -->
-                    필요한 li 개수 : {{ row[n-1] }} * {{ column[n-1] }}<br>
+                    Cell 개수 : {{ row[n-1] }} * {{ column[n-1] }} = {{ row[n-1] * column[n-1] }}<br>
                 <!-- </div> -->
             </div>
-
-            계산된 속성을 실행할 수 없는 중첩된 v-for는 메소드로 처리
-            <div class="drag" draggable="true" v-for="n in tableCount" :key="`A-${n}`">
+            <div :class=" 'drag '+(n-1) " draggable="true" v-for="n in tableCount"  :key="`A-${n}`">
                 <ul>
                     <li v-for="n in row[n-1] * column[n-1]" v-bind:key="`B-${n}`">
                         <div class="resizer column" v-show="n % row !== 0" @mousedown="colResize" @mouseup="stop" @mouseout="stop"></div>
@@ -75,6 +72,7 @@
         {{selectStack}}
         {{tableCount}}
         {{selectCount}}
+        {{test}}
         <button @click="clear">Clear</button>
 		<button @click="undo">Undo</button>
       </ul>
@@ -93,18 +91,8 @@ export default {
             selectInputs : ["테스트,테스트2"],
         }
     },
-    props: ["option", "tableCount", "selectCount", "row" , "column"],
-    // computed: {
-    //     // bind: function () {
-    //     //     let inputArray = this.selectInputs[this.selectCount-1].split(",");
-    //     //     this.selectStack[this.selectCount-1] = inputArray;
-    //     //     return inputArray;
-    //     //     },
-    //     li: function () {
-    //         let many = this.row[this.tableCount-1] * this.column[this.tableCount-1];
-    //         return many;
-    //     }
-    // },
+    props: ["option", "tableCount", "selectCount", "row" , "column", "test"],
+    // 계산된 속성을 실행할 수 없는 중첩된 v-for는 메소드로 처리합니다.
     methods: {
         /* 확대, 축소 */
         zoomIn: function (e) {
@@ -128,8 +116,9 @@ export default {
 		},
         setTable : function (event) {
 
-            this.$nextTick(() =>
-            {
+            // nextTick 안써도 된다. 그냥 한번 써본 것.
+            // this.$nextTick(() =>
+            // {
                 if (event.target.value.length <= 2){
 
                     let lis = document.querySelectorAll(".table .drag:last-child ul > li");
@@ -150,31 +139,18 @@ export default {
                     //     element.style.width = this.width+"%";
                     //     element.style.height = this.height+"%";
                     // });
+
                 }
-            })
+
+            // })
         },
-        // cutInput : function() {
+        cutInput : function() {
 
-        //     let colCut;
-        //     let rowCut;
+            let toolsRow = this.row[this.tableCount-1];
+            let toolsCol = this.column[this.tableCount-1];
+            this.$emit('cutInput', toolsRow, toolsCol);
 
-        //     if (this.row[this.tableCount-1].length > 2 || this.row[this.tableCount-1] > 20) {
-        //         let cut = String(this.row[this.tableCount-1]);
-        //         cut = cut.slice(0,-1);
-        //         cut = cut.slice(0, 2);
-        //         let rowCut = parseInt(cut);
-        //     }
-
-        //     if (this.column[this.tableCount-1].length > 2 || this.column[this.tableCount-1] > 20) {
-        //         let cut = String(this.column[this.tableCount-1]);
-        //         cut = cut.slice(0,-1);
-        //         cut = cut.slice(0, 2);
-        //         let colCut = parseInt(cut);
-        //     }
-
-        //     this.$emit('cutInput', rowCut, colCut)
-
-        // },
+        },
     },
     created() {
 
@@ -183,16 +159,6 @@ export default {
         eventBus.$emit('undo', this.undo);
 
     },
-    beforeUpdate() {
-
-        // 셀렉트 박스
-        // if(this.selectStack.length < this.selectCount) {
-        //     this.selectStack[this.selectCount] = inputArray;
-        // }
-
-        // this.cutInput();
-
-    }
 }
 </script>
 <style>

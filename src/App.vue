@@ -8,11 +8,11 @@
     </div>
     <div class="middle">
       <div class="left">
-        <Tools v-bind:option="option" :tableCount="tableCount" :selectCount="selectCount" :row="row" :column="column" draggable="false"></Tools>
+        <Tools v-bind:option="option" :tableCount="tableCount" :selectCount="selectCount" :row="row" :column="column" v-bind:test="tableDropBools" v-on:cutInput="cut" draggable="false"></Tools>
       </div>
       <div class="right">
         <div class="section one">
-          <Document v-bind:option="option" :tableCount="tableCount" :selectCount="selectCount" :row="row" :column="column"></Document>
+          <Document v-bind:option="option" :tableCount="tableCount" :selectCount="selectCount" :row="row" :column="column" v-bind:test="tableDropBools"></Document>
         </div>
       </div>
     </div>
@@ -33,6 +33,7 @@ export default {
             row : [1],
             column : [1],
             selectCount : 1,
+            tableDropBools : [true],
             msg: '원하는 재료를 선택 / 동의서를 구성',
             option: {
                 penColor:"rgb(0, 0, 0)",
@@ -44,13 +45,13 @@ export default {
         'Tools' : Tools,
         'Document' : Document,
     },
-    // @cutInput="cutInputs"
-    // methods : {
-    //     cutInputs : function(rowCut, colCut) {
-    //         this.row[this.selectCount-1] = rowCut;
-    //         this.column[this.selectCount-1] = colCut;
-    //     }
-    // },
+    methods : {
+        cut : function(toolsRow, toolsCol) {
+            this.row[this.tableCount-1] = toolsRow;
+            this.column[this.tableCount-1] = toolsCol;
+            console.log("cut");
+        }
+    },
     mounted() {
   
         /* HTML5 Drag & Drop API 사용 */
@@ -77,9 +78,14 @@ export default {
             event.dataTransfer.setData('text', 'anything');
 
             // 클래스 이름이 drag 인 것만 drop 되게끔 설정
-            if ( event.target.className == "drag" || event.target.className == "dropped" ) {
+            if ( event.target.className == "drag "+ (this.tableCount-1) || event.target.className == "dropped" || event.target.className == "drag" ) {
                 dragged = event.target;
                 draggedParentClass = event.target.parentNode.className;
+            }  else {
+
+                alert("드래그 할 수 없는 요소입니다.")
+                return;
+
             }
 
             // make it half transparent
@@ -106,19 +112,42 @@ export default {
 
             // move dragged elem to the selected drop target
 
-            if ( event.target.className == "document") {
+            if ( dragged.className == "dropped" ) {
+
+                    // 삭제 로직
+
+                    alert("이미 드롭된 요소는 삭제만 가능합니다.");
+
+                    return;
+            }
+
+
+            if ( event.target.className == "document" ) {
 
                 // 드롭 후 복구를 위해 자식 노드를 포함하여 미리 복사
                 let dupElement = dragged.cloneNode(true);
+                let tableCount = this.tableCount;
 
                 event.target.appendChild( dragged );
 
-                dropAfter(dupElement);
+                dropAfter(dupElement, tableCount);
 
                 if (draggedParentClass == "table") {
+
+                    // 카운트 추가
                     this.tableCount = this.tableCount + 1
+
+                    // 카운트가 추가 되기전의 bool을 false로 하여 tools에서 안보이게 처리한다.
+                    this.tableDropBools[this.tableCount-2] = false;
+
+                    // 다음에 드래그 앤 드랍할 표를 준비시킨다. 
+                    this.tableDropBools.push(true);
+
                     this.row.push(1)
                     this.column.push(1)
+
+                    console.log(this.tableDropBools);
+
                 }
                 if (draggedParentClass == "select") { 
                     this.selectCount = this.selectCount + 1
@@ -132,7 +161,7 @@ export default {
 
         }, false);
         
-        function dropAfter(dupElement) {
+        function dropAfter(dupElement, tableCount) {
 
             // 전자서명일 경우 한번만 실행
 
@@ -147,7 +176,7 @@ export default {
 
             }
 
-            dragged.setAttribute("class", "dropped");
+            dragged.setAttribute("class", "dropped "+(tableCount-1));
 
             // document의 높이에 dragged의 높이가 auto로 적용이 안되므로 잠깐 풀어줘야 한다.
 
@@ -201,6 +230,27 @@ export default {
                 }
                 break;
             }
+            
+            let hideThis = document.getElementsByClassName(tableCount-1)[0]
+            hideThis.style.display="none";
+        }
+    },
+    beforeUpdate() {
+
+        // 행, 열 input 실시간 감시
+            
+        if (this.row[this.tableCount-1].length > 2 || this.row[this.tableCount-1] > 20) {
+            let cut = String(this.row[this.tableCount-1]);
+            cut = cut.slice(0,-1);
+            cut = cut.slice(0, 2);
+            this.row[this.tableCount-1] = parseInt(cut);
+        }
+
+        if (this.column[this.tableCount-1].length > 2 || this.column[this.tableCount-1] > 20) {
+            let cut = String(this.column[this.tableCount-1]);
+            cut = cut.slice(0,-1);
+            cut = cut.slice(0, 2);
+            this.column[this.tableCount-1] = parseInt(cut);
         }
     },
 }

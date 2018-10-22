@@ -4,6 +4,7 @@
         <div class="document">
           {{tableCount}}
           {{selectCount}}
+          <br>
         </div>
         <div class="bin">
             <h1><font-awesome-icon icon="trash-alt"/></h1>
@@ -20,9 +21,10 @@ export default {
   mixins:[resizeTableMixin],
   data () {
     return {
+      documentShowBools : [true]
     }
   },
-  props: ["option", "tableCount", "selectCount", "row" , "column"],
+  props: ["option", "tableCount", "selectCount", "row" , "column", "test"],
   created() {
     eventBus.$on("clear", method => {
       this.clear = method;
@@ -95,28 +97,61 @@ export default {
     margin-top : 1px;
     /* 자동 늘림 방지 */
     align-self : flex-start;
+    height : auto;
+    display : block;
 }
 
 .bg .a4 .document .dropped ul {
+    position : relative;
     display : flex;
     width : 100%;
+    height : auto;
     flex-flow : row wrap;
     box-sizing: border-box;
     border-left : 1px solid #000;
     border-top : 1px solid #000;
     text-align: center;
+    top : 0px;
+    left : 0px;
 } 
 
 .bg .a4 .document .dropped ul > li {
+    position : relative;
     width : 100%;
     word-break : break-word;
     border-bottom : 1px solid rgb(0, 0, 0);
     border-right : 1px solid rgb(0, 0, 0);
     box-sizing : border-box;
+    transition: all 0.03s;
+    flex : 1 1 auto;
 }
 
 .bg .a4 .document .dropped ul >li:last-child {
-    overflow: auto;
+    /* overflow: auto; */
 }
+
+
+.bg .a4 .document .dropped ul li .resizer.column {
+    position : absolute;
+    right :-17px;
+    top : 5%;
+    width : 32px;
+    height : 90%;
+    /* background: #222; */
+    cursor : w-resize;
+    z-index : 99;
+}
+
+.bg .a4 .document .dropped ul li .resizer.row {
+    position : absolute;
+    bottom : -16px;
+    width : 100%;
+    cursor : s-resize;
+    height : 32px;
+    /* background: #555; */
+    z-index: 99;
+}
+
+
 
 </style>
