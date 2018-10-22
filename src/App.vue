@@ -8,11 +8,11 @@
     </div>
     <div class="middle">
       <div class="left">
-        <Tools v-bind:option="option" :tableCount="tableCount" :selectCount="selectCount" :row="row" :column="column" v-bind:test="tableDropBools" v-on:cutInput="cut" draggable="false"></Tools>
+        <Tools v-bind:option="option" :tableCount="tableCount" :selectCount="selectCount" :row="row" :column="column" v-bind:propsBools="tableDropBools" v-on:cutInput="cut" draggable="false"></Tools>
       </div>
       <div class="right">
         <div class="section one">
-          <Document v-bind:option="option" :tableCount="tableCount" :selectCount="selectCount" :row="row" :column="column" v-bind:test="tableDropBools"></Document>
+          <Document v-bind:option="option" :tableCount="tableCount" :selectCount="selectCount" :row="row" :column="column" v-bind:propsBools="tableDropBools"></Document>
         </div>
       </div>
     </div>
@@ -77,6 +77,8 @@ export default {
             // 크로스 브라우징용 코드 (edge, firefox)
             event.dataTransfer.setData('text', 'anything');
 
+            console.log(event.target.className);
+
             // 클래스 이름이 drag 인 것만 drop 되게끔 설정
             if ( event.target.className == "drag "+ (this.tableCount-1) || event.target.className == "dropped" || event.target.className == "drag" ) {
                 dragged = event.target;
@@ -120,7 +122,6 @@ export default {
 
                     return;
             }
-
 
             if ( event.target.className == "document" ) {
 

@@ -24,7 +24,7 @@ export default {
       documentShowBools : [true]
     }
   },
-  props: ["option", "tableCount", "selectCount", "row" , "column", "test"],
+  props: ["option", "tableCount", "selectCount", "row" , "column", "propsBools"],
   created() {
     eventBus.$on("clear", method => {
       this.clear = method;
@@ -122,7 +122,6 @@ export default {
     border-bottom : 1px solid rgb(0, 0, 0);
     border-right : 1px solid rgb(0, 0, 0);
     box-sizing : border-box;
-    transition: all 0.03s;
     flex : 1 1 auto;
 }
 

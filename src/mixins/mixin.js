@@ -20,7 +20,7 @@ const resizeTableMixin = {
             const regex_1 = /\d/i
             let thisTableIndex = thisTable.parentNode.getAttribute('class').match(regex_1)[0];
 
-            console.log("table Index : " + thisTableIndex);
+            // console.log("table Index : " + thisTableIndex);
 
             let lis = thisTable.querySelectorAll("li");
 
@@ -36,7 +36,7 @@ const resizeTableMixin = {
                 }
             }
 
-            console.log("index : " + rowIndex);
+            // console.log("index : " + rowIndex);
 
             // start
             let rowStart = lis[this.row[thisTableIndex] * (rowIndex - 1)].getAttribute("class") - 1;

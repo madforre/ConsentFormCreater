@@ -14,13 +14,13 @@
         </li> -->
         <li class="table">
             <p>표 (최대 20 x 20)</p>
-            <div class="value" v-for="n in tableCount" v-show="test[n-1]" :key="n">
+            <div class="value" v-for="n in tableCount" v-show="propsBools[n-1]" :key="n">
               행　<input type="number" v-model="row[n-1]" @click="setTable" @keyup="setTable" @keydown ="cutInput"  min="1" max="20">
               열　<input type="number" v-model="column[n-1]" @click="setTable" @keyup="setTable" @keydown="cutInput" min="1" max="20">
             </div>
             삽입된 표 : {{tableCount-1}} 개
             <!-- li 한 개당 width : {{width}} %<br> -->
-            <div v-for="n in tableCount" v-show="test[n-1]" v-bind:key="`C-${n}`">
+            <div v-for="n in tableCount" v-show="propsBools[n-1]" v-bind:key="`C-${n}`">
                 <!-- <div v-for="n in row[n-1] * column[n-1]" v-bind:key="`B-${n}`"> -->
                     Cell 개수 : {{ row[n-1] }} * {{ column[n-1] }} = {{ row[n-1] * column[n-1] }}<br>
                 <!-- </div> -->
@@ -33,7 +33,6 @@
                     </li>
                 </ul>
             </div>
-
         </li>
         <li class="input">
             <p>인풋 박스 생성</p>
@@ -72,7 +71,6 @@
         {{selectStack}}
         {{tableCount}}
         {{selectCount}}
-        {{test}}
         <button @click="clear">Clear</button>
 		<button @click="undo">Undo</button>
       </ul>
@@ -91,7 +89,7 @@ export default {
             selectInputs : ["테스트,테스트2"],
         }
     },
-    props: ["option", "tableCount", "selectCount", "row" , "column", "test"],
+    props: ["option", "tableCount", "selectCount", "row" , "column", "propsBools"],
     // 계산된 속성을 실행할 수 없는 중첩된 v-for는 메소드로 처리합니다.
     methods: {
         /* 확대, 축소 */
