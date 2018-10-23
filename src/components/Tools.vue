@@ -122,6 +122,7 @@ export default {
         setTable : function (event) {
 
             // nextTick 안써도 된다. 그냥 한번 써본 것.
+            // * mounted와 마찬가지로 vm.$nextTick를 사용하면 전체가 렌더링된 상태를 보장할 수 있다.
             // this.$nextTick(() =>
             // {
                 if (event.target.value.length <= 2){
@@ -157,7 +158,7 @@ export default {
 
         },
         setSelects : function (event) {
-
+            
         },
     },
     created() {

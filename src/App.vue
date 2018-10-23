@@ -57,7 +57,7 @@ export default {
             
             this.table.row[this.table.count-1] = toolsRow;
             this.table.column[this.table.count-1] = toolsCol;
-            
+
             // console.log(toolsRow, toolsCol);
 
             // console.log(this.table.row[this.table.count-1].length);
@@ -262,6 +262,7 @@ export default {
         }
     },
     beforeUpdate() {
+        console.log("보여라");
 
         // 행, 열 input 실시간 감시
             

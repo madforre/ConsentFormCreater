@@ -21,7 +21,7 @@ export default {
   mixins:[resizeTableMixin],
   data () {
     return {
-      documentShowBools : [true],
+
     }
   },
   props: ["option", "table", "select"],
@@ -145,7 +145,5 @@ export default {
     /* background: #555; */
     z-index: 99;
 }
-
-
 
 </style>
