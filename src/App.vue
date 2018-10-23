@@ -57,7 +57,7 @@ export default {
             
             this.table.row[this.table.count-1] = toolsRow;
             this.table.column[this.table.count-1] = toolsCol;
-
+            
             // console.log(toolsRow, toolsCol);
 
             // console.log(this.table.row[this.table.count-1].length);
@@ -92,7 +92,7 @@ export default {
             console.log(event.target.className);
 
             // 클래스 이름이 drag 인 것만 drop 되게끔 설정
-            if ( event.target.className == "drag table"+(this.table.count-1) || event.target.className == "dropped" || event.target.className == "drag" ) {
+            if ( event.target.className == "drag table "+(this.table.count-1) || event.target.className == "dropped" || event.target.className == "drag" ) {
                 dragged = event.target;
                 draggedParentClass = event.target.parentNode.className;
             }  else {
@@ -168,13 +168,13 @@ export default {
                     count = this.select.count;
                     dropAfter(dupElement, count);
 
-                    this.select.count = this.select.count + 1
+                    this.select.count = this.select.count + 1;
 
                     this.select.shows[this.select.count-2] = false;
 
                     this.select.shows.push(true);
 
-                    this.select.inputs.push("")
+                    this.select.inputs.push("");
 
                     console.log(this.select.shows);
                 }
@@ -266,6 +266,7 @@ export default {
         // 행, 열 input 실시간 감시
             
         if (this.table.row[this.table.count-1].length > 2 || this.table.row[this.table.count-1] > 20) {
+            console.log("열 넘었는데??")
             let cut = String(this.table.row[this.table.count-1]);
             cut = cut.slice(0,-1);
             cut = cut.slice(0, 2);
@@ -273,6 +274,7 @@ export default {
         }
 
         if (this.table.column[this.table.count-1].length > 2 || this.table.column[this.table.count-1] > 20) {
+            console.log("행 넘었는데??")
             let cut = String(this.table.column[this.table.count-1]);
             cut = cut.slice(0,-1);
             cut = cut.slice(0, 2);

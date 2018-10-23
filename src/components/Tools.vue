@@ -25,7 +25,7 @@
                     Cell 개수 : {{ table.row[n-1] }} * {{ table.column[n-1] }} = {{ table.row[n-1] * table.column[n-1] }}<br>
                 <!-- </div> -->
             </div>
-            <div :class=" 'drag table'+(n-1) " draggable="true" v-for="n in table.count"  :key="`A-${n}`">
+            <div :class=" 'drag table '+(n-1) " draggable="true" v-for="n in table.count"  :key="`A-${n}`">
                 <ul>
                     <li v-for="n in table.row[n-1] * table.column[n-1]" v-bind:key="`B-${n}`">
                         <div class="resizer column" v-show="n % table.row !== 0" @mousedown="colResize" @mouseup="stop" @mouseout="stop"></div>
