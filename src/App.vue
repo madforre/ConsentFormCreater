@@ -8,11 +8,11 @@
     </div>
     <div class="middle">
       <div class="left">
-        <Tools v-bind:option="option" :tableCount="tableCount" :selectCount="selectCount" :row="row" :column="column" v-bind:propsBools="tableDropBools" :selectDropBools="selectDropBools" :selectInputs="selectInputs" v-on:cutInput="cut" draggable="false"></Tools>
+        <Tools v-bind:option="option" :table="table" :select="select" v-on:cutInput="cut" draggable="false"></Tools>
       </div>
       <div class="right">
         <div class="section one">
-          <Document v-bind:option="option" :tableCount="tableCount" :selectCount="selectCount" :row="row" :column="column" v-bind:propsBools="tableDropBools" :selectDropBools="selectDropBools" :selectInputs="selectInputs"></Document>
+          <Document v-bind:option="option" :table="table" :select="select"></Document>
         </div>
       </div>
     </div>
@@ -30,16 +30,17 @@ export default {
     data : function () {
         return {
             table : {
-                
+                count : 1,
+                row : [1],
+                column : [1],
+                shows : [true],
             },
-            row : [1],
-            column : [1],
-            tableCount : 1,
-            tableDropBools : [true],
-            selectCount : 1,
-            selectDropBools : [true],
-            selectInputs : [""],
-            selectOutputs : [],
+            select : {
+                count : 1,
+                inputs : [""],
+                outputs : [],
+                shows : [true],
+            },
             msg: '원하는 재료를 선택 / 동의서를 구성',
             option: {
                 penColor:"rgb(0, 0, 0)",
@@ -53,9 +54,14 @@ export default {
     },
     methods : {
         cut : function(toolsRow, toolsCol) {
-            this.row[this.tableCount-1] = toolsRow;
-            this.column[this.tableCount-1] = toolsCol;
-            console.log("cut");
+            
+            this.table.row[this.table.count-1] = toolsRow;
+            this.table.column[this.table.count-1] = toolsCol;
+
+            // console.log(toolsRow, toolsCol);
+
+            // console.log(this.table.row[this.table.count-1].length);
+
         }
     },
     mounted() {
@@ -86,7 +92,7 @@ export default {
             console.log(event.target.className);
 
             // 클래스 이름이 drag 인 것만 drop 되게끔 설정
-            if ( event.target.className == "drag "+ (this.tableCount-1) || event.target.className == "dropped" || event.target.className == "drag" ) {
+            if ( event.target.className == "drag table"+(this.table.count-1) || event.target.className == "dropped" || event.target.className == "drag" ) {
                 dragged = event.target;
                 draggedParentClass = event.target.parentNode.className;
             }  else {
@@ -133,40 +139,44 @@ export default {
 
                 // 드롭 후 복구를 위해 자식 노드를 포함하여 미리 복사
                 let dupElement = dragged.cloneNode(true);
-                let tableCount = this.tableCount;
+                let count;
 
                 event.target.appendChild( dragged );
 
-                dropAfter(dupElement, tableCount);
-
                 if (draggedParentClass == "table") {
 
+                    count = this.table.count;
+                    dropAfter(dupElement, count);
+
                     // 카운트 추가
-                    this.tableCount = this.tableCount + 1
+                    this.table.count = this.table.count + 1
 
                     // 카운트가 추가 되기전의 bool을 false로 하여 tools에서 안보이게 처리한다.
-                    this.tableDropBools[this.tableCount-2] = false;
+                    this.table.shows[this.table.count-2] = false;
 
                     // 다음에 드래그 앤 드랍할 표를 준비시킨다. 
-                    this.tableDropBools.push(true);
+                    this.table.shows.push(true);
 
-                    this.row.push(1)
-                    this.column.push(1)
+                    this.table.row.push(1)
+                    this.table.column.push(1)
 
-                    console.log(this.tableDropBools);
+                    console.log(this.table.shows);
 
                 }
                 if (draggedParentClass == "select") { 
-                    this.selectCount = this.selectCount + 1
 
-                    this.selectDropBools[this.selectCount-2] = false;
+                    count = this.select.count;
+                    dropAfter(dupElement, count);
 
-                    this.selectDropBools.push(true);
+                    this.select.count = this.select.count + 1
 
-                    this.row.push("")
-                    this.column.push("")
+                    this.select.shows[this.select.count-2] = false;
 
-                    console.log(this.selectDropBools);
+                    this.select.shows.push(true);
+
+                    this.select.inputs.push("")
+
+                    console.log(this.select.shows);
                 }
 
             }
@@ -177,7 +187,7 @@ export default {
 
         }, false);
         
-        function dropAfter(dupElement, tableCount) {
+        function dropAfter(dupElement, count) {
 
             // 전자서명일 경우 한번만 실행
 
@@ -192,7 +202,7 @@ export default {
 
             }
 
-            dragged.setAttribute("class", "dropped "+(tableCount-1));
+            dragged.setAttribute("class", "dropped "+(count-1));
 
             // document의 높이에 dragged의 높이가 auto로 적용이 안되므로 잠깐 풀어줘야 한다.
 
@@ -247,7 +257,7 @@ export default {
                 break;
             }
             
-            let hideThis = document.getElementsByClassName(tableCount-1)[0]
+            let hideThis = document.getElementsByClassName(count-1)[0]
             hideThis.style.display="none";
         }
     },
@@ -255,18 +265,18 @@ export default {
 
         // 행, 열 input 실시간 감시
             
-        if (this.row[this.tableCount-1].length > 2 || this.row[this.tableCount-1] > 20) {
-            let cut = String(this.row[this.tableCount-1]);
+        if (this.table.row[this.table.count-1].length > 2 || this.table.row[this.table.count-1] > 20) {
+            let cut = String(this.table.row[this.table.count-1]);
             cut = cut.slice(0,-1);
             cut = cut.slice(0, 2);
-            this.row[this.tableCount-1] = parseInt(cut);
+            this.table.row[this.table.count-1] = parseInt(cut);
         }
 
-        if (this.column[this.tableCount-1].length > 2 || this.column[this.tableCount-1] > 20) {
-            let cut = String(this.column[this.tableCount-1]);
+        if (this.table.column[this.table.count-1].length > 2 || this.table.column[this.table.count-1] > 20) {
+            let cut = String(this.table.column[this.table.count-1]);
             cut = cut.slice(0,-1);
             cut = cut.slice(0, 2);
-            this.column[this.tableCount-1] = parseInt(cut);
+            this.table.column[this.table.count-1] = parseInt(cut);
         }
     },
 }

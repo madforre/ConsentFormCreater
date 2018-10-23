@@ -25,12 +25,12 @@ const resizeTableMixin = {
             let lis = thisTable.querySelectorAll("li");
 
             /* rowResize시 현재 row의 위치 대략 구하기 */
-            let checkRow = theClass / this.row[thisTableIndex];
+            let checkRow = theClass / this.table.row[thisTableIndex];
 
             // checkRow의 소수점을 제거한 rowIndex
             let rowIndex;
 
-            for (let n = 0; n < this.column[thisTableIndex]; n++) {
+            for (let n = 0; n < this.table.column[thisTableIndex]; n++) {
                 if (checkRow > n && checkRow <= n+1) {
                     rowIndex = n+1;
                 }
@@ -39,10 +39,10 @@ const resizeTableMixin = {
             // console.log("index : " + rowIndex);
 
             // start
-            let rowStart = lis[this.row[thisTableIndex] * (rowIndex - 1)].getAttribute("class") - 1;
+            let rowStart = lis[this.table.row[thisTableIndex] * (rowIndex - 1)].getAttribute("class") - 1;
 
             // end
-            let rowEnd = lis[this.row[thisTableIndex] * rowIndex - 1].getAttribute("class") - 1;
+            let rowEnd = lis[this.table.row[thisTableIndex] * rowIndex - 1].getAttribute("class") - 1;
 
             // height
             const regex_2 = /[0-9\.]*/i
@@ -74,7 +74,7 @@ const resizeTableMixin = {
             let thisTableIndex = thisTable.parentNode.getAttribute('class').match(regex_1)[0];
 
             /* colResize시 현재 col 위치 구하기 */
-            let checkColumn = theClass % this.row[thisTableIndex];
+            let checkColumn = theClass % this.table.row[thisTableIndex];
             let columnIndex = checkColumn - 1;
             
 
@@ -89,17 +89,17 @@ const resizeTableMixin = {
                 // offsetX 가 15보다 크면 checkCol의 왼쪽을 전부 선택한 후
                 // 크기를 키운 다음 오른쪽을 전부 선택한 후 크기를 줄인다.
 
-                for(let n=0; n < this.column[thisTableIndex]; n++) {
+                for(let n=0; n < this.table.column[thisTableIndex]; n++) {
 
-                    beforeWidthFloat = parseFloat(lis[columnIndex+this.row[thisTableIndex]*n].style.width.match(regex_2)[0]);
-                    afterWidthFloat = parseFloat(lis[columnIndex+this.row[thisTableIndex]*n+1].style.width.match(regex_2)[0]);
+                    beforeWidthFloat = parseFloat(lis[columnIndex+this.table.row[thisTableIndex]*n].style.width.match(regex_2)[0]);
+                    afterWidthFloat = parseFloat(lis[columnIndex+this.table.row[thisTableIndex]*n+1].style.width.match(regex_2)[0]);
 
                     // width가 1퍼센트 이상일때만 실행하고 미만이라면 
                     // 오른쪽으로 더이상 줄지 않도록 만들어야 한다.
 
                     if (afterWidthFloat >= 1) {
-                        lis[columnIndex+this.row[thisTableIndex]*n].style.width = (beforeWidthFloat + 0.5) + "%";
-                        lis[columnIndex+this.row[thisTableIndex]*n + 1].style.width = (afterWidthFloat - 0.5) + "%";
+                        lis[columnIndex+this.table.row[thisTableIndex]*n].style.width = (beforeWidthFloat + 0.5) + "%";
+                        lis[columnIndex+this.table.row[thisTableIndex]*n + 1].style.width = (afterWidthFloat - 0.5) + "%";
                     }
 
                 }
@@ -112,17 +112,17 @@ const resizeTableMixin = {
                 // 오른쪽이 커지는중이다. 왼쪽으로 더이상 줄지 않도록 해야 한다.
                 // 왼쪽으로 리사이징시에는 버그 발생 하는 중이다.
 
-                for(let n=0; n < this.column[thisTableIndex]; n++) {
+                for(let n=0; n < this.table.column[thisTableIndex]; n++) {
 
-                    beforeWidthFloat = parseFloat(lis[columnIndex+this.row[thisTableIndex]*n].style.width.match(regex_2)[0]);
-                    afterWidthFloat = parseFloat(lis[columnIndex+this.row[thisTableIndex]*n+1].style.width.match(regex_2)[0]);
+                    beforeWidthFloat = parseFloat(lis[columnIndex+this.table.row[thisTableIndex]*n].style.width.match(regex_2)[0]);
+                    afterWidthFloat = parseFloat(lis[columnIndex+this.table.row[thisTableIndex]*n+1].style.width.match(regex_2)[0]);
 
                     // width가 1퍼센트 이상일때만 실행하고 미만이라면 
                     // 왼쪽으로 더이상 줄지 않도록 만들어야 한다.
 
                     if (beforeWidthFloat >= 1) {
-                        lis[columnIndex+this.row[thisTableIndex]*n].style.width = (beforeWidthFloat - 0.5) + "%";
-                        lis[columnIndex+this.row[thisTableIndex]*n + 1].style.width = (afterWidthFloat + 0.5) + "%";
+                        lis[columnIndex+this.table.row[thisTableIndex]*n].style.width = (beforeWidthFloat - 0.5) + "%";
+                        lis[columnIndex+this.table.row[thisTableIndex]*n + 1].style.width = (afterWidthFloat + 0.5) + "%";
                     }
                 }
             }

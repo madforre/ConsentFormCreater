@@ -14,21 +14,21 @@
         </li> -->
         <li class="table">
             <p>표 (최대 20 x 20)</p>
-            <div class="value" v-for="n in tableCount" v-show="propsBools[n-1]" :key="n">
-              행　<input type="number" v-model="row[n-1]" @click="setTable" @keyup="setTable" @keydown ="cutInput"  min="1" max="20">
-              열　<input type="number" v-model="column[n-1]" @click="setTable" @keyup="setTable" @keydown="cutInput" min="1" max="20">
+            <div class="value" v-for="n in table.count" v-show="table.shows[n-1]" :key="n">
+              행　<input type="number" v-model="table.row[n-1]" @click="setTable" @keyup="setTable" @keydown="cutInput"  min="1" max="20">
+              열　<input type="number" v-model="table.column[n-1]" @click="setTable" @keyup="setTable" @keydown="cutInput" min="1" max="20">
             </div>
-            삽입된 표 : {{tableCount-1}} 개
+            삽입된 표 : {{table.count-1}} 개
             <!-- li 한 개당 width : {{width}} %<br> -->
-            <div v-for="n in tableCount" v-show="propsBools[n-1]" v-bind:key="`C-${n}`">
+            <div v-for="n in table.count" v-show="table.shows[n-1]" v-bind:key="`C-${n}`">
                 <!-- <div v-for="n in row[n-1] * column[n-1]" v-bind:key="`B-${n}`"> -->
-                    Cell 개수 : {{ row[n-1] }} * {{ column[n-1] }} = {{ row[n-1] * column[n-1] }}<br>
+                    Cell 개수 : {{ table.row[n-1] }} * {{ table.column[n-1] }} = {{ table.row[n-1] * table.column[n-1] }}<br>
                 <!-- </div> -->
             </div>
-            <div :class=" 'drag '+(n-1) " draggable="true" v-for="n in tableCount"  :key="`A-${n}`">
+            <div :class=" 'drag table'+(n-1) " draggable="true" v-for="n in table.count"  :key="`A-${n}`">
                 <ul>
-                    <li v-for="n in row[n-1] * column[n-1]" v-bind:key="`B-${n}`">
-                        <div class="resizer column" v-show="n % row !== 0" @mousedown="colResize" @mouseup="stop" @mouseout="stop"></div>
+                    <li v-for="n in table.row[n-1] * table.column[n-1]" v-bind:key="`B-${n}`">
+                        <div class="resizer column" v-show="n % table.row !== 0" @mousedown="colResize" @mouseup="stop" @mouseout="stop"></div>
                         <div class="resizer row"  @mousedown="rowResize" @mouseup="stop" @mouseout="stop"></div>
                     </li>
                 </ul>
@@ -51,13 +51,13 @@
             <p>
                 셀렉트 박스 생성
             </p>
-            <input v-for="n in selectCount" :key="n" class="selectValue" type="text" @keyup="setSelects" v-show="selectDropBools[n-1]" v-model="selectInputs[n-1]" placeholder="ex) 딸기,바나나,키위">
+            <input v-for="n in select.count" :key="n" class="selectValue" type="text" @keyup="setSelects" v-show="select.shows[n-1]" v-model="select.inputs[n-1]" placeholder="ex) 딸기,바나나,키위">
             <p>추가할 요소들은<br>
             쉼표로 구분합니다.</p>
             <div class="drag" draggable="true">
                 <select>
                     <option>선택해주세요.</option>
-                    <option v-for="select in bind" :key="select">{{select}}</option>
+                    <!-- <option v-for="select in bind" :key="select">{{select}}</option> -->
                 </select>
             </div>
         </li>
@@ -67,11 +67,12 @@
                 <vueSignature class="board" ref="signature" :sigOption="option" :w="'100%'" :h="'100%'"></vueSignature>
             </div>
         </li>
-        {{tableCount}}
-        {{selectCount}}
+        {{table.count}}
+        {{select.count}}
         -----------------
-        {{selectDropBools}}
-        {{selectInputs}}
+        테이블 쇼 {{table.shows}}
+        셀렉트 쇼 {{select.shows}}
+        {{select.inputs}}
         <button @click="clear">Clear</button>
 		<button @click="undo">Undo</button>
       </ul>
@@ -86,17 +87,16 @@ export default {
     mixins:[resizeTableMixin],
     data: function() {
         return {
-
         }
     },
-    computed: {
-        bind: function () {
-                let inputArray = this.selectInputs[this.selectCount-1].split(",");
-                console.log(inputArray);
-                return inputArray;
-            },
-        },
-    props: ["option", "tableCount", "selectCount", "row" , "column", "propsBools", "selectDropBools", "selectInputs"],
+    // computed: {
+    //     bind: function () {
+    //             let inputArray = this.select.inputs[this.select.count-1].split(",");
+    //             console.log(inputArray);
+    //             return inputArray;
+    //         },
+    //     },
+    props: ["option", "table", "select"],
     // 계산된 속성을 실행할 수 없는 중첩된 v-for는 메소드로 처리합니다.
     methods: {
         /* 확대, 축소 */
@@ -130,9 +130,9 @@ export default {
                     let wid;
                     let hei;
                     
-                    wid =  100 / this.row[this.tableCount-1];
-                    hei =  100 / this.column[this.tableCount-1];
-                    let li = this.row[this.tableCount-1] * this.column[this.tableCount-1];
+                    wid =  100 / this.table.row[this.table.count-1];
+                    hei =  100 / this.table.column[this.table.count-1];
+                    let li = this.table.row[this.table.count-1] * this.table.column[this.table.count-1];
 
                     for(let i=0; i< li; i++) {
                         lis[i].style.width = wid+"%";
@@ -151,8 +151,8 @@ export default {
         },
         cutInput : function() {
 
-            let toolsRow = this.row[this.tableCount-1];
-            let toolsCol = this.column[this.tableCount-1];
+            let toolsRow = this.table.row[this.table.count-1];
+            let toolsCol = this.table.column[this.table.count-1];
             this.$emit('cutInput', toolsRow, toolsCol);
 
         },

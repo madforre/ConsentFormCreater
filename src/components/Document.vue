@@ -2,8 +2,8 @@
   <div class="bg">
     <div class="a4">
         <div class="document">
-          {{tableCount}}
-          {{selectCount}}
+          {{table.count}}
+          {{select.count}}
           <br>
         </div>
         <div class="bin">
@@ -24,7 +24,7 @@ export default {
       documentShowBools : [true],
     }
   },
-  props: ["option", "tableCount", "selectCount", "row" , "column", "propsBools",  "selectDropBools", "selectInputs"],
+  props: ["option", "table", "select"],
   created() {
     eventBus.$on("clear", method => {
       this.clear = method;
@@ -124,11 +124,6 @@ export default {
     box-sizing : border-box;
     flex : 1 1 auto;
 }
-
-.bg .a4 .document .dropped ul >li:last-child {
-    /* overflow: auto; */
-}
-
 
 .bg .a4 .document .dropped ul li .resizer.column {
     position : absolute;
