@@ -21,7 +21,7 @@ export default {
   mixins:[resizeTableMixin],
   data () {
     return {
-      documentShowBools : [true]
+      documentShowBools : [true],
     }
   },
   props: ["option", "tableCount", "selectCount", "row" , "column", "propsBools",  "selectDropBools", "selectInputs"],

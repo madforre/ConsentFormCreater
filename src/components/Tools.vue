@@ -51,13 +51,13 @@
             <p>
                 셀렉트 박스 생성
             </p>
-            <input v-for="n in selectCount" :key="n" class="selectValue" type="text" v-show="selectDropBools[n-1]" v-model="selectInputs[n-1]" placeholder="ex) 딸기,바나나,키위">
+            <input v-for="n in selectCount" :key="n" class="selectValue" type="text" @keyup="setSelects" v-show="selectDropBools[n-1]" v-model="selectInputs[n-1]" placeholder="ex) 딸기,바나나,키위">
             <p>추가할 요소들은<br>
             쉼표로 구분합니다.</p>
             <div class="drag" draggable="true">
                 <select>
                     <option>선택해주세요.</option>
-                    <!-- <option v-for="select in bind" :key="select">{{select}}</option> -->
+                    <option v-for="select in bind" :key="select">{{select}}</option>
                 </select>
             </div>
         </li>
@@ -89,6 +89,13 @@ export default {
 
         }
     },
+    computed: {
+        bind: function () {
+                let inputArray = this.selectInputs[this.selectCount-1].split(",");
+                console.log(inputArray);
+                return inputArray;
+            },
+        },
     props: ["option", "tableCount", "selectCount", "row" , "column", "propsBools", "selectDropBools", "selectInputs"],
     // 계산된 속성을 실행할 수 없는 중첩된 v-for는 메소드로 처리합니다.
     methods: {
@@ -147,6 +154,9 @@ export default {
             let toolsRow = this.row[this.tableCount-1];
             let toolsCol = this.column[this.tableCount-1];
             this.$emit('cutInput', toolsRow, toolsCol);
+
+        },
+        setSelects : function (event) {
 
         },
     },

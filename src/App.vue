@@ -29,13 +29,17 @@ import Tools from './components/Tools.vue'
 export default {
     data : function () {
         return {
-            tableCount : 1,
+            table : {
+                
+            },
             row : [1],
             column : [1],
-            selectCount : 1,
+            tableCount : 1,
             tableDropBools : [true],
+            selectCount : 1,
             selectDropBools : [true],
             selectInputs : [""],
+            selectOutputs : [],
             msg: '원하는 재료를 선택 / 동의서를 구성',
             option: {
                 penColor:"rgb(0, 0, 0)",
