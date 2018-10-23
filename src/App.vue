@@ -8,11 +8,11 @@
     </div>
     <div class="middle">
       <div class="left">
-        <Tools v-bind:option="option" :tableCount="tableCount" :selectCount="selectCount" :row="row" :column="column" v-bind:propsBools="tableDropBools" v-on:cutInput="cut" draggable="false"></Tools>
+        <Tools v-bind:option="option" :tableCount="tableCount" :selectCount="selectCount" :row="row" :column="column" v-bind:propsBools="tableDropBools" :selectDropBools="selectDropBools" :selectInputs="selectInputs" v-on:cutInput="cut" draggable="false"></Tools>
       </div>
       <div class="right">
         <div class="section one">
-          <Document v-bind:option="option" :tableCount="tableCount" :selectCount="selectCount" :row="row" :column="column" v-bind:propsBools="tableDropBools"></Document>
+          <Document v-bind:option="option" :tableCount="tableCount" :selectCount="selectCount" :row="row" :column="column" v-bind:propsBools="tableDropBools" :selectDropBools="selectDropBools" :selectInputs="selectInputs"></Document>
         </div>
       </div>
     </div>
@@ -34,6 +34,8 @@ export default {
             column : [1],
             selectCount : 1,
             tableDropBools : [true],
+            selectDropBools : [true],
+            selectInputs : [""],
             msg: '원하는 재료를 선택 / 동의서를 구성',
             option: {
                 penColor:"rgb(0, 0, 0)",
@@ -152,6 +154,15 @@ export default {
                 }
                 if (draggedParentClass == "select") { 
                     this.selectCount = this.selectCount + 1
+
+                    this.selectDropBools[this.selectCount-2] = false;
+
+                    this.selectDropBools.push(true);
+
+                    this.row.push("")
+                    this.column.push("")
+
+                    console.log(this.selectDropBools);
                 }
 
             }

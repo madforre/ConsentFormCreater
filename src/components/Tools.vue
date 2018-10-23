@@ -51,8 +51,7 @@
             <p>
                 셀렉트 박스 생성
             </p>
-            <input class="selectValue" type="text" v-model="selectInputs[selectCount]" placeholder="ex) 딸기,바나나,키위">
-            <input v-for="n in selectCount" :key="n" class="selectValue" type="text" v-model="selectInputs[n]" placeholder="ex) 딸기,바나나,키위">
+            <input v-for="n in selectCount" :key="n" class="selectValue" type="text" v-show="selectDropBools[n-1]" v-model="selectInputs[n-1]" placeholder="ex) 딸기,바나나,키위">
             <p>추가할 요소들은<br>
             쉼표로 구분합니다.</p>
             <div class="drag" draggable="true">
@@ -68,9 +67,11 @@
                 <vueSignature class="board" ref="signature" :sigOption="option" :w="'100%'" :h="'100%'"></vueSignature>
             </div>
         </li>
-        {{selectStack}}
         {{tableCount}}
         {{selectCount}}
+        -----------------
+        {{selectDropBools}}
+        {{selectInputs}}
         <button @click="clear">Clear</button>
 		<button @click="undo">Undo</button>
       </ul>
@@ -85,11 +86,10 @@ export default {
     mixins:[resizeTableMixin],
     data: function() {
         return {
-            selectStack : { },
-            selectInputs : ["테스트,테스트2"],
+
         }
     },
-    props: ["option", "tableCount", "selectCount", "row" , "column", "propsBools"],
+    props: ["option", "tableCount", "selectCount", "row" , "column", "propsBools", "selectDropBools", "selectInputs"],
     // 계산된 속성을 실행할 수 없는 중첩된 v-for는 메소드로 처리합니다.
     methods: {
         /* 확대, 축소 */

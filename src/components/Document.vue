@@ -24,7 +24,7 @@ export default {
       documentShowBools : [true]
     }
   },
-  props: ["option", "tableCount", "selectCount", "row" , "column", "propsBools"],
+  props: ["option", "tableCount", "selectCount", "row" , "column", "propsBools",  "selectDropBools", "selectInputs"],
   created() {
     eventBus.$on("clear", method => {
       this.clear = method;
