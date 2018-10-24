@@ -54,10 +54,10 @@
             <input v-for="n in select.count" :key="n" class="selectValue" type="text" @keyup="setSelects" v-show="select.shows[n-1]" v-model="select.inputs[n-1]" placeholder="ex) 딸기,바나나,키위">
             <p>추가할 요소들은<br>
             쉼표로 구분합니다.</p>
-            <div class="drag" draggable="true">
+            <div :class=" 'drag select '+(n-1)" draggable="true" v-for="n in select.count" :key="`D-${n}`">
                 <select>
                     <option>선택해주세요.</option>
-                    <!-- <option v-for="select in bind" :key="select">{{select}}</option> -->
+                    <option v-for="index in select.outputs[n-1]" :key="index">{{index}}</option>
                 </select>
             </div>
         </li>
@@ -67,12 +67,6 @@
                 <vueSignature class="board" ref="signature" :sigOption="option" :w="'100%'" :h="'100%'"></vueSignature>
             </div>
         </li>
-        <!-- {{table.count}}
-        {{select.count}}
-        -----------------
-        테이블 쇼 {{table.shows}}
-        셀렉트 쇼 {{select.shows}}
-        {{select.inputs}} -->
         <button @click="clear">Clear</button>
 		<button @click="undo">Undo</button>
       </ul>
@@ -162,6 +156,14 @@ export default {
 
         },
         setSelects : function (event) {
+
+            // console.log(event.target.value);
+            // this.select.inputs[this.select.count-1].split(",");
+            let eventArr = event.target.value.split(",");
+
+            console.log(eventArr);
+            
+            this.$emit('setSelects', eventArr)
 
         },
     },

@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <div class="header">
+        {{select.outputs}}
       <ul class="gnb">
         <li><h1>Form CMS</h1></li>
         <li><p>{{msg}}　<font-awesome-icon icon="marker"/> </p></li>
@@ -8,7 +9,7 @@
     </div>
     <div class="middle">
       <div class="left">
-        <Tools v-bind:option="option" :table="table" :select="select" v-on:cutInput="cut" draggable="false"></Tools>
+        <Tools v-bind:option="option" :table="table" :select="select" v-on:cutInput="cut" v-on:setSelects="set" draggable="false"></Tools>
       </div>
       <div class="right">
         <div class="section one">
@@ -62,8 +63,14 @@ export default {
             this.table.column[this.table.count-1] = toolsCol;
 
         },
+        set : function(eventArr) {
+            console.log("이벤트 set 수신")
+
+            this.select.outputs[this.select.count-1] = eventArr
+        },
     },
     mounted() {
+        /* 알아두기 : mounted와 마찬가지로 vm.$nextTick를 사용하면 전체가 렌더링된 상태를 보장할 수 있다. */
   
         /* HTML5 Drag & Drop API 사용 */
         
@@ -91,12 +98,14 @@ export default {
             console.log(event.target.className);
 
             // 클래스 이름이 drag 인 것만 drop 되게끔 설정
-            if ( event.target.className == "drag table "+(this.table.count-1) || event.target.className == "dropped" || event.target.className == "drag" ) {
+            if ( event.target.className == "drag select "+(this.select.count-1) || event.target.className == "drag table "+(this.table.count-1) || event.target.className == "dropped" || event.target.className == "drag" ) {
+                
                 dragged = event.target;
                 draggedParentClass = event.target.parentNode.className;
+
             }  else {
 
-                alert("드래그 할 수 없는 요소입니다.")
+                alert("생성 또는 추가할 항목을 드래그 해주세요!")
                 return;
 
             }
@@ -270,7 +279,7 @@ export default {
             cut = cut.slice(0,-1);
             cut = cut.slice(0, 2);
             this.table.column[this.table.count-1] = cut;
-            
+
         }
             
         if (this.table.row[this.table.count-1].length > 2 || this.table.row[this.table.count-1] > 20) {
