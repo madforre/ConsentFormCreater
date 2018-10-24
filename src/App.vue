@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <div class="header">
-        {{select.outputs}}
       <ul class="gnb">
         <li><h1>Form CMS</h1></li>
         <li><p>{{msg}}　<font-awesome-icon icon="marker"/> </p></li>
@@ -58,15 +57,14 @@ export default {
         cut : function(toolsRow, toolsCol) {
 
             console.log("이벤트 컷 수신")
-
             this.table.row[this.table.count-1] = toolsRow;
             this.table.column[this.table.count-1] = toolsCol;
 
         },
         set : function(eventArr) {
-            console.log("이벤트 set 수신")
 
-            this.select.outputs[this.select.count-1] = eventArr
+            console.log("이벤트 set 수신")
+            this.select.outputs[this.select.count-1] = eventArr;
         },
     },
     mounted() {
@@ -97,8 +95,10 @@ export default {
 
             console.log(event.target.className);
 
-            // 클래스 이름이 drag 인 것만 drop 되게끔 설정
-            if ( event.target.className == "drag select "+(this.select.count-1) || event.target.className == "drag table "+(this.table.count-1) || event.target.className == "dropped" || event.target.className == "drag" ) {
+            // 클래스 이름이 drag 인 것만 drop 되게끔 설정 event.target.className == "dropped" || 제외
+            if ( event.target.className == "drag select "+(this.select.count-1) || 
+                event.target.className == "drag table "+(this.table.count-1) || 
+                event.target.className == "drag" ) {
                 
                 dragged = event.target;
                 draggedParentClass = event.target.parentNode.className;
@@ -134,14 +134,11 @@ export default {
 
             // move dragged elem to the selected drop target
 
-            if ( dragged.className == "dropped" ) {
-
-                    // 삭제 로직
-
-                    alert("이미 드롭된 요소는 삭제만 가능합니다.");
-
-                    return;
-            }
+            // if ( dragged.className == "dropped" ) {
+            //         // 삭제 로직
+            //         alert("이미 드롭된 요소는 삭제만 가능합니다.");
+            //         return;
+            // }
 
             if ( event.target.className == "document" ) {
 
@@ -154,37 +151,45 @@ export default {
                 if (draggedParentClass == "table") {
 
                     count = this.table.count;
-                    dropAfter(dupElement, count);
+                    twoWayBindCase(dupElement, count);
 
                     // 카운트 추가
                     this.table.count = this.table.count + 1
-
                     // 카운트가 추가 되기전의 bool을 false로 하여 tools에서 안보이게 처리한다.
                     this.table.shows[this.table.count-2] = false;
-
-                    // 다음에 드래그 앤 드랍할 표를 준비시킨다. 
+                    // 다음에 드래그 앤 드랍할 표를 준비시킨다.
                     this.table.shows.push(true);
-
                     this.table.row.push(1)
                     this.table.column.push(1)
 
-                    // console.log(this.table.shows);
-
-                }
-                if (draggedParentClass == "select") { 
+                } else if (draggedParentClass == "select") {
 
                     count = this.select.count;
-                    dropAfter(dupElement, count);
+                    twoWayBindCase(dupElement, count);
 
+                    // 카운트 추가
                     this.select.count = this.select.count + 1;
-
+                    // 카운트가 추가 되기전의 bool을 false로 하여 tools에서 안보이게 처리한다.
                     this.select.shows[this.select.count-2] = false;
-
+                    // 다음에 드래그 앤 드랍할 표를 준비시킨다.
                     this.select.shows.push(true);
-
                     this.select.inputs.push("");
 
-                    // console.log(this.select.shows);
+                } else if (draggedParentClass == "sign") {
+
+                    // document의 높이에 dragged의 높이가 auto로 적용이 안되므로 잠깐 풀어줘야 한다.
+                    dragged.parentNode.height = "auto";
+                    
+                    dragged.setAttribute("class", "dropped");
+                    dragged.style.width = "100%";
+                    dragged.style.height = "15%";
+                    dragged.style.resize = "none";
+                    dragged.style.border = "";
+                    dragged.setAttribute("draggable", "false");
+
+                } else {
+
+                    commonCase(dupElement);
                 }
 
             }
@@ -194,43 +199,20 @@ export default {
             }
 
         }, false);
-        
-        function dropAfter(dupElement, count) {
 
-            // 전자서명일 경우 한번만 실행
+        function commonCase(dupElement) {
 
-            // 드래그했던 Elements 의 부모 위치 변수로 저장
-
-            if ( draggedParentClass != "sign" || draggedParentClass != "table" || draggedParentClass != "select" || dragged.className == "dropped") {
-
-                let restoreMe = document.querySelector("." + draggedParentClass);
+            let restoreMe = document.querySelector("." + draggedParentClass);
                 
-                dupElement.style.opacity = "";
-                restoreMe.appendChild(dupElement);
+            dupElement.style.opacity = "";
+            restoreMe.appendChild(dupElement);
 
-            }
-
-            dragged.setAttribute("class", "dropped "+(count-1));
+            dragged.setAttribute("class", "dropped");
 
             // document의 높이에 dragged의 높이가 auto로 적용이 안되므로 잠깐 풀어줘야 한다.
-
             dragged.parentNode.height = "auto";
 
-            // 각각의 Tools에 대한 디테일한 설정
             switch (draggedParentClass) {
-
-                case "sign":
-                dragged.style.width = "100%";
-                dragged.style.height = "15%";
-                dragged.style.resize = "none";
-                dragged.style.border = "";
-                dragged.setAttribute("draggable", "false");
-                break;
-
-                case "select":
-                dragged.style.width = "auto";
-                dragged.style.height = "1.3%";
-                break;
 
                 case "check":
                 dragged.style.width ="3.9%";
@@ -244,17 +226,31 @@ export default {
                 break;
 
                 case "input":
-                // dragged.style.display = "flex";
                 dragged.style.width ="auto";
                 dragged.firstChild.style.width ="90%";
                 dragged.firstChild.style.height ="90%";
-                // dragged.firstChild.style.margin ="0 auto 0 0";
                 dragged.firstChild.style.justifyContent = "center";
                 break;
 
-                case "table":
+            }
 
-                // 이벤트 버스를 통해 tools의 table을 가지고 온다.
+        }
+        function twoWayBindCase(dupElement, count) {
+
+            // 드래그했던 Elements 의 부모 위치 변수로 저장
+            dragged.setAttribute("class", "dropped "+(count-1));
+
+            // document의 높이에 dragged의 높이가 auto로 적용이 안되므로 잠깐 풀어줘야 한다.
+            dragged.parentNode.height = "auto";
+
+            switch (draggedParentClass) {
+
+                case "select":
+                dragged.style.width = "auto";
+                dragged.style.height = "1.3%";
+                break;
+
+                case "table":
                 dragged.style.height = "auto";
                 dragged.style.width = "100%";
                 let lis = dragged.querySelectorAll("ul > li");
@@ -265,8 +261,8 @@ export default {
                 break;
             }
             
-            let hideThis = document.getElementsByClassName(count-1)[0]
-            hideThis.style.display="none";
+            // let hideThis = document.getElementsByClassName(count-1)[0]
+            // hideThis.style.display="none";
         }
     },
     beforeUpdate() {

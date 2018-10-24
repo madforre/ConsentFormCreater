@@ -15,8 +15,8 @@
         <li class="table">
             <p>표 (최대 20 x 20)</p>
             <div class="value" v-for="n in table.count" @keyup="cutInput" v-show="table.shows[n-1]" :key="n">
-              행　<input type="number" v-model="table.row[n-1]" @keyup="setTable" min="1" max="20">
-              열　<input type="number" v-model="table.column[n-1]" @keyup="setTable" min="1" max="20">
+              행　<input type="number" v-model="table.row[n-1]" @keyup="setTable" >
+              열　<input type="number" v-model="table.column[n-1]" @keyup="setTable" >
             </div>
             삽입된 표 : {{table.count-1}} 개
             <!-- li 한 개당 width : {{width}} %<br> -->
@@ -157,8 +157,6 @@ export default {
         },
         setSelects : function (event) {
 
-            // console.log(event.target.value);
-            // this.select.inputs[this.select.count-1].split(",");
             let eventArr = event.target.value.split(",");
 
             console.log(eventArr);
