@@ -1,5 +1,26 @@
 <template>
   <div class="bg">
+    <div class="fonts">
+      <ul>
+        <li>
+          글자 크기
+          <input type="range" min="1" max="14">
+        </li>
+        <li>글자 굵기
+          <input type="range" min="1" max="6">
+        </li>
+        <li>
+          왼쪽 정렬<br>
+          <input type="radio" name="sort" checked>
+        </li>
+        <li>가운데 정렬<br>
+          <input type="radio" name="sort">
+        </li>
+        <li>오른쪽 정렬<br>
+          <input type="radio" name="sort">
+        </li>
+      </ul>
+    </div>
     <div class="a4">
         <div class="document">
           {{table.count}}
@@ -14,7 +35,7 @@
 </template>
 
 <script scoped>
-import { eventBus } from '../main.js'
+import { eventBus } from '../main.js';
 import resizeTableMixin from '../mixins/mixin.js';
 
 export default {
@@ -46,8 +67,40 @@ export default {
 
 /* 휴지통 */
 
-/* width : 1190px;
-  height : 1684px; */
+/* 글 도구 모음 */
+
+.bg .fonts {
+  position : fixed;
+  top : 35%;
+  margin : 0 auto;
+  width : 100px;
+  color : #000;
+  font-size : 18px;
+}
+
+.bg .fonts ul {
+  display : flex;
+  flex-direction: column;
+}
+
+.bg .fonts ul li {
+  box-sizing: border-box;
+  border : 1px solid rgb(255, 255, 255);
+  background: rgb(76, 107, 245);
+  color : white;
+}
+
+.bg .fonts ul li input {
+  display : block;
+  margin : 0 auto;
+  width : 100%;
+}
+
+/* 
+ * A4 용지 기준
+ * width : 1190px;
+ * height : 1684px; 
+ */
 
 .bin {
     position : absolute;
@@ -64,9 +117,10 @@ export default {
 }
 
 .bg {
-  overflow: auto;
-  height : 52rem;
-  background: #ccc;
+    position : relative;
+    overflow: auto;
+    height : 52rem;
+    background: #ccc;
 }
 
 .bg .a4 {
@@ -83,7 +137,6 @@ export default {
 .bg .a4> .document {
     display : flex;
     box-sizing: border-box;
-    /* border : 1px dotted black; */
     flex-flow : row wrap;
     align-content: flex-start;
     height : 1684px;

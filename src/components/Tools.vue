@@ -2,28 +2,15 @@
     <div class="tools">
       <ul>
         <li><h1>Tools</h1></li>
-        <li>
-            <button v-on:click="zoomIn">　+　.</button>
-            <button v-on:click="zoomOut">　-　.</button>
-        </li>
-        <!-- <li class="words">
-            <p>글자 넣기</p>
-            <div class="size"></div>
-            <div class="weight"></div>
-            <div class="drag" draggable="true">글자</div>
-        </li> -->
         <li class="table">
-            <p>표 (최대 20 x 20)</p>
-            <div class="value" v-for="n in table.count" @keyup="cutInput" v-show="table.shows[n-1]" :key="n">
-              행　<input type="number" v-model="table.row[n-1]" @keyup="setTable" >
-              열　<input type="number" v-model="table.column[n-1]" @keyup="setTable" >
+            <p>표 (최대 12 x 12)</p>
+            <div class="value" v-for="n in table.count" @click="setTable" @keyup="cutInput" v-show="table.shows[n-1]" :key="n">
+              행　<input type="number" v-model="table.row[n-1]" @keyup="setTable" min=1 max=12>
+              열　<input type="number" v-model="table.column[n-1]" @keyup="setTable" min=1 max=12>
             </div>
             삽입된 표 : {{table.count-1}} 개
-            <!-- li 한 개당 width : {{width}} %<br> -->
             <div v-for="n in table.count" v-show="table.shows[n-1]" v-bind:key="`C-${n}`">
-                <!-- <div v-for="n in row[n-1] * column[n-1]" v-bind:key="`B-${n}`"> -->
-                    Cell 개수 : {{ table.row[n-1] }} * {{ table.column[n-1] }} = {{ table.row[n-1] * table.column[n-1] }}<br>
-                <!-- </div> -->
+                Cell 개수 : {{ table.row[n-1] }} * {{ table.column[n-1] }} = {{ table.row[n-1] * table.column[n-1] }}<br>
             </div>
             <div :class=" 'drag table '+(n-1) " draggable="true" v-for="n in table.count"  :key="`A-${n}`">
                 <ul>
@@ -83,28 +70,9 @@ export default {
         return {
         }
     },
-    // computed: {
-    //     bind: function () {
-    //             let inputArray = this.select.inputs[this.select.count-1].split(",");
-    //             console.log(inputArray);
-    //             return inputArray;
-    //         },
-    //     },
     props: ["option", "table", "select"],
-    // 계산된 속성을 실행할 수 없는 중첩된 v-for는 메소드로 처리합니다.
     methods: {
-        /* 확대, 축소 */
-        zoomIn: function (e) {
-            let zoom = document.querySelector(".creater .document");
-            zoom.style.width = "1190px";
-            zoom.style.height = "1684px";
-        },
-        zoomOut: function (e) {
-            let zoom = document.querySelector(".creater .document");
-            zoom.style.width = "595px";
-            zoom.style.height = "842px";
-        },
-        /* 전자서명 */
+        /* 전자서명 관련 메소드 */
         clear() {
 			var _this = this;
 			_this.$refs.signature.clear();
@@ -112,40 +80,41 @@ export default {
 		undo() {
 			var _this = this;
 			_this.$refs.signature.undo();
-		},
+        },
+        // 계산된 속성을 실행할 수 없는 중첩된 v-for는 메소드로 처리한다.
         setTable : function (event) {
 
-            // nextTick 안써도 된다. 그냥 한번 써본 것.
-            // * mounted와 마찬가지로 vm.$nextTick를 사용하면 전체가 렌더링된 상태를 보장할 수 있다.
-            // this.$nextTick(() =>
-            // {
-                if (event.target.value.length <= 2){
+            if (event.target.value.length <= 2){
 
-                    let lis = document.querySelectorAll(".table .drag:last-child ul > li");
-                    let wid;
-                    let hei;
-                    
-                    wid =  100 / this.table.row[this.table.count-1];
-                    hei =  100 / this.table.column[this.table.count-1];
-                    let li = this.table.row[this.table.count-1] * this.table.column[this.table.count-1];
+                let lis = document.querySelectorAll(".table .drag:last-child ul > li");
+                let wid;
+                let hei;
+                
+                wid =  100 / this.table.row[this.table.count-1];
+                hei =  100 / this.table.column[this.table.count-1];
+                let li = this.table.row[this.table.count-1] * this.table.column[this.table.count-1];
 
-                    for(let i=0; i< li; i++) {
-                        lis[i].style.width = wid+"%";
-                        lis[i].style.height = hei+"%";
-                    }
-
-                    // forEach는 edge 지원 안한다.
-                    // lis.forEach(element => {
-                    //     element.style.width = this.width+"%";
-                    //     element.style.height = this.height+"%";
-                    // });
-
+                for(let i=0; i< li; i++) {
+                    lis[i].style.width = wid+"%";
+                    lis[i].style.height = hei+"%";
                 }
+
+                /* 
+                 * 아래에 쓰인 forEach문은 edge에서 지원이 안된다.
+                 *
+                 * lis.forEach(element => {
+                 *     element.style.width = this.width+"%";
+                 *     element.style.height = this.height+"%";
+                 * });
+                 * 
+                 */
+
+            }
         },
 
         cutInput : function(event) {
 
-            /* 인풋 실시간 감시 로직 */
+            // 인풋 실시간 감시 로직
 
             let toolsRow = this.table.row[this.table.count-1];
             let toolsCol = this.table.column[this.table.count-1];
@@ -203,7 +172,6 @@ export default {
     color : rgb(80, 150, 255);
     flex-direction: column;
     border: 2px solid rgb(80, 150, 255);
-    /* border : 1px solid rgba(2, 109, 250, 0.986); */
     padding : 1rem;
     box-sizing: border-box;
 }

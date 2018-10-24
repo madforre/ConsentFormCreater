@@ -25,8 +25,7 @@
 import Document from './components/Document.vue'
 import Tools from './components/Tools.vue'
 
-/* 데이터를 표현하거나 데이터 조작에 대해 요청하는 루트 컴포넌트 */
-
+// 데이터를 표현하거나 데이터 조작에 대해 요청하는 루트 컴포넌트
 export default {
     data : function () {
         return {
@@ -54,23 +53,25 @@ export default {
         'Document' : Document,
     },
     methods : {
-        cut : function(toolsRow, toolsCol) {
 
+        cut : function(toolsRow, toolsCol) {
             console.log("이벤트 컷 수신")
             this.table.row[this.table.count-1] = toolsRow;
             this.table.column[this.table.count-1] = toolsCol;
 
         },
         set : function(eventArr) {
-
             console.log("이벤트 set 수신")
             this.select.outputs[this.select.count-1] = eventArr;
         },
     },
     mounted() {
-        /* 알아두기 : mounted와 마찬가지로 vm.$nextTick를 사용하면 전체가 렌더링된 상태를 보장할 수 있다. */
-  
-        /* HTML5 Drag & Drop API 사용 */
+
+        /* 
+         * 알아두기 : mounted와 마찬가지로 vm.$nextTick를 사용하면 
+         * 전체가 렌더링된 상태를 보장할 수 있다. 
+         * mounted단계에서 내장 함수인 HTML5 Drag & Drop API 를 사용하였다.
+         */
         
         let dragged;
         let draggedParentClass;
@@ -103,22 +104,19 @@ export default {
                 dragged = event.target;
                 draggedParentClass = event.target.parentNode.className;
 
-            }  else {
+            } else {
 
-                alert("생성 또는 추가할 항목을 드래그 해주세요!")
+                alert("생성 또는 추가할 항목만 드래그 해주세요!")
                 return;
 
             }
 
-            // make it half transparent
+            // make it half transparent (드래그 시 투명도 조절)
             event.target.style.opacity = .5;
         
         }, false);
     
         document.addEventListener("dragend", (event) => {
-
-            // 이벤트 타겟의 부모 노드가 document이면 document에 맞게 사이즈 조절
-            // 부모 노드가 document가 아니면 정해진 대로 가공
 
             event.target.style.border = "";
 
@@ -132,13 +130,16 @@ export default {
 
             event.preventDefault();
 
+            console.log(event);
+            console.log(event.target);
+            console.log(event.target.className);
+
             // move dragged elem to the selected drop target
 
-            // if ( dragged.className == "dropped" ) {
-            //         // 삭제 로직
-            //         alert("이미 드롭된 요소는 삭제만 가능합니다.");
-            //         return;
-            // }
+            /* 
+             * 이벤트 타겟의 부모 노드가 document이면 document에 맞게 사이즈 조절한다.
+             * 부모 노드가 document가 아니라 표 안속에 있는 경우는 정해진 대로 가공한다.
+             */
 
             if ( event.target.className == "document" ) {
 
@@ -179,7 +180,7 @@ export default {
 
                     // document의 높이에 dragged의 높이가 auto로 적용이 안되므로 잠깐 풀어줘야 한다.
                     dragged.parentNode.height = "auto";
-                    
+
                     dragged.setAttribute("class", "dropped");
                     dragged.style.width = "100%";
                     dragged.style.height = "15%";
@@ -190,11 +191,12 @@ export default {
                 } else {
 
                     commonCase(dupElement);
+
                 }
 
             }
 
-            if ( event.target.className == "bin") {
+            if (event.target.className == "bin") {
                 console.log("delete");
             }
 
@@ -260,16 +262,14 @@ export default {
                 }
                 break;
             }
-            
-            // let hideThis = document.getElementsByClassName(count-1)[0]
-            // hideThis.style.display="none";
+
         }
     },
     beforeUpdate() {
 
         // 행, 열 input 실시간 감시
 
-        if (this.table.column[this.table.count-1].length > 2 || this.table.column[this.table.count-1] > 20) {
+        if (this.table.column[this.table.count-1].length > 2 || this.table.column[this.table.count-1] > 12) {
 
             let cut = String(this.table.column[this.table.count-1]);
             cut = cut.slice(0,-1);
@@ -278,8 +278,8 @@ export default {
 
         }
             
-        if (this.table.row[this.table.count-1].length > 2 || this.table.row[this.table.count-1] > 20) {
-            
+        if (this.table.row[this.table.count-1].length > 2 || this.table.row[this.table.count-1] > 12) {
+
             let cut = String(this.table.row[this.table.count-1]);
             cut = cut.slice(0,-1);
             cut = cut.slice(0, 2);
