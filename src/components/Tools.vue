@@ -14,9 +14,9 @@
         </li> -->
         <li class="table">
             <p>표 (최대 20 x 20)</p>
-            <div class="value" v-for="n in table.count" v-show="table.shows[n-1]" :key="n">
-              행　<input type="number" v-model="table.row[n-1]" @click="setTable" @keyup="setTable" @keydown="cutInput"  min="1" max="20">
-              열　<input type="number" v-model="table.column[n-1]" @click="setTable" @keyup="setTable" @keydown="cutInput" min="1" max="20">
+            <div class="value" v-for="n in table.count" @keyup="cutInput" v-show="table.shows[n-1]" :key="n">
+              행　<input type="number" v-model="table.row[n-1]" @keyup="setTable" min="1" max="20">
+              열　<input type="number" v-model="table.column[n-1]" @keyup="setTable" min="1" max="20">
             </div>
             삽입된 표 : {{table.count-1}} 개
             <!-- li 한 개당 width : {{width}} %<br> -->
@@ -67,12 +67,12 @@
                 <vueSignature class="board" ref="signature" :sigOption="option" :w="'100%'" :h="'100%'"></vueSignature>
             </div>
         </li>
-        {{table.count}}
+        <!-- {{table.count}}
         {{select.count}}
         -----------------
         테이블 쇼 {{table.shows}}
         셀렉트 쇼 {{select.shows}}
-        {{select.inputs}}
+        {{select.inputs}} -->
         <button @click="clear">Clear</button>
 		<button @click="undo">Undo</button>
       </ul>
@@ -147,18 +147,22 @@ export default {
                     // });
 
                 }
-
-            // })
         },
-        cutInput : function() {
+
+        cutInput : function(event) {
+
+            /* 인풋 실시간 감시 로직 */
 
             let toolsRow = this.table.row[this.table.count-1];
             let toolsCol = this.table.column[this.table.count-1];
+
+            // console.log("이벤트 감지")
+
             this.$emit('cutInput', toolsRow, toolsCol);
 
         },
         setSelects : function (event) {
-            
+
         },
     },
     created() {

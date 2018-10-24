@@ -16,6 +16,7 @@
         </div>
       </div>
     </div>
+    <input class="measure" type="hidden" style="color : white;">{{table.row}} {{table.column}}
   </div>
 </template>
 
@@ -54,15 +55,13 @@ export default {
     },
     methods : {
         cut : function(toolsRow, toolsCol) {
-            
+
+            console.log("이벤트 컷 수신")
+
             this.table.row[this.table.count-1] = toolsRow;
             this.table.column[this.table.count-1] = toolsCol;
 
-            // console.log(toolsRow, toolsCol);
-
-            // console.log(this.table.row[this.table.count-1].length);
-
-        }
+        },
     },
     mounted() {
   
@@ -160,7 +159,7 @@ export default {
                     this.table.row.push(1)
                     this.table.column.push(1)
 
-                    console.log(this.table.shows);
+                    // console.log(this.table.shows);
 
                 }
                 if (draggedParentClass == "select") { 
@@ -176,7 +175,7 @@ export default {
 
                     this.select.inputs.push("");
 
-                    console.log(this.select.shows);
+                    // console.log(this.select.shows);
                 }
 
             }
@@ -262,25 +261,27 @@ export default {
         }
     },
     beforeUpdate() {
-        console.log("보여라");
 
         // 행, 열 input 실시간 감시
-            
-        if (this.table.row[this.table.count-1].length > 2 || this.table.row[this.table.count-1] > 20) {
-            console.log("열 넘었는데??")
-            let cut = String(this.table.row[this.table.count-1]);
-            cut = cut.slice(0,-1);
-            cut = cut.slice(0, 2);
-            this.table.row[this.table.count-1] = parseInt(cut);
-        }
 
         if (this.table.column[this.table.count-1].length > 2 || this.table.column[this.table.count-1] > 20) {
-            console.log("행 넘었는데??")
+
             let cut = String(this.table.column[this.table.count-1]);
             cut = cut.slice(0,-1);
             cut = cut.slice(0, 2);
-            this.table.column[this.table.count-1] = parseInt(cut);
+            this.table.column[this.table.count-1] = cut;
+            
         }
+            
+        if (this.table.row[this.table.count-1].length > 2 || this.table.row[this.table.count-1] > 20) {
+            
+            let cut = String(this.table.row[this.table.count-1]);
+            cut = cut.slice(0,-1);
+            cut = cut.slice(0, 2);
+            this.table.row[this.table.count-1] = cut;
+
+        }
+
     },
 }
 </script>

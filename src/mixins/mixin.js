@@ -128,7 +128,6 @@ const resizeTableMixin = {
             }
         },
         stop() {
-            console.log("마우스 업");
             document.removeEventListener("mousemove",this.rowMouseMoveHandler);
             document.removeEventListener("mousemove",this.colMouseMoveHandler);
         }
