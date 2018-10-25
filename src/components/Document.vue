@@ -1,25 +1,39 @@
 <template>
   <div class="bg">
-    <div class="fonts">
-      <ul>
-        <li>
-          글자 크기
-          <input type="range" min="1" max="14">
-        </li>
-        <li>글자 굵기
-          <input type="range" min="1" max="6">
-        </li>
-        <li>
-          왼쪽 정렬<br>
-          <input type="radio" name="sort" checked>
-        </li>
-        <li>가운데 정렬<br>
-          <input type="radio" name="sort">
-        </li>
-        <li>오른쪽 정렬<br>
-          <input type="radio" name="sort">
-        </li>
-      </ul>
+    <div class="bar">
+      <div class="fonts">
+        <ul>
+          <li class="size">
+            <select>
+              <option>글꼴</option>
+              <option>8px</option>
+              <option>9px</option>
+              <option>10px</option>
+              <option>11px</option>
+              <option>12px</option>
+              <option>14px</option>
+              <option>16px</option>
+              <option>18px</option>
+              <option>20px</option>
+            </select>
+          </li>
+          <li class="bold">
+            <h3><font-awesome-icon icon="bold"/></h3>
+          </li>
+          <li class="underline">
+            <h3><font-awesome-icon icon="underline"/></h3>
+          </li>
+          <li class="align">
+            <h3><font-awesome-icon icon="align-left"/></h3>
+          </li>
+          <li class="align">
+            <h3><font-awesome-icon icon="align-center"/></h3>
+          </li>
+          <li class="align">
+            <h3><font-awesome-icon icon="align-right"/></h3>
+          </li>
+        </ul>
+      </div>
     </div>
     <div class="a4">
         <div class="document">
@@ -65,42 +79,13 @@ export default {
 
 <style>
 
-/* 휴지통 */
-
-/* 글 도구 모음 */
-
-.bg .fonts {
-  position : fixed;
-  top : 35%;
-  margin : 0 auto;
-  width : 100px;
-  color : #000;
-  font-size : 18px;
-}
-
-.bg .fonts ul {
-  display : flex;
-  flex-direction: column;
-}
-
-.bg .fonts ul li {
-  box-sizing: border-box;
-  border : 1px solid rgb(255, 255, 255);
-  background: rgb(76, 107, 245);
-  color : white;
-}
-
-.bg .fonts ul li input {
-  display : block;
-  margin : 0 auto;
-  width : 100%;
-}
-
 /* 
  * A4 용지 기준
  * width : 1190px;
- * height : 1684px; 
+ * height : 1684px;
  */
+
+/* 휴지통 */
 
 .bin {
     position : absolute;
@@ -142,6 +127,49 @@ export default {
     height : 1684px;
 }
 
+/* 글 도구 모음 */
+
+.bg .bar {
+  position : relative;
+  width : 500px;
+  margin : 0 auto;
+}
+
+.bg .bar .fonts {
+  position : fixed;
+  color : #000;
+  font-size : 15px;
+  z-index: 99;
+}
+
+.bg .bar .fonts ul {
+  display : flex;
+  flex-direction: row;  
+}
+
+.bg .bar .fonts ul li {
+  display : flex;
+  box-sizing: border-box;
+  border : 1px solid rgb(255, 255, 255);
+  background: rgb(84, 110, 228);
+  color : white;
+  width : 80px;
+  height : 35px;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+}
+
+.bg .bar .fonts ul li:hover {
+  background: rgb(54, 81, 202);
+}
+
+.bg .bar .fonts ul li input {
+  display : block;
+  margin : 0 auto;
+  width : 100%;
+}
+
 /* Drop된 요소의 Resize를 위한 css 설정 */
 
 .bg .a4 .document .dropped {
@@ -152,6 +180,7 @@ export default {
     align-self : flex-start;
     height : auto;
     display : block;
+    z-index: 98;
 }
 
 .bg .a4 .document .dropped ul {
@@ -186,7 +215,7 @@ export default {
     height : 90%;
     /* background: #222; */
     cursor : w-resize;
-    z-index : 99;
+    z-index : 98;
 }
 
 .bg .a4 .document .dropped ul li .resizer.row {
@@ -196,7 +225,7 @@ export default {
     cursor : s-resize;
     height : 32px;
     /* background: #555; */
-    z-index: 99;
+    z-index: 98;
 }
 
 </style>

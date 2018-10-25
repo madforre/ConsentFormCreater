@@ -16,7 +16,7 @@
         </div>
       </div>
     </div>
-    <input class="measure" type="hidden" style="color : white;">{{table.row}} {{table.column}}
+    <p style="color : white;">{{table.row}} {{table.column}} </p>
   </div>
 </template>
 
@@ -96,7 +96,7 @@ export default {
 
             console.log(event.target.className);
 
-            // 클래스 이름이 drag 인 것만 drop 되게끔 설정 event.target.className == "dropped" || 제외
+            // 클래스 이름이 drag 있는 것만 drop 되게끔 설정 event.target.className == "dropped" || 제외
             if ( event.target.className == "drag select "+(this.select.count-1) || 
                 event.target.className == "drag table "+(this.table.count-1) || 
                 event.target.className == "drag" ) {
@@ -106,7 +106,7 @@ export default {
 
             } else {
 
-                alert("생성 또는 추가할 항목만 드래그 해주세요!")
+                // alert("생성 또는 추가할 항목만 드래그 해주세요!")
                 return;
 
             }
@@ -343,8 +343,9 @@ html {
     background : rgb(80, 150, 255);
     color : white;
     border-bottom : 2px solid rgb(85, 144, 233);
-    padding : 0.5rem;
+    padding : 1rem;
     margin-bottom : 8px;
+    background-image: linear-gradient(to bottom right, rgb(35, 72, 235), rgb(85, 144, 233));
 }
 
 #app .header .gnb {
@@ -390,6 +391,8 @@ html {
 }
 .middle .right {
     width : 83%;
+    /* height : 100%;
+    background: #333; */
 }
 
 .middle .right .one {
@@ -399,25 +402,6 @@ html {
     align-items: center;
     box-sizing: border-box;
     margin-bottom : 1rem;
-}
-
-ul li .resizer.column {
-    position : absolute;
-    right :-17px;
-    top : 5%;
-    width : 32px;
-    height : 90%;
-    cursor : w-resize;
-    z-index : 99;
-}
-
-ul li .resizer.row {
-    position : absolute;
-    bottom : -16px;
-    width : 100%;
-    cursor : s-resize;
-    height : 32px;
-    z-index: 99;
 }
 
 .tools .drag {

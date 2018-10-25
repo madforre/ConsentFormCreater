@@ -149,6 +149,7 @@ export default {
     min-width : 250px;
     overflow : auto;
     height : 51rem;
+    /* background: rgba(7, 102, 255, 0.294); */
 }
 
 .tools>ul {
@@ -177,7 +178,7 @@ export default {
 }
 
 .tools ul .table ul {
-    background: rgb(80, 150, 255);
+    background: rgb(80, 135, 255);
     margin : 0.5rem 0;
     width : auto;
     height : 12rem;
