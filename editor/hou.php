@@ -6,7 +6,9 @@
     //     echo "서버 변수 키 : " . $key . " 값 : " . $value . "<hr>";
     // };
 
-    echo "hi";
+    echo $_POST["ir1"];
+
+    echo "<hr>";
 
     foreach ($_POST as $key => $value) {
         echo "포스트 변수 키 : " . $key . " 값 : " . $value . "<hr>";

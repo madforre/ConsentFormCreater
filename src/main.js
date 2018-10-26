@@ -1,6 +1,10 @@
 import Vue from 'vue'
 import App from './App.vue'
 
+/* Vue Axios */
+import axios from 'axios'
+Vue.prototype.$http = axios
+
 /* Vue Signature */
 import VueSignature from "vue-signature"
 Vue.use(VueSignature)

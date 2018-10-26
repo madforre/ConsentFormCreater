@@ -1,37 +1,24 @@
 <template>
     <div class="tools">
       <ul>
-        <li><h1>Tools</h1></li>
-        <li class="table">
-            <p>표 (최대 12 x 12)</p>
-            <div class="value" v-for="n in table.count" @click="setTable" @keyup="cutInput" v-show="table.shows[n-1]" :key="n">
-              행　<input type="number" v-model="table.row[n-1]" @keyup="setTable" min=1 max=12>
-              열　<input type="number" v-model="table.column[n-1]" @keyup="setTable" min=1 max=12>
-            </div>
-            삽입된 표 : {{table.count-1}} 개
-            <div v-for="n in table.count" v-show="table.shows[n-1]" v-bind:key="`C-${n}`">
-                Cell 개수 : {{ table.row[n-1] }} * {{ table.column[n-1] }} = {{ table.row[n-1] * table.column[n-1] }}<br>
-            </div>
-            <div :class=" 'drag table '+(n-1) " draggable="true" v-for="n in table.count"  :key="`A-${n}`">
-                <ul>
-                    <li v-for="n in table.row[n-1] * table.column[n-1]" v-bind:key="`B-${n}`">
-                        <div class="resizer column" v-show="n % table.row !== 0" @mousedown="colResize" @mouseup="stop" @mouseout="stop"></div>
-                        <div class="resizer row"  @mousedown="rowResize" @mouseup="stop" @mouseout="stop"></div>
-                    </li>
-                </ul>
-            </div>
+        <li>
+            <h1>Tools</h1>
         </li>
-        <li class="input">
-            <p>인풋 박스 생성</p>
-            <br>
-            <div class="drag" draggable="true">
-                <input type="text">
-            </div>
+        <hr>
+        <li>
+            <p>원하는 문서의 위치에 HTML 　요소를 Drag & Drop 합니다.</p>
         </li>
+        <hr>
         <li class="check">
             <h4>체크 박스 추가</h4>
             <div class="drag" draggable="true">
                 <input class="checkbox" type="checkbox" checked>
+            </div>
+        </li>
+        <li class="input">
+            <p>인풋 박스 생성</p>
+            <div class="drag" draggable="true">
+                <input type="text">
             </div>
         </li>
         <li class="select">
@@ -62,15 +49,13 @@
 <script>
 
 import { eventBus } from '../main.js'
-import resizeTableMixin from '../mixins/mixin.js';
 
 export default {
-    mixins:[resizeTableMixin],
     data: function() {
         return {
         }
     },
-    props: ["option", "table", "select"],
+    props: ["option", "select"],
     methods: {
         /* 전자서명 관련 메소드 */
         clear() {
@@ -80,49 +65,6 @@ export default {
 		undo() {
 			var _this = this;
 			_this.$refs.signature.undo();
-        },
-        // 계산된 속성을 실행할 수 없는 중첩된 v-for는 메소드로 처리한다.
-        setTable : function (event) {
-
-            if (event.target.value.length <= 2){
-
-                let lis = document.querySelectorAll(".table .drag:last-child ul > li");
-                let wid;
-                let hei;
-                
-                wid =  100 / this.table.row[this.table.count-1];
-                hei =  100 / this.table.column[this.table.count-1];
-                let li = this.table.row[this.table.count-1] * this.table.column[this.table.count-1];
-
-                for(let i=0; i< li; i++) {
-                    lis[i].style.width = wid+"%";
-                    lis[i].style.height = hei+"%";
-                }
-
-                /* 
-                 * 아래에 쓰인 forEach문은 edge에서 지원이 안된다.
-                 *
-                 * lis.forEach(element => {
-                 *     element.style.width = this.width+"%";
-                 *     element.style.height = this.height+"%";
-                 * });
-                 * 
-                 */
-
-            }
-        },
-
-        cutInput : function(event) {
-
-            // 인풋 실시간 감시 로직
-
-            let toolsRow = this.table.row[this.table.count-1];
-            let toolsCol = this.table.column[this.table.count-1];
-
-            // console.log("이벤트 감지")
-
-            this.$emit('cutInput', toolsRow, toolsCol);
-
         },
         setSelects : function (event) {
 
@@ -134,12 +76,15 @@ export default {
 
         },
     },
-    created() {
+    created() {        
+    this.$nextTick(function() {
+      const signInit = document.querySelector(".tools .sign .board");
+      signInit.style.height = "143px";
+    })
 
-        // 이벤트 버스를 이용한 이벤트 발행
-        eventBus.$emit('clear', this.clear);
-        eventBus.$emit('undo', this.undo);
-
+    // 이벤트 버스를 이용한 이벤트 발행
+    eventBus.$emit('clear', this.clear);
+    eventBus.$emit('undo', this.undo);
     },
 }
 </script>
@@ -148,8 +93,10 @@ export default {
 .tools {
     min-width : 250px;
     overflow : auto;
-    height : 51rem;
+    height : 50rem;
+    padding : 1rem;
     /* background: rgba(7, 102, 255, 0.294); */
+    /* border : 1px solid rgb(80, 112, 255); */
 }
 
 .tools>ul {
@@ -165,39 +112,6 @@ export default {
 
 .tools ul .words {
     border : 1px solid rgba(2, 109, 250, 0.986);
-}
-
-/* 표 */
-
-.tools ul> .table{
-    color : rgb(80, 150, 255);
-    flex-direction: column;
-    border: 2px solid rgb(80, 150, 255);
-    padding : 1rem;
-    box-sizing: border-box;
-}
-
-.tools ul .table ul {
-    background: rgb(80, 135, 255);
-    margin : 0.5rem 0;
-    width : auto;
-    height : 12rem;
-    display : flex;
-    flex-flow: row wrap;
-    align-items : flex-start;
-}
-
-.tools ul .table ul li {
-    padding : 0;
-    height : auto;
-    box-sizing : border-box;
-    border : 1px solid rgb(255, 255, 255);
-    word-break:break-word;
-}
-
-.tools ul .table input{
-    width : 30px;
-    text-align: center;
 }
 
 /* 인풋 박스 */

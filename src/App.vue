@@ -8,33 +8,29 @@
     </div>
     <div class="middle">
       <div class="left">
-        <Tools v-bind:option="option" :table="table" :select="select" v-on:cutInput="cut" v-on:setSelects="set" draggable="false"></Tools>
+        <Tools v-bind:option="option" :select="select" v-on:setSelects="set" draggable="false"></Tools>
       </div>
       <div class="right">
         <div class="section one">
-          <Document v-bind:option="option" :table="table" :select="select"></Document>
+          <Document v-bind:option="option" :select="select"></Document>
         </div>
       </div>
     </div>
-    <p style="color : white;">{{table.row}} {{table.column}} </p>
+    <div class="bottom">
+        <input type="button" value="전송">
+    </div>
   </div>
 </template>
 
 <script>
 
-import Document from './components/Document.vue'
 import Tools from './components/Tools.vue'
+import Document from './components/Document.vue'
 
 // 데이터를 표현하거나 데이터 조작에 대해 요청하는 루트 컴포넌트
 export default {
     data : function () {
         return {
-            table : {
-                count : 1,
-                row : [1],
-                column : [1],
-                shows : [true],
-            },
             select : {
                 count : 1,
                 inputs : [""],
@@ -53,13 +49,6 @@ export default {
         'Document' : Document,
     },
     methods : {
-
-        cut : function(toolsRow, toolsCol) {
-            console.log("이벤트 컷 수신")
-            this.table.row[this.table.count-1] = toolsRow;
-            this.table.column[this.table.count-1] = toolsCol;
-
-        },
         set : function(eventArr) {
             console.log("이벤트 set 수신")
             this.select.outputs[this.select.count-1] = eventArr;
@@ -97,8 +86,7 @@ export default {
             console.log(event.target.className);
 
             // 클래스 이름이 drag 있는 것만 drop 되게끔 설정 event.target.className == "dropped" || 제외
-            if ( event.target.className == "drag select "+(this.select.count-1) || 
-                event.target.className == "drag table "+(this.table.count-1) || 
+            if ( event.target.className == "drag select "+(this.select.count-1) ||
                 event.target.className == "drag" ) {
                 
                 dragged = event.target;
@@ -149,21 +137,7 @@ export default {
 
                 event.target.appendChild( dragged );
 
-                if (draggedParentClass == "table") {
-
-                    count = this.table.count;
-                    twoWayBindCase(dupElement, count);
-
-                    // 카운트 추가
-                    this.table.count = this.table.count + 1
-                    // 카운트가 추가 되기전의 bool을 false로 하여 tools에서 안보이게 처리한다.
-                    this.table.shows[this.table.count-2] = false;
-                    // 다음에 드래그 앤 드랍할 표를 준비시킨다.
-                    this.table.shows.push(true);
-                    this.table.row.push(1)
-                    this.table.column.push(1)
-
-                } else if (draggedParentClass == "select") {
+                if (draggedParentClass == "select") {
 
                     count = this.select.count;
                     twoWayBindCase(dupElement, count);
@@ -183,7 +157,6 @@ export default {
 
                     dragged.setAttribute("class", "dropped");
                     dragged.style.width = "100%";
-                    dragged.style.height = "15%";
                     dragged.style.resize = "none";
                     dragged.style.border = "";
                     dragged.setAttribute("draggable", "false");
@@ -252,41 +225,9 @@ export default {
                 dragged.style.height = "1.3%";
                 break;
 
-                case "table":
-                dragged.style.height = "auto";
-                dragged.style.width = "100%";
-                let lis = dragged.querySelectorAll("ul > li");
-                for(let i=0; i<lis.length; i++) {
-                    lis[i].style.height = "50px";
-                    lis[i].setAttribute("class", i+1);
-                }
-                break;
             }
 
         }
-    },
-    beforeUpdate() {
-
-        // 행, 열 input 실시간 감시
-
-        if (this.table.column[this.table.count-1].length > 2 || this.table.column[this.table.count-1] > 12) {
-
-            let cut = String(this.table.column[this.table.count-1]);
-            cut = cut.slice(0,-1);
-            cut = cut.slice(0, 2);
-            this.table.column[this.table.count-1] = cut;
-
-        }
-            
-        if (this.table.row[this.table.count-1].length > 2 || this.table.row[this.table.count-1] > 12) {
-
-            let cut = String(this.table.row[this.table.count-1]);
-            cut = cut.slice(0,-1);
-            cut = cut.slice(0, 2);
-            this.table.row[this.table.count-1] = cut;
-
-        }
-
     },
 }
 </script>
@@ -331,7 +272,7 @@ html {
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
     box-sizing: border-box;
-    padding : 0.5rem;
+    padding : 0.3rem;
 }
 
 /* app header */
@@ -371,31 +312,29 @@ html {
     color : rgb(12, 88, 44);
 }
 
-.middle {
+#app .middle {
     height : auto;
     width : 100%;
     display : flex;
     flex-direction: row;
 }
 
-.middle .left {
+#app .middle .left {
     border : 3px solid rgb(80, 150, 255);
     width : 16%;
     margin-right : 0.5%;
     min-width : 300px;
 }
 
-.middle .left {
+#app .middle .left {
     box-sizing : border-box;
     padding : 0.5rem;
 }
-.middle .right {
+#app .middle .right {
     width : 83%;
-    /* height : 100%;
-    background: #333; */
 }
 
-.middle .right .one {
+#app .middle .right .one {
     box-sizing : border-box;
     border : 2px solid rgb(80, 150, 255);
     overflow: auto;
@@ -404,8 +343,20 @@ html {
     margin-bottom : 1rem;
 }
 
-.tools .drag {
+#app .middle .tools .drag {
     cursor : all-scroll;
+}
+
+#app .bottom {
+    position : fixed;
+    bottom : 0;
+    width : 100%;
+    z-index : 99;
+    padding : 0.2rem;
+}
+
+#app .bottom input {
+    padding : 0.1rem;
 }
 
 </style>
