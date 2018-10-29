@@ -23,11 +23,10 @@
 <body>
 
 <div id="app">
-
 <div class="header">
       <ul class="gnb">
         <li><h1>Form CMS</h1></li>
-        <li><p><font-awesome-icon icon="marker"/> </p></li>
+		<li><p><font-awesome-icon icon="marker"/> </p></li>
       </ul>
 </div>
 <br>
@@ -35,7 +34,8 @@
 <br>
 <br>
 
-<!-- SE2 Markup Start -->	
+<!-- SE2 Markup Start -->
+<div class="editor_wrap">
 <div id="smart_editor2">
 	<div id="smart_editor2_content"><a href="#se2_iframe" class="blind">글쓰기영역으로 바로가기</a>
 		<div class="se2_tool" id="se2_tool">
@@ -783,7 +783,7 @@
 		</div>
 		<!-- //입력 -->
 		<!-- 입력창조절/ 모드전환 -->
-		<div class="se2_conversion_mode">
+		<div class="se2_conversion_mode" style="display : none;">
 			<button type="button" class="se2_inputarea_controller husky_seditor_editingArea_verticalResizer" title="입력창 크기 조절"><span>입력창 크기 조절</span></button>
 			<ul class="se2_converter">
 			<li class="active"><button type="button" class="se2_to_editor"><span>Editor</span></button></li>
@@ -817,18 +817,17 @@
 <br>
 <br>
 <br>
-
+</div>
 <!--Example Start-->
 <div id="se2_sample" style="margin:10px 0;">
-	<input type="button" onclick="showHTML();" value="HTML 미리 확인하기" />
-	<input type="button" onclick="submitContents();" value="다음 단계로" />
-	<form action="./index.php" method="post">
+	<input type="button" onclick="showHTML();" value="in HTML" style="cursor : pointer" />
+	<input type="button" onclick="submitContents();" value="다음 단계로" style=" cursor : pointer;"/>
+	<form action="./draganddrop.php" method="post">
 		<textarea name="ir1" id="ir1" rows="10" cols="100" style="width:766px; height:412px; display:none;">
 			<p>동의서 탬플릿을 작성해 주세요.</p>
 		</textarea>
 	</form>
 </div>
-
 </div>
 
 <script type="text/javascript">
@@ -873,12 +872,17 @@ if(window.frameElement){
 
 	var changeMe = document.querySelector('#smart_editor2')
 	var changeMeToo = document.querySelector('.husky_seditor_editing_area_container')
+	var wrap = document.querySelector('.editor_wrap');
 
-	changeMe.style.width = "100%";
+	changeMe.style.width = "1200px";
 	changeMe.style.height = "40rem";
+	changeMe.style.margin = "0 auto";
 
-	changeMeToo.style.width = "100%";
-	changeMeToo.style.height = "40rem";
+	changeMeToo.style.width = "1190px";
+	changeMeToo.style.height = "43rem";
+	wrap.style.overflow = "auto";
+
+	
 
 })()
 

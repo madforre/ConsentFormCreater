@@ -17,7 +17,6 @@
       </div>
     </div>
     <div class="bottom">
-        <input type="button" value="전송">
     </div>
   </div>
 </template>
@@ -56,7 +55,7 @@ export default {
     },
     mounted() {
 
-        /* 
+        /**
          * 알아두기 : mounted와 마찬가지로 vm.$nextTick를 사용하면 
          * 전체가 렌더링된 상태를 보장할 수 있다. 
          * mounted단계에서 내장 함수인 HTML5 Drag & Drop API 를 사용하였다.
@@ -83,7 +82,7 @@ export default {
             // 크로스 브라우징용 코드 (edge, firefox)
             event.dataTransfer.setData('text', 'anything');
 
-            console.log(event.target.className);
+            // console.log("드래그 시작 / 클래스 이름 : " + event.target.className);
 
             // 클래스 이름이 drag 있는 것만 drop 되게끔 설정 event.target.className == "dropped" || 제외
             if ( event.target.className == "drag select "+(this.select.count-1) ||
@@ -118,25 +117,36 @@ export default {
 
             event.preventDefault();
 
-            console.log(event);
-            console.log(event.target);
-            console.log(event.target.className);
-
             // move dragged elem to the selected drop target
 
-            /* 
+            /**
              * 이벤트 타겟의 부모 노드가 document이면 document에 맞게 사이즈 조절한다.
              * 부모 노드가 document가 아니라 표 안속에 있는 경우는 정해진 대로 가공한다.
              */
 
-            if ( event.target.className == "document" ) {
+            if (event.target.className == "document" && draggedParentClass == "sign") {
+
+                    event.target.appendChild( dragged );
+
+                    console.log(dragged);
+                    
+                    signatureCase(dragged);
+
+                    return;
+
+                }
+
+            console.log("hi");
+
+            // if ( event.target.className == "document" ) {
+            if ( event.target.tagName == "TD" || event.target.tagName == "P" ) {
 
                 // 드롭 후 복구를 위해 자식 노드를 포함하여 미리 복사
                 let dupElement = dragged.cloneNode(true);
                 let count;
 
-                event.target.appendChild( dragged );
-
+                event.target.tagName=="TD" ? event.target.appendChild(dragged) : event.target.parentNode.appendChild(dragged)
+                
                 if (draggedParentClass == "select") {
 
                     count = this.select.count;
@@ -150,17 +160,6 @@ export default {
                     this.select.shows.push(true);
                     this.select.inputs.push("");
 
-                } else if (draggedParentClass == "sign") {
-
-                    // document의 높이에 dragged의 높이가 auto로 적용이 안되므로 잠깐 풀어줘야 한다.
-                    dragged.parentNode.height = "auto";
-
-                    dragged.setAttribute("class", "dropped");
-                    dragged.style.width = "100%";
-                    dragged.style.resize = "none";
-                    dragged.style.border = "";
-                    dragged.setAttribute("draggable", "false");
-
                 } else {
 
                     commonCase(dupElement);
@@ -169,12 +168,9 @@ export default {
 
             }
 
-            if (event.target.className == "bin") {
-                console.log("delete");
-            }
-
         }, false);
 
+        // 케이스 별로 속성 조정 로직
         function commonCase(dupElement) {
 
             let restoreMe = document.querySelector("." + draggedParentClass);
@@ -190,21 +186,21 @@ export default {
             switch (draggedParentClass) {
 
                 case "check":
-                dragged.style.width ="3.9%";
-                dragged.style.height ="3%";
-                break;
-
-                case "words":
-                dragged.style.fontSize = "2rem";
-                dragged.style.width = "auto";
-                dragged.style.height = "3%";
+                dragged.style.display ="inline-block";
+                dragged.style.margin = "0px 3px 0px 0px";
+                dragged.parentNode.style.boxSizing = "border-box";
+                dragged.childNodes[0].style.display = "block";
+                dragged.childNodes[0].style.width = "35px";
+                dragged.childNodes[0].style.height = "35px";
+                console.log(dragged.childNodes[0]);
                 break;
 
                 case "input":
-                dragged.style.width ="auto";
-                dragged.firstChild.style.width ="90%";
-                dragged.firstChild.style.height ="90%";
-                dragged.firstChild.style.justifyContent = "center";
+                dragged.style.display ="inline-block";
+                dragged.childNodes[0].style.display = "block";
+                dragged.childNodes[0].style.width = "100%";
+                dragged.childNodes[0].style.height = "20px";
+
                 break;
 
             }
@@ -221,11 +217,23 @@ export default {
             switch (draggedParentClass) {
 
                 case "select":
-                dragged.style.width = "auto";
                 dragged.style.height = "1.3%";
+                dragged.style.marginLeft = "5px";
+                dragged.style.marginRight = "5px";
+                dragged.style.display ="inline-block";
                 break;
 
             }
+
+        }
+        function signatureCase(dragged) {
+
+            dragged.parentNode.height = "auto";
+            dragged.setAttribute("class", "hi");
+            dragged.style.width = "100%";
+            dragged.style.height = "400px";
+            dragged.style.border = "";
+            dragged.setAttribute("draggable", "false");
 
         }
     },

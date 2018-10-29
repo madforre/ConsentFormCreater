@@ -3,11 +3,16 @@
     <div class="bar">
     </div>
     <div class="a4">
-        <div class="document">
+        <div class="document" style="margin : 2.3%; box-sizing: border-box; height : 1684px; text-align: left; overflow : hidden;">
+          <!-- 문서 내용이 들어갑니다. -->
         </div>
-        <div class="bin" v-on:click="getData">
-            <h1><font-awesome-icon icon="trash-alt"/></h1>
-        </div>
+      <div class="sendBtn" v-on:click="sendData">
+        <h1><font-awesome-icon icon="paper-plane"/></h1>
+        <p>완료</p>
+        <form id="send" method="post" action="./endpoint.php">
+          <input name="document" class="pickme" type="hidden">
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -22,6 +27,21 @@ export default {
     }
   },
   props: ["option", "select"],
+  methods : {
+    sendData() {
+      let stringfyDoc = document.querySelector(".document").outerHTML;
+      let picked = document.querySelector(".pickme")
+      picked.setAttribute('value', stringfyDoc);
+
+      // console.log(picked.getAttribute('value'));
+      document.getElementById("send").submit();
+    },
+    // 이벤트 버스로 수신받을 전자서명 관련 메소드
+    clear(){
+    },
+    undo(){
+    }
+  },
   created() {
     this.$nextTick(function() {
       // contents는 php파일에서 post 값으로 받은 전역변수이다.
@@ -36,16 +56,6 @@ export default {
       this.undo = method;
     })
   },
-  methods : {
-    getData() {
-      console.log(contents);
-    },
-    // 이벤트 버스로 수신받을 전자서명 관련 메소드
-    clear(){
-    },
-    undo(){
-    }
-  },
 }
 </script>
 
@@ -57,20 +67,23 @@ export default {
  * height : 1684px;
  */
 
-/* 휴지통 */
+/* 전송 */
 
-.bin {
-    position : absolute;
-    right : 3%;
+.sendBtn {
+    position : fixed;
+    right : 4.5%;
     bottom : 7%;
     background : rgb(255, 255, 255);
     padding : 0.5rem;
-    color : rgba(158, 38, 38, 0.445);
+    font-weight: 600;
+    color : rgba(71, 88, 235, 0.822);
     cursor : pointer;
+    width : 50px;
 }
 
-.bin:hover {
-    color : rgba(255, 31, 31, 0.822);
+.sendBtn:hover{
+  box-shadow: 4px 4px 4px #103ba08a;
+  border : 1px solid rgb(92, 145, 245);
 }
 
 .bg {
@@ -82,22 +95,12 @@ export default {
 
 .bg .a4 {
     border : 1px solid gray;
-    padding : 2.3%;
     margin : 0 auto;
     margin-top : 2rem;
     margin-bottom : 2rem;
     width : 1190px;
     height : 1684px;
     background : #fff;
-}
-
-.bg .a4> .document {
-    /* display : flex; */
-    box-sizing: border-box;
-    /* flex-flow : row wrap; */
-    /* align-content: flex-start; */
-    height : 1684px;
-    text-align: left;
 }
 
 /* Drop된 요소의 Resize를 위한 css 설정 */

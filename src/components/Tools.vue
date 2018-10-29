@@ -110,32 +110,6 @@ export default {
     display : flex;
 }
 
-/* 글자 */
-
-.tools ul .words {
-    border : 1px solid rgba(2, 109, 250, 0.986);
-}
-
-/* 인풋 박스 */
-
-.tools ul .input {
-    flex-direction: column;
-    border : 2px solid rgb(80, 150, 255);
-    padding : 5%;
-    color : rgb(80, 150, 255);
-}
-
-.tools ul .input .drag {
-    margin-top : 6%;
-    padding : 4%;
-    
-}
-
-.tools ul .input .drag input {
-    box-sizing: border-box;
-    width : 100%;
-}
-
 /* 체크 박스 */
 
 .tools ul .check {
@@ -186,6 +160,27 @@ export default {
     left : 20%;
     content: '✔';
 }
+
+/* 인풋 박스 */
+
+.tools ul .input {
+    flex-direction: column;
+    border : 2px solid rgb(80, 150, 255);
+    padding : 5%;
+    color : rgb(80, 150, 255);
+}
+
+.tools ul .input .drag {
+    margin-top : 6%;
+    padding : 4%;
+    
+}
+
+.tools ul .input .drag input {
+    box-sizing: border-box;
+    width : 100%;
+}
+
 
 /* 셀렉트 박스 */
 

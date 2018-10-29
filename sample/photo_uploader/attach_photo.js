@@ -632,7 +632,7 @@
  			this._loadFunc = function(rq){ 
  				clearTimeout(_timer);
  				_timer = undefined; 
- 				t._onload(rq); 
+ 				t._onload(rq);
  			}
  			req.addEventListener("load", this._loadFunc, false);
  		}else{

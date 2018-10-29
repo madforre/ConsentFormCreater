@@ -78,9 +78,9 @@ html {
 #se2_sample {
     position : fixed;
     bottom : 0px;
-    right : 0.5%;
-    width : 99%;
-    background-image: linear-gradient(to bottom right, rgb(35, 72, 235), rgb(85, 144, 233));
+    right : 4%;
+    width : 10%;
+    /* background-image: linear-gradient(to bottom right, rgb(35, 72, 235), rgb(85, 144, 233)); */
     z-index : 99;
     padding-top : 0.35rem;
     padding-bottom : 0.35rem;

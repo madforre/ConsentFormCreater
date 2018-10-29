@@ -14,4 +14,3 @@
     <script src="./dist/build.js"></script>
   </body>
 </html>
-
