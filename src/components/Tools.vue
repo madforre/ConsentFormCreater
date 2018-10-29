@@ -2,11 +2,13 @@
     <div class="tools">
       <ul>
         <li>
-            <h1>Tools</h1>
+            <h2>Tools</h2>
         </li>
         <hr>
         <li>
-            <p>원하는 문서의 위치에 HTML 　요소를 Drag & Drop 합니다.</p>
+            <p>원하는 문서의 위치에 HTML 　요소를 Drag & Drop 합니다.<br>
+            전자 서명을 제외한 모든 요소는 표 안에 삽입 합니다.
+            </p>
         </li>
         <hr>
         <li class="check">

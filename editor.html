@@ -13,6 +13,9 @@
 <script type="text/javascript" src="./js/service/SE2BasicCreator.js" charset="utf-8"></script>
 <script type="text/javascript" src="./js/smarteditor2.min.js" charset="utf-8"></script>
 
+<!-- 사진 첨부 샘플-->
+<script type="text/javascript" src="./sample/js/plugin/hp_SE2M_AttachQuickPhoto.js" charset="utf-8"></script>
+
 <!-- 엑시오스 추가 -->
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
@@ -542,6 +545,19 @@
 					<!--//@lazyload_html-->
 				</li>
 </ul>
+<ul class="se2_multy">
+
+	<li class="se2_mn husky_seditor_ui_photo_attach">
+
+	  <button type="button" class="se2_photo ico_btn">
+
+		<span class="se2_icon"></span><span class="se2_mntxt">사진<span class="se2_new"></span></span>
+
+	  </button>
+
+	</li>
+
+  </ul>
 			</div>
 			<!-- //704이상 -->
 		</div>
@@ -804,8 +820,7 @@
 
 <!--Example Start-->
 <div id="se2_sample" style="margin:10px 0;">
-	<input type="button" onclick="pasteHTML();" value="본문에 내용 넣기" />
-	<input type="button" onclick="showHTML();" value="본문 내용 가져오기" />
+	<input type="button" onclick="showHTML();" value="HTML 미리 확인하기" />
 	<input type="button" onclick="submitContents();" value="다음 단계로" />
 	<form action="./index.php" method="post">
 		<textarea name="ir1" id="ir1" rows="10" cols="100" style="width:766px; height:412px; display:none;">
@@ -838,11 +853,6 @@ if(window.frameElement){
 			//oEditor.exec("PASTE_HTML", ["로딩이 완료된 후에 본문에 삽입되는 text입니다."]);
 		}
 	});
-	
-	function pasteHTML() {
-		var sHTML = "<span style='color:#FF0000;'>이미지도 같은 방식으로 삽입합니다.<\/span>";
-		oEditor.exec("PASTE_HTML", [sHTML]);
-	}
 	
 	function showHTML() {
 		var sHTML = oEditor.getIR();

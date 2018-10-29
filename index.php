@@ -11,7 +11,7 @@
     <script> 
       var contents = `<?php echo $contents;?>`;
     </script>
-    <script src="/dist/build.js"></script>
+    <script src="./dist/build.js"></script>
   </body>
 </html>
 
