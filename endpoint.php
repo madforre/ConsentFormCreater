@@ -21,7 +21,6 @@
 
         // 전자서명 설정 - https://github.com/szimek/signature_pad 참고
         var canvas = document.querySelector("canvas");
-
         var signaturePad = new SignaturePad(canvas, {
             penColor: "rgb(0, 0, 0)",
             backgroundColor:"rgb(233, 233, 233)",
@@ -35,9 +34,9 @@
             canvas.getContext("2d").scale(ratio, ratio);
             signaturePad.clear(); // otherwise isEmpty() might return incorrect value
         }
-
         window.addEventListener("resize", resizeCanvas);
         resizeCanvas();
+        
     </script>
 </body>
 </html>

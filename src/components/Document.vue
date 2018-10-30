@@ -14,12 +14,16 @@
         </form>
       </div>
     </div>
+    <a href=""></a>
   </div>
 </template>
 
 <script scoped>
 import { eventBus } from '../main.js';
-// import axios from 'axios';
+
+/* axios 사용하려다 말았음
+ * import axios from 'axios';
+ */
 
 export default {
   data () {
@@ -33,8 +37,15 @@ export default {
       let picked = document.querySelector(".pickme")
       picked.setAttribute('value', stringfyDoc);
 
-      // console.log(picked.getAttribute('value'));
+      /* 크롬에서 Cross Site Scripting (XSS) 에 대한 테스트를 하면 ERR_BLOCKED_BY_XSS_AUDITOR라는 에러 메시지를 보게된다.
+      * XSS Auditor는 크롬과 사파리에 탑재되어 있고, 기본 동작하도록 설정되어 있다. 
+      * XSS Auditor의 동작은 X-XSS-Protection이라는 HTTP Response 헤더에 의해 결정된다.
+      * 파이어 폭스에서 실행하면 스크립트를 넣은 HTML(폼 전달)은 정상적으로 작동하는 것을 확인할 수 있다.
+      * 
+      * 요약하면 에디터에서 다음 페이지로 포스트 값 넘길 때 파폭 되고 크롬, 사파리 안됨!
+      */
       document.getElementById("send").submit();
+      
     },
     // 이벤트 버스로 수신받을 전자서명 관련 메소드
     clear(){
