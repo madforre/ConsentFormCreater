@@ -229,11 +229,14 @@ export default {
         function signatureCase(dragged) {
 
             dragged.parentNode.height = "auto";
-            dragged.setAttribute("class", "hi");
             dragged.style.width = "100%";
-            dragged.style.height = "400px";
             dragged.style.border = "";
             dragged.setAttribute("draggable", "false");
+
+            // 전자서명 높이 설정
+            dragged.childNodes[0].childNodes[0].style.width = "100%";
+            dragged.childNodes[0].style.height = "auto";
+            dragged.childNodes[0].childNodes[0].style.height = "300px";
 
         }
     },
