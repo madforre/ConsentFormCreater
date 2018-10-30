@@ -25,8 +25,8 @@ js(에디터 라이브러리), vuejs(Vue-CLI 번들링 파일), css(에디터 cs
 ### References
 
 보시는 분 참고
-* src - (Vue-CLI 코드 / 싱글 뷰 컴포넌트)
-* references - (작업 기록 및 에디터 참고 코드)
+* src 폴더 - (Vue-CLI 코드 / 싱글 뷰 컴포넌트)
+* 작업내용 폴더 - (작업 기록 및 에디터 참고 코드)
 
 라이브러리 참고
 * https://github.com/naver/smarteditor2
