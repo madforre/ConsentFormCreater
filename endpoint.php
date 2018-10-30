@@ -10,12 +10,19 @@
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
 </head>
+<style>
+    .result {
+        margin : 0 auto;
+    }
+</style>
 <body>
+    <div class="result">
     <?php 
     foreach ($_POST as $key => $value) {
         echo "포스트 변수 키 : " . $key . "<hr> 값 : " . $value . "<hr>";
     };
     ?>
+    </div>
 
     <script>
 
