@@ -78,7 +78,7 @@ export default {
 
         },
     },
-    created() {        
+    created() {
     this.$nextTick(function() {
       const signInit = document.querySelector(".tools .sign .board");
       signInit.style.height = "143px";
