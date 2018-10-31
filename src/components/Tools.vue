@@ -72,7 +72,7 @@ export default {
 
             let eventArr = event.target.value.split(",");
 
-            console.log(eventArr);
+            // console.log(eventArr);
             
             this.$emit('setSelects', eventArr)
 

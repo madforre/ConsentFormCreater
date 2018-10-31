@@ -49,7 +49,7 @@ export default {
     },
     methods : {
         set : function(eventArr) {
-            console.log("이벤트 set 수신")
+            // console.log("이벤트 set 수신")
             this.select.outputs[this.select.count-1] = eventArr;
         },
     },
@@ -128,7 +128,7 @@ export default {
 
                     event.target.appendChild( dragged );
 
-                    console.log(dragged);
+                    // console.log(dragged);
                     
                     signatureCase(dragged);
 
@@ -136,7 +136,7 @@ export default {
 
                 }
 
-            console.log("hi");
+            // console.log("hi");
 
             // if ( event.target.className == "document" ) {
             if ( event.target.tagName == "TD" || event.target.tagName == "P" ) {
@@ -192,7 +192,7 @@ export default {
                 dragged.childNodes[0].style.display = "block";
                 dragged.childNodes[0].style.width = "35px";
                 dragged.childNodes[0].style.height = "35px";
-                console.log(dragged.childNodes[0]);
+                // console.log(dragged.childNodes[0]);
                 break;
 
                 case "input":
