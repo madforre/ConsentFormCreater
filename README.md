@@ -12,7 +12,7 @@ Vue Router와 Vue-CLI 싱글 뷰 컴포넌트를 이용하여 동의서 생성�
 
 ### 흐름 
 
-editor.html (post 폼 전송) -> draganddrop.php (post 값 받은 후 인풋 및 전자서명 추가, 다시 post 전송, Vue-CLI로 제작 후 번들링) 
+editor.html (post 폼 전송) -> draganddrop.php (post 값 받은 다음 인풋 및 전자서명 추가하면  다시 post 전송, Vue-CLI로 제작 후 번들링) 
 -> endpoint.php (post 값 받은 후 랜더링 해주는 PHP 파일)
 
 ### 필수 파일 
