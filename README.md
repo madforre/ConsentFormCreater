@@ -1,6 +1,6 @@
 # Form CMS
 
-Vue Router와 Vue-CLI 싱글 뷰 컴포넌트를 이용하여 동의서 생성하는 프로그램(CMS) 만들기
+Vue Router와 Vue-CLI 싱글 뷰 컴포넌트를 이용하여 동의서 생성하는 프로그램(CMS) 만들기 - 제작 중단
 
 ### Beta 1.0.0
 
